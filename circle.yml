@@ -8,10 +8,9 @@ dependencies:
   cache_directories:
     - "~/docker"
   override:
-    - ls -al ~/docker/
     - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
     - docker build --rm=false -t pqvp-demo:latest .
-    - mkdir -p ~/docker; docker save pqvp-demo > ~/docker/image.tar
+    - mkdir -p ~/docker; docker save pqvp-demo:latest > ~/docker/image.tar
     - sudo wget https://releases.hashicorp.com/terraform/0.8.6/terraform_0.8.6_linux_amd64.zip -O /usr/local/bin/terraform.zip
     - cd /usr/local/bin && sudo unzip terraform.zip
     - git clone https://github.com/silinternational/ecs-deploy.git
@@ -19,6 +18,8 @@ dependencies:
 test:
   override:
     - terraform/scripts/run_tests.sh
+    - docker run -d -p 80:80 pqvp-demo:latest; sleep 10
+    - curl --retry 10 --retry-delay 5 localhost:80
 
 deployment:
   prod:

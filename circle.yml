@@ -5,3 +5,4 @@ machine:
 dependencies:
   override:
     - docker info
+    - docker build --rm=false -t trussworks/pqvp .

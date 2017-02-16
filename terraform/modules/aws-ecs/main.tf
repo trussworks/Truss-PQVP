@@ -54,6 +54,16 @@ variable "alb_security_group_ids" {
   type        = "list"
 }
 
+variable "minimum_healthy_percent" {
+  description = "lower limit on the number of running tasks"
+  default     = "100"
+}
+
+variable "maximum_percent" {
+  description = "upper limit on the number of running tasks"
+  default     = "200"
+}
+
 data "aws_route53_zone" "main" {
   name = "${var.zone_name}"
 }
@@ -103,16 +113,22 @@ resource "aws_ecs_task_definition" "main" {
 }
 
 resource "aws_ecs_service" "main" {
-  name            = "${var.name}"
-  cluster         = "${aws_ecs_cluster.main.id}"
-  task_definition = "${aws_ecs_task_definition.main.arn}"
-  desired_count   = "${var.ecs_desired_count}"
-  iam_role        = "${aws_iam_role.ecs_service_role.arn}"
+  name                               = "${var.name}"
+  cluster                            = "${aws_ecs_cluster.main.id}"
+  task_definition                    = "${aws_ecs_task_definition.main.arn}"
+  desired_count                      = "${var.ecs_desired_count}"
+  iam_role                           = "${aws_iam_role.ecs_service_role.arn}"
+  deployment_minimum_healthy_percent = "${var.minimum_healthy_percent}"
+  deployment_maximum_percent         = "${var.maximum_percent}"
 
   load_balancer {
     target_group_arn = "${aws_alb_target_group.main.id}"
     container_name   = "${aws_ecs_task_definition.main.family}"
     container_port   = 80
+  }
+
+  lifecycle {
+    ignore_changes = ["task_definition"]
   }
 }
 

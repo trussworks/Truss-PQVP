@@ -13,7 +13,11 @@
 | vpc_id | VPC ID to be used by the ALB | - | yes |
 | subnet_ids | Subnets IDs for the ALB | - | yes |
 | zone_name | Route53 zone name | - | yes |
+| hostname | Route53 record to create | - | yes |
 | s3_logs_bucket | S3 bucket for storing Application Load Balancer logs | - | yes |
+| alb_security_group_ids | Security Group IDs to assign to the ALB | - | yes |
+| minimum_healthy_percent | lower limit on the number of running tasks | `100` | no |
+| maximum_percent | upper limit on the number of running tasks | `200` | no |
 
 ## Outputs
 

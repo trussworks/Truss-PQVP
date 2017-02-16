@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install -y postgresql postgresql-contrib postgis n
 
 RUN echo "\ndaemon off;" >> /etc/nginx/nginx.conf
 
-RUN echo "Version 2" >> /var/www/html/index.nginx-debian.html
+RUN echo "Version 3" >> /var/www/html/index.nginx-debian.html
 
 WORKDIR /etc/nginx
 

@@ -1,15 +1,25 @@
 machine:
   services:
     - docker
+  environment:
+    AWS_DEFAULT_REGION: us-west-2
+    ECR_REPOSITORY: ${AWS_ACCOUNT_ID}.dkr.ecr.us-west-2.amazonaws.com/pqvp-demo
 
 dependencies:
   override:
     - sudo wget https://releases.hashicorp.com/terraform/0.8.6/terraform_0.8.6_linux_amd64.zip -O /usr/local/bin/terraform.zip
     - cd /usr/local/bin && sudo unzip terraform.zip
     - terraform version
-    - docker info
-    - docker build --rm=false -t trussworks/pqvp .
+    - eval $(aws ecr get-login --region $AWS_DEFAULT_REGION)
+    - docker build --rm=false -t pqvp-demo:latest .
 
 test:
   override:
     - terraform/scripts/run_tests.sh
+
+deployment:
+  prod:
+    branch: master
+    commands:
+      - docker tag pqvp-demo:latest ${ECR_REPOSITORY}:latest
+      - docker push ${ECR_REPOSITORY}/pqvp-demo:latest

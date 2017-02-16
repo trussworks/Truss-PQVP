@@ -4,5 +4,12 @@ machine:
 
 dependencies:
   override:
+    - sudo wget https://releases.hashicorp.com/terraform/0.8.6/terraform_0.8.6_linux_amd64.zip -O /usr/local/bin/terraform.zip
+    - cd /usr/local/bin && sudo unzip terraform.zip
+    - terraform version
     - docker info
     - docker build --rm=false -t trussworks/pqvp .
+
+test:
+  override:
+    - terraform/scripts/run_tests.sh

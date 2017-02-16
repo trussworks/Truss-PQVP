@@ -3,7 +3,6 @@ machine:
     - docker
   environment:
     AWS_DEFAULT_REGION: us-west-2
-    ECR_REPOSITORY: ${AWS_ACCOUNT_ID}.dkr.ecr.us-west-2.amazonaws.com/pqvp-demo
 
 dependencies:
   override:
@@ -21,5 +20,5 @@ deployment:
   prod:
     branch: master
     commands:
-      - docker tag pqvp-demo:latest ${ECR_REPOSITORY}:latest
-      - docker push ${ECR_REPOSITORY}/pqvp-demo:latest
+      - docker tag pqvp-demo:latest ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/pqvp-demo:latest
+      - docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/pqvp-demo:latest

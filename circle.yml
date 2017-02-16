@@ -22,6 +22,6 @@ deployment:
   prod:
     branch: mk-circle-glue
     commands:
-      - eval $(aws ecr get-login --region $AWS_DEFAULT_REGION
+      - eval $(aws ecr get-login --region $AWS_DEFAULT_REGION)
       - docker tag pqvp-demo:latest ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/pqvp-demo:latest
       - docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/pqvp-demo:latest

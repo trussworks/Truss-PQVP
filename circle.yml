@@ -18,7 +18,7 @@ test:
 
 deployment:
   prod:
-    branch: master
+    branch: mk-circle-glue
     commands:
       - docker tag pqvp-demo:latest ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/pqvp-demo:latest
       - docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/pqvp-demo:latest

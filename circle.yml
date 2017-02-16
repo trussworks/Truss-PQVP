@@ -18,7 +18,7 @@ test:
 
 deployment:
   prod:
-    branch: mk-fix-push
+    branch: master
     commands:
       - docker tag pqvp-demo:latest ${AWS_ACCOUNT_ID}.dkr.ecr.us-west-2.amazonaws.com/pqvp-demo:latest
       - docker push ${AWS_ACCOUNT_ID}.dkr.ecr.us-west-2.amazonaws.com/pqvp-demo:latest

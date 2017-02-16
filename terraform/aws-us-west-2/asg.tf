@@ -13,11 +13,11 @@ module "asg" {
   min_size                    = 2
   max_size                    = 2
   desired_capacity            = 2
-  iam_instance_profile        = "${module.nginx.ecs_instance_profile_name}"
+  iam_instance_profile        = "${module.pqvp-demo.ecs_instance_profile_name}"
 
   user_data = <<EOF
 #!/bin/bash
-echo "ECS_CLUSTER=${module.nginx.ecs_cluster_name}" >> /etc/ecs/ecs.config
+echo "ECS_CLUSTER=${module.pqvp-demo.ecs_cluster_name}" >> /etc/ecs/ecs.config
 echo 'ECS_AVAILABLE_LOGGING_DRIVERS=["json-file","awslogs"]' >> /etc/ecs/ecs.config
 EOF
 }

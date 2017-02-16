@@ -1,10 +1,10 @@
 // ecs cluster and task definition
-module "nginx" {
+module "pqvp-demo" {
   source                   = "../modules/aws-ecs"
-  name                     = "nginx"
+  name                     = "pqvp"
   hostname                 = "demo"
   environment              = "${var.environment}"
-  container_definitions    = "${file("task-definitions/nginx.json")}"
+  container_definitions    = "${file("task-definitions/pqvp.json")}"
   ecs_role_policy          = "${file("iam-policies/ecs-role.json")}"
   ecs_instance_role_policy = "${file("iam-policies/ecs-instance-role-policy.json")}"
   ecs_service_role_policy  = "${file("iam-policies/ecs-service-role-policy.json")}"

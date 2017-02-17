@@ -1,14 +1,15 @@
-FROM ubuntu:16.04
+FROM golang:1.8.0
 
 # install PostGres with GIS extension
-RUN apt-get update && apt-get install -y postgresql postgresql-contrib postgis nginx
+RUN apt-get update && apt-get install -y postgresql postgresql-contrib postgis
 
-RUN echo "\ndaemon off;" >> /etc/nginx/nginx.conf
+RUN mkdir -p /go/src/app
+WORKDIR /go/src/app
+ADD . /go/src/app
 
-RUN echo "Version 5" >> /var/www/html/index.nginx-debian.html
+RUN go get -u github.com/zenazn/goji
+RUN make
 
-WORKDIR /etc/nginx
-
-CMD ["nginx"]
+ENTRYPOINT /go/src/app/server/server
 
 EXPOSE 80

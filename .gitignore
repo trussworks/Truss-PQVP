@@ -1,3 +1,15 @@
 .terraform
 graph.png
 .DS_Store
+.env
+
+# Client side excludes
+client/node_modules
+client/build
+client/npm-debug.log*
+client/yarn-debug.log*
+client/yarn-error.log*
+
+# Server side exclude
+server/.glide/
+server/server

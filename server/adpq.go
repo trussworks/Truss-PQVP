@@ -15,7 +15,7 @@ func main() {
 
 	entry := flag.String("entry", "../client/public/index.html", "the entrypoint to serve.")
 	static := flag.String("static", "../client/dist", "the directory to serve static files from.")
-	port := flag.String("port", ":8000", "the `port` to listen on.")
+	port := flag.String("port", ":80", "the `port` to listen on.")
 	flag.Parse()
 
 	listener, err := net.Listen("tcp", *port)

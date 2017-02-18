@@ -10,6 +10,6 @@ ADD . /go/src/app
 RUN go get -u github.com/zenazn/goji
 RUN make
 
-ENTRYPOINT /go/src/app/server/server
+ENTRYPOINT /go/src/app/server/server -entry /go/src/app/client/public/index.html
 
 EXPOSE 80

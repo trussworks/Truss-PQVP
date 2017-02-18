@@ -19,7 +19,7 @@ test:
   override:
     - terraform/scripts/run_tests.sh
     - docker run -d -p 80:80 pqvp-demo:latest; sleep 10
-    - curl --retry 10 --retry-delay 5 localhost:80
+    - curl -sSf --retry 10 --retry-delay 5 localhost:80
 
 deployment:
   prod:

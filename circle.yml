@@ -34,7 +34,7 @@ test:
     - docker run -d -p 80:80 pqvp-demo:latest; sleep 10
     - curl -sSf --retry 10 --retry-delay 5 localhost:80
     # Run selenium tests
-    - /bin/true
+    - curl localhost:4445
   post:
     # Wait for Sauce Connect to close the tunnel
     - killall --wait sc

@@ -5,7 +5,7 @@ graph.png
 
 # Client side excludes
 client/node_modules
-client/build
+client/dist
 client/npm-debug.log*
 client/yarn-debug.log*
 client/yarn-error.log*

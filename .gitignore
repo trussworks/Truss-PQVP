@@ -1,6 +1,7 @@
 .terraform
 graph.png
 .DS_Store
+*.swp
 .env
 
 # Client side excludes

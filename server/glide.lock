@@ -1,0 +1,13 @@
+hash: f7b1b7cafe4d87c531f907168834732463ea5abb189626022a7a5fe69c27a53d
+updated: 2017-02-20T18:03:58.508317179-05:00
+imports:
+- name: github.com/zenazn/goji
+  version: 64eb34159fe53473206c2b3e70fe396a639452f2
+  subpackages:
+  - bind
+  - graceful
+  - graceful/listener
+  - web
+  - web/middleware
+  - web/mutil
+testImports: []

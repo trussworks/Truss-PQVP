@@ -16,12 +16,13 @@ RUN apt-get update && apt-get install -y \
     postgis \
     yarn
 
+RUN curl https://glide.sh/get | sh
+
 RUN mkdir -p /go/src/app
 WORKDIR /go/src/app
 ADD . /go/src/app
 
 # build backend binary
-RUN go get -u github.com/zenazn/goji
 RUN make
 
 # package frontend files

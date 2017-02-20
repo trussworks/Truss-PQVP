@@ -9,7 +9,7 @@ if (isDev) {
   new WebpackDevServer(webpack(config), {
     publicPath: "/",
     hot: true,
-    proxy: { "/api/*" : "http://localhost:8080" }
+    // proxy: { "/api/*" : "http://localhost:8080" }
   }).listen(3001, 'localhost', function (err, result) {
     if (err) { console.log(err) }
     console.log('Listening at localhost:3001');

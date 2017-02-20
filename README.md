@@ -8,8 +8,7 @@ https://demo.pqvp.truss.works
 1. Install Docker
 2. `$ make local_docker`
     * This builds the server and runs it in docker.
-3. Container ID with `docker ps`
-4. Server logs at: `docker logs -f <container-id>`
+3. Server logs at: `docker logs -f pqvp-demo`
 
 ## Client Dev
 1. Read `./client/README.md`

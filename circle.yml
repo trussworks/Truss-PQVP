@@ -8,24 +8,46 @@ dependencies:
   cache_directories:
     - "~/docker"
   override:
+    # Enable Docker image caching to speed up builds
     - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
     - docker build --rm=false -t pqvp-demo:latest .
     - mkdir -p ~/docker; docker save pqvp-demo:latest > ~/docker/image.tar
+    # Pull down and install terraform to run tests
     - sudo wget https://releases.hashicorp.com/terraform/0.8.6/terraform_0.8.6_linux_amd64.zip -O /usr/local/bin/terraform.zip
     - cd /usr/local/bin && sudo unzip terraform.zip
+    # Clone ecs-deploy so we can push task updates to ECS once tests past
     - git clone https://github.com/silinternational/ecs-deploy.git
+    # Pull down Sauce Labs Connect
+    - wget https://saucelabs.com/downloads/sc-latest-linux.tar.gz
+    - tar -xzf sc-latest-linux.tar.gz
 
 test:
   override:
+    # Run validation checks against all of the terraform files
     - terraform/scripts/run_tests.sh
+    # Setup Sauce Connect
+    - cd sc-*-linux && ./bin/sc --user $SAUCE_USERNAME --api-key $SAUCE_ACCESS_KEY --readyfile ~/sauce_is_ready:
+        background: true
+    # Wait for tunnel to be ready
+    - while [ ! -e ~/sauce_is_ready ]; do sleep 1; done
+    # Basic test that we can run and curl a local container with the latest image
     - docker run -d -p 80:80 pqvp-demo:latest; sleep 10
     - curl -sSf --retry 10 --retry-delay 5 localhost:80
+    # TODO: Add calls to selenium tests here
+    # Verify Sauce Connect is working
+    - curl -sSf localhost:4445
+  post:
+    # Wait for Sauce Connect to close the tunnel
+    - killall --wait sc
 
 deployment:
   prod:
     branch: master
     commands:
+      # Get credentials to access the container registry
       - eval $(aws ecr get-login --region $AWS_DEFAULT_REGION)
+      # Tag and push the latest image
       - docker tag pqvp-demo:latest ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/pqvp-demo:latest
       - docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/pqvp-demo:latest
+      # Deploy latest docker image to ECS cluster
       - ./ecs-deploy/ecs-deploy -c ecs-pqvp-demo -n pqvp -i ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/pqvp-demo:latest

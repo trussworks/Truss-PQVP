@@ -1,18 +1,41 @@
 {
   "name": "adpq",
   "version": "0.1.0",
+  "description": "Emergency alert web app",
   "private": true,
-  "devDependencies": {
-    "react-scripts": "0.9.0"
+  "main": "webpack.config.js",
+  "scripts": {
+    "prod": "webpack --config ./webpack-production.config.js --progress --colors",
+    "start": "node dev-server.js"
   },
   "dependencies": {
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2"
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "react-hot-loader": "^3.0.0-beta.6",
+    "isomorphic-fetch": "^2.2.1"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
-  }
+  "devDependencies": {
+    "babel-core": "^6.17.0",
+    "babel-eslint": "^7.0.0",
+    "babel-loader": "^6.2.5",
+    "babel-polyfill": "^6.16.0",
+    "babel-preset-env": "^1.1.8",
+    "babel-preset-react": "^6.16.0",
+    "eslint": "^3.8.1",
+    "eslint-config-airbnb": "^12.0.0",
+    "eslint-loader": "^1.6.0",
+    "eslint-plugin-import": "^1.16.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.4.1",
+    "html-webpack-plugin": "^2.22.0",
+    "path": "^0.12.7",
+    "webpack": "^1.13.2",
+    "webpack-dev-server": "^1.16.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:trussworks/Truss-PQVP.git"
+  },
+  "author": "",
+  "license": "Commercial"
 }

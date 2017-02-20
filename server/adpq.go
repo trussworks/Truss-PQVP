@@ -13,7 +13,7 @@ import (
 
 func main() {
 
-	entry := flag.String("entry", "../client/public/index.html", "the entrypoint to serve.")
+	entry := flag.String("entry", "../client/dist/index.html", "the entrypoint to serve.")
 	static := flag.String("static", "../client/dist", "the directory to serve static files from.")
 	port := flag.String("port", ":80", "the `port` to listen on.")
 	flag.Parse()
@@ -25,7 +25,7 @@ func main() {
 
 	goji.Get("/hello/:name", hello)
 	goji.Get("/", IndexHandler(entry))
-	goji.Get("/dist", AssetsHandler(static))
+	goji.Handle("/:file.:ext", http.FileServer(http.Dir(*static)))
 	goji.ServeListener(listener)
 }
 
@@ -38,12 +38,5 @@ func hello(c web.C, w http.ResponseWriter, r *http.Request) {
 func IndexHandler(entrypoint *string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, *entrypoint)
-	}
-}
-
-// AssetsHandler serves up our static assets
-func AssetsHandler(static *string) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, *static)
 	}
 }

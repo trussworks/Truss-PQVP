@@ -13,3 +13,4 @@ client/yarn-error.log*
 # Server side exclude
 server/.glide/
 server/server
+server/vendor

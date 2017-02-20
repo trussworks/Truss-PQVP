@@ -1,0 +1,6 @@
+package: .
+import:
+- package: github.com/zenazn/goji
+  version: ^1.0.0
+  subpackages:
+  - web

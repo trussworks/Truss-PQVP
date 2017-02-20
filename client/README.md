@@ -1,18 +1,11 @@
 ## Initial Setup
 
-### Install Yarn
-We are using [Yarn](https://yarnpkg.com) for package management.
-```
-brew update
-brew install yarn
-```
+1. `brew update`
+2. `brew install nodenv`
+3. `nodenv install`
+4. `brew install yarn`
+5. `yarn install`
+6. `npm start` This will run the development server
 
-### Install Packages
-```yarn install```
-
-### Run development server
-```npm start```
-
-## Build Production Files
-```npm run-script prod```
+* To build for production (done automatically by `make local_docker`): `npm run-script prod`
 

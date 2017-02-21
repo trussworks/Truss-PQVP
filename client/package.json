@@ -16,9 +16,13 @@
     ]
   },
   "dependencies": {
+    "copy-webpack-plugin": "^4.0.1",
+    "css-loader": "^0.26.1",
     "fetch-mock": "^5.9.4",
+    "file-loader": "^0.10.0",
     "immutable": "^3.8.1",
     "isomorphic-fetch": "^2.2.1",
+    "node-sass": "^4.5.0",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-hot-loader": "^3.0.0-beta.6",
@@ -27,7 +31,11 @@
     "react-router-redux": "^4.0.8",
     "redux": "^3.6.0",
     "redux-mock-store": "^1.2.2",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "sass-loader": "^6.0.2",
+    "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7",
+    "uswds": "^0.14.0"
   },
   "devDependencies": {
     "babel-core": "^6.17.0",

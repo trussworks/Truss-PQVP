@@ -1,24 +1,22 @@
 import React from 'react';
+import thunk from 'redux-thunk';
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import { routerMiddleware } from 'react-router-redux';
+import { Router, Route, browserHistory } from 'react-router';
+import { App } from './app/App';
+import rootReducer from './app/rootReducer';
 
-export class Root extends React.Component {
-  constructor(props) {
-    super(props);
+const middleware = routerMiddleware(browserHistory);
+const store = createStore(rootReducer, applyMiddleware(thunk, middleware));
 
-    this.state = { remote: 'Have Not Talked To Server' };
-    const resp = fetch('/hello/PQVP');
-    resp.then(response => response.text()).then((text) => {
-      this.setState({ remote: `Server says: ${text}` });
-    });
-  }
 
-  render() {
-    return (
-      <div>
-        <h1>my Root is on Fire!</h1>
-        <p>{ this.state.remote }</p>
-      </div>
-    );
-  }
-}
+export const Root = () => (
+  <Provider store={store}>
+    <Router history={browserHistory} >
+      <Route component={App} path="/" />
+    </Router>
+  </Provider>
+);
 
 export default Root;

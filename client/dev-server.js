@@ -9,6 +9,11 @@ if (isDev) {
   new WebpackDevServer(webpack(config), {
     publicPath: "/",
     hot: true,
+    proxy: {
+      "/hello": {
+        target: 'http://localhost:80',
+      }
+    },
   }).listen(3001, 'localhost', function (err, result) {
     if (err) { console.log(err) }
     console.log('Listening at localhost:3001');

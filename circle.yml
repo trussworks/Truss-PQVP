@@ -20,9 +20,13 @@ dependencies:
     # Pull down Sauce Labs Connect
     - wget https://saucelabs.com/downloads/sc-latest-linux.tar.gz
     - tar -xzf sc-latest-linux.tar.gz
+    # Install Glide to run go tests
+    - curl https://glide.sh/get | sh
 
 test:
   override:
+    # Run server tests
+    - make server_test
     # Run validation checks against all of the terraform files
     - terraform/scripts/run_tests.sh
     # Setup Sauce Connect

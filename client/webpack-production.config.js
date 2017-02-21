@@ -1,6 +1,7 @@
 const path                          = require('path');
 const webpack                       = require('webpack');
 const HTMLWebpackPlugin             = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const HTMLWebpackPluginConfig = new HTMLWebpackPlugin({
   template: path.join(__dirname + '/src/index.html'),
@@ -26,6 +27,16 @@ module.exports = {
       "process.env.NODE_ENV": JSON.stringify('production'),
       FB_CONFIG: JSON.stringify("1565113137123334"),
     }),
+    new CopyWebpackPlugin([
+      {
+        from: path.join(__dirname, 'node_modules/uswds/src/fonts'),
+        to: 'public/fonts'
+      },
+      {
+        from: path.join(__dirname, 'node_modules/uswds/src/img'),
+        to: 'public/img'
+      },
+    ]),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false
@@ -42,10 +53,29 @@ module.exports = {
         include: path.join(__dirname, 'src')
       },
       {
-        test:   /\.css$/,
+        test:   /\.scss$/,
         exclude: /node_modules/,
-        loaders: ['style-loader', 'css-loader', 'postcss-loader']
-      }
+        loaders: ['style-loader', 'css-loader', 'sass-loader']
+      },
+      { test: /\.(png|jpg|svg|mp4)$/,
+        loader: 'file-loader?name=public/img/[name].[ext]'
+      },
+      {
+        test: /\.woff2?$/,
+        loader: 'url-loader',
+        options: {
+          name: 'public/fonts/[hash].[ext]',
+          limit: 50000,
+          mimetype: 'application/font-woff',
+        },
+      },
+      {
+        test: /\.(ttf|eot)$/,
+        loader: 'file-loader',
+        options: {
+          name: 'public/fonts/[hash].[ext]',
+        },
+      },
     ]
   }
 };

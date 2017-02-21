@@ -3,9 +3,11 @@ import React from 'react';
 export class Root extends React.Component {
   constructor(props) {
     super(props);
-    const resp = fetch('/hello/there');
+
+    this.state = { remote: 'Have Not Talked To Server' };
+    const resp = fetch('/hello/PQDP');
     resp.then(response => response.text()).then((text) => {
-      console.log(text);
+      this.setState({ remote: `Server says: ${text}` });
     });
   }
 
@@ -13,6 +15,7 @@ export class Root extends React.Component {
     return (
       <div>
         <h1>my Root is on Fire!</h1>
+        <p>{ this.state.remote }</p>
       </div>
     );
   }

@@ -5,7 +5,7 @@ export class Root extends React.Component {
     super(props);
 
     this.state = { remote: 'Have Not Talked To Server' };
-    const resp = fetch('/hello/PQDP');
+    const resp = fetch('/hello/PQVP');
     resp.then(response => response.text()).then((text) => {
       this.setState({ remote: `Server says: ${text}` });
     });

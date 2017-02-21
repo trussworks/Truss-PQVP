@@ -6,13 +6,28 @@
   "main": "webpack.config.js",
   "scripts": {
     "prod": "webpack --config ./webpack-production.config.js --progress --colors",
-    "start": "node dev-server.js"
+    "start": "node dev-server.js",
+    "test": "jest"
+  },
+  "jest": {
+    "automock": false,
+    "setupFiles": [
+      "./setupJest.js"
+    ]
   },
   "dependencies": {
+    "fetch-mock": "^5.9.4",
+    "immutable": "^3.8.1",
+    "isomorphic-fetch": "^2.2.1",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-hot-loader": "^3.0.0-beta.6",
-    "isomorphic-fetch": "^2.2.1"
+    "react-redux": "^5.0.2",
+    "react-router": "^3.0.2",
+    "react-router-redux": "^4.0.8",
+    "redux": "^3.6.0",
+    "redux-mock-store": "^1.2.2",
+    "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
     "babel-core": "^6.17.0",
@@ -29,6 +44,7 @@
     "eslint-plugin-react": "^6.4.1",
     "html-webpack-plugin": "^2.22.0",
     "path": "^0.12.7",
+    "react-test-renderer": "^15.4.2",
     "webpack": "^1.13.2",
     "webpack-dev-server": "^1.16.2"
   },

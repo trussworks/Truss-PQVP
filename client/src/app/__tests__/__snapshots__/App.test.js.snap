@@ -1,0 +1,10 @@
+exports[`test App renders 1`] = `
+<div>
+  <div>
+    <h1>
+      The Emergency Alert App Header
+    </h1>
+  </div>
+  <div />
+</div>
+`;

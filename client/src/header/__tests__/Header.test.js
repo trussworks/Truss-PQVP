@@ -1,10 +1,10 @@
 import React from 'react';
-import App from '../App';
+import Header from '../Header';
 import renderer from 'react-test-renderer';
 
-test('App renders', () => {
+test('Header renders', () => {
   const component = renderer.create(
-    <App />
+    <Header />
   );
 
   let tree = component.toJSON();

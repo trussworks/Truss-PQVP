@@ -1,6 +1,6 @@
 import React from 'react';
 import 'isomorphic-fetch';
-import { render } from 'react-dom';
+import ReactDom, { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import { Root } from './Root';
 

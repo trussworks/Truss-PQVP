@@ -1,12 +1,12 @@
-import { Map } from 'immutable';
+import { combineReducers } from 'redux';
+import { reducer as form } from 'redux-form';
+import application from './appReducer';
 
-const application = (state = new Map({
-}), action) => {
-  switch (action.type) {
-    default: {
-      return state;
-    }
-  }
-};
+const appReducer = combineReducers({
+  application,
+  form,
+});
 
-export default application;
+const rootReducer = (state, action) => appReducer(newState, action);
+
+export default rootReducer;

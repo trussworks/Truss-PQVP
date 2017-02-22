@@ -4,13 +4,13 @@ import (
 	"database/sql"
 	"flag"
 	"fmt"
-	_ "github.com/lib/pq"
-	"github.com/zenazn/goji"
-	"github.com/zenazn/goji/web"
 	"log"
-	"net"
 	"net/http"
 	"sync"
+
+	_ "github.com/lib/pq"
+	"goji.io"
+	"goji.io/pat"
 )
 
 var (
@@ -26,20 +26,19 @@ func main() {
 	port := flag.String("port", ":80", "the `port` to listen on.")
 	flag.Parse()
 
-	listener, err := net.Listen("tcp", *port)
-	if err != nil {
-		log.Fatal("Could not bind to port")
-	}
+	mux := goji.NewMux()
 
-	goji.Get("/hello/:name", hello)
-	goji.Get("/", IndexHandler(entry))
-	goji.Handle("/:file.:ext", http.FileServer(http.Dir(*static)))
-	goji.ServeListener(listener)
+	mux.HandleFunc(pat.Get("/hello/:name"), hello)
+	mux.HandleFunc(pat.Get("/"), IndexHandler(entry))
+	mux.Handle(pat.Get("/:file.:ext"), http.FileServer(http.Dir(*static)))
+
+	http.ListenAndServe(*port, mux)
 }
 
 // Hello takes a request along with params and responds with hello :name
-func hello(c web.C, w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "hello, %s!\n", c.URLParams["name"])
+func hello(w http.ResponseWriter, r *http.Request) {
+	name := pat.Param(r, "name")
+	fmt.Fprintf(w, "hello, %s!\n", name)
 }
 
 // IndexHandler serves up our index.html
@@ -49,12 +48,13 @@ func IndexHandler(entrypoint *string) http.HandlerFunc {
 	}
 }
 
+// GetDB sets up our database connection
 func GetDB() *sql.DB {
 	once.Do(func() {
 		// Get connection parameters
 		dns := fmt.Sprintf("user=pqvp password=pqvp dbname=pqvp sslmode=disable")
 		// Open postgres driver
-		var err error = nil
+		var err error
 		database, err = sql.Open("postgres", dns)
 		if err != nil {
 			log.Fatal("Opening database", err)

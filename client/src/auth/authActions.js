@@ -1,4 +1,4 @@
-import { SAVE_USER } from './loginReducer';
+import { SAVE_USER } from './authReducer';
 
 export function saveUser(email, authToken) {
   const userInfo = { email, authToken };

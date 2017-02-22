@@ -45,17 +45,21 @@ module.exports = {
     })
   ],
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loaders: ['babel', 'eslint-loader'],
+        loaders: ['babel-loader', 'eslint-loader'],
         include: path.join(__dirname, 'src')
       },
       {
         test:   /\.scss$/,
         exclude: /node_modules/,
-        loaders: ['style-loader', 'css-loader', 'sass-loader']
+        use: [
+          'style-loader',
+          'css-loader',
+          'sass-loader'
+        ]
       },
       { test: /\.(png|jpg|svg|mp4)$/,
         loader: 'file-loader?name=public/img/[name].[ext]'

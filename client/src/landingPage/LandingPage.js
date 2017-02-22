@@ -1,4 +1,5 @@
 import React from 'react';
+import SignUp from '../auth/SignUp';
 
 export class LandingPage extends React.Component {
   constructor(props) {
@@ -14,8 +15,8 @@ export class LandingPage extends React.Component {
   render() {
     return (
       <div>
-        <h1>my Root is on Fire!</h1>
-        <p>{ this.state.remote }</p>
+        <h1>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h1>
+        <SignUp />
       </div>
     );
   }

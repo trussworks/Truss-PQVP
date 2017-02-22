@@ -9,6 +9,7 @@ if (isDev) {
   new WebpackDevServer(webpack(config), {
     publicPath: "/",
     hot: true,
+    historyApiFallback: true,
     proxy: {
       "/hello": {
         target: 'http://localhost:80',

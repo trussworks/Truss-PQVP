@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 import { reducer as form } from 'redux-form';
 import application from './appReducer';
+import login from '../login/loginReducer';
 
-const appReducer = combineReducers({
+export const rootReducer = combineReducers({
   application,
+  login,
   form,
 });
-
-const rootReducer = (state, action) => appReducer(state, action);
 
 export default rootReducer;

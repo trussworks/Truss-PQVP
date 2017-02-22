@@ -48,12 +48,13 @@ func IndexHandler(entrypoint *string) http.HandlerFunc {
 	}
 }
 
+// GetDB sets up our database connection
 func GetDB() *sql.DB {
 	once.Do(func() {
 		// Get connection parameters
 		dns := fmt.Sprintf("user=pqvp password=pqvp dbname=pqvp sslmode=disable")
 		// Open postgres driver
-		var err error = nil
+		var err error
 		database, err = sql.Open("postgres", dns)
 		if err != nil {
 			log.Fatal("Opening database", err)

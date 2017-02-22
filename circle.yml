@@ -12,7 +12,7 @@ dependencies:
 
 test:
   override:
-    bin/circle-test.sh
+    - bin/circle-test.sh
   post:
     # Wait for Sauce Connect to close the tunnel
     # - killall --wait sc

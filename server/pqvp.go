@@ -27,7 +27,8 @@ func main() {
 
 // Hello takes a request along with params and responds with hello :name
 func hello(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "hello, %s!\n", pat.Param(r, "name"))
+	name := pat.Param(r, "name")
+	fmt.Fprintf(w, "hello, %s!\n", name)
 }
 
 // IndexHandler serves up our index.html

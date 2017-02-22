@@ -57,7 +57,7 @@ func GetDB() *sql.DB {
 		var err error = nil
 		database, err = sql.Open("postgres", dns)
 		if err != nil {
-			log.Println("Opening database", err)
+			log.Fatal("Opening database", err)
 		}
 
 		/* Open does not actually try to connect to the database so we Ping() here as a way of checking the configuration
@@ -65,7 +65,7 @@ func GetDB() *sql.DB {
 		*/
 		if err = database.Ping(); err != nil {
 			database.Close()
-			log.Println("Pinging database", err)
+			log.Fatal("Pinging database", err)
 		}
 	})
 	return database

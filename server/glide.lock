@@ -1,5 +1,5 @@
-hash: 47f0b3cfb39b98ac5b4cded805d5c9a8b1c5f66992a82b0043c4acdd7cedf131
-updated: 2017-02-21T11:20:22.28928134-08:00
+hash: 0c18fe10ac0c333b766edd4d30499f103539283b86af68f6272383562f774d42
+updated: 2017-02-22T15:46:08.842496254-05:00
 imports:
 - name: github.com/stretchr/testify
   version: 69483b4bd14f5845b5a1e55bca19e954e827f1d0
@@ -8,15 +8,16 @@ imports:
 - name: github.com/zenazn/goji
   version: 64eb34159fe53473206c2b3e70fe396a639452f2
   subpackages:
-  - bind
-  - graceful
-  - graceful/listener
   - web
-  - web/middleware
-  - web/mutil
+- name: goji.io
+  version: 0d89ff54b2c18c9c4ba530e32496aef902d3c6cd
+  subpackages:
+  - internal
+  - pat
+  - pattern
 testImports:
 - name: github.com/davecgh/go-spew
-  version: 04cdfd42973bb9c8589fd6a731800cf222fde1a9
+  version: 6d212800a42e8ab5c146b8ace3490ee17e5225f9
   subpackages:
   - spew
 - name: github.com/pmezard/go-difflib

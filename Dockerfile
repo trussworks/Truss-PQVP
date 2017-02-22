@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y \
     postgis \
     yarn
 
+# install glide for vendoring go libs
 RUN curl https://glide.sh/get | sh
 
 RUN mkdir -p /go/src/app
@@ -23,6 +24,7 @@ WORKDIR /go/src/app
 ADD . /go/src/app
 
 # build backend binary
+RUN make server_test
 RUN make server_build
 
 # package frontend files

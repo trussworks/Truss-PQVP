@@ -24,8 +24,7 @@ WORKDIR /go/src/app
 ADD . /go/src/app
 
 # build backend binary
-RUN make server_test
-RUN make server_build
+RUN make server
 
 # package frontend files
 WORKDIR /go/src/app/client

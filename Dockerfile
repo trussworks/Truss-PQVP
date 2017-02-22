@@ -17,7 +17,8 @@ RUN apt-get update && apt-get install -y \
     yarn
 
 # install glide for vendoring go libs
-RUN curl https://glide.sh/get | sh
+RUN go get github.com/Masterminds/glide
+RUN go get github.com/mattes/migrate
 
 RUN mkdir -p /go/src/app
 WORKDIR /go/src/app

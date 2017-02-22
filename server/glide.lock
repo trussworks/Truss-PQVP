@@ -1,10 +1,12 @@
-hash: 11a94eaa33fc97c47b2938395394309221eb21651f5efc4dba5586d520f5e94b
-updated: 2017-02-22T10:24:42.252149796-08:00
+hash: 0fd7930c1302d53b22acb59694af81ab20a27d184987db41d5cc00220c8c230a
+updated: 2017-02-22T11:21:15.927752312-08:00
 imports:
 - name: github.com/lib/pq
   version: ba5d4f7a35561e22fbdf7a39aa0070f4d460cfc0
   subpackages:
   - oid
+- name: github.com/mattes/migrate
+  version: eb02bc77fbff74a86a688f227e4254b3c397710c
 - name: github.com/stretchr/testify
   version: 69483b4bd14f5845b5a1e55bca19e954e827f1d0
   subpackages:

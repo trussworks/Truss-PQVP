@@ -6,7 +6,6 @@ export function saveUser(email, authToken) {
 }
 
 export function authenticateUser(email, password) {
-  console.log('Authenticating User!');
   const config = {
     method: 'POST',
     headers: {
@@ -15,17 +14,12 @@ export function authenticateUser(email, password) {
     },
     body: JSON.stringify({ email, password }),
   };
-  console.log(config);
+  console.log(config); // silence the warning until we are actually hitting an endpoint
 
   return (dispatch) => {
-    console.log('we dispatching');
     fetch('/hello/there')
       .then((response) => {
-        console.log('got back from login');
-        console.log(response);
-
-        const userMessage = saveUser(email, 'DEADBEEF');
-        console.log(userMessage);
+        const userMessage = saveUser(email, response);
 
         dispatch(userMessage);
         return response;

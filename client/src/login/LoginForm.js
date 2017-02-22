@@ -1,9 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Field, reduxForm } from 'redux-form';
 
-export const LoginForm = reduxForm({
-  form: 'login',
-})(({ handleSubmit, submitting }) => (
+const LoginForm = ({ handleSubmit, submitting }) => (
   <form onSubmit={handleSubmit}>
     <div>
       <label htmlFor="email">Email</label>
@@ -15,11 +13,13 @@ export const LoginForm = reduxForm({
     </div>
     <button type="submit" disabled={submitting}>Sign In</button>
   </form>
-  ));
+  );
 
 LoginForm.propTypes = {
   handleSubmit: PropTypes.func,
   submitting: PropTypes.bool,
 };
 
-export default LoginForm;
+export default reduxForm({
+  form: 'login',
+})(LoginForm);

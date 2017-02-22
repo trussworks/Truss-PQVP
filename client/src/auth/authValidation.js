@@ -1,4 +1,4 @@
-const signUpValidation = (values) => {
+const authValidation = (values) => {
   const errors = {};
 
   if (!values.email) {
@@ -14,4 +14,4 @@ const signUpValidation = (values) => {
   return errors;
 };
 
-export default signUpValidation;
+export default authValidation;

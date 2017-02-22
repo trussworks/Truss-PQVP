@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import LoginForm from './LoginForm';
-import { authenticateUser } from './loginActions';
+import { authenticateUser } from './authActions';
 
 class LoginContainer extends React.Component {
   constructor(props) {

@@ -2,7 +2,7 @@ import { Map } from 'immutable';
 
 export const SAVE_USER = 'SAVE_USER';
 
-const loginReducer = (state = new Map({ user: {} }), action) => {
+const authReducer = (state = new Map({ user: {} }), action) => {
   switch (action.type) {
     case SAVE_USER: {
       return state.set('user', action.userInfo);
@@ -13,4 +13,4 @@ const loginReducer = (state = new Map({ user: {} }), action) => {
   }
 };
 
-export default loginReducer;
+export default authReducer;

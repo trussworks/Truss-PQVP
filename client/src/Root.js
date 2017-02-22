@@ -6,7 +6,7 @@ import { routerMiddleware } from 'react-router-redux';
 import { Router, Route, browserHistory } from 'react-router';
 import { App } from './app/App';
 import { LandingPage } from './landingPage/LandingPage';
-import { LoginContainer } from './login/LoginContainer';
+import LoginContainer from './login/LoginContainer';
 import { rootReducer } from './app/rootReducer';
 
 const middleware = routerMiddleware(browserHistory);

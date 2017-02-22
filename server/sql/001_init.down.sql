@@ -1,2 +1,2 @@
-drop extension postgis;
-drop user pqvp;
+DROP EXTENSION postgis;
+DROP USER pqvp;

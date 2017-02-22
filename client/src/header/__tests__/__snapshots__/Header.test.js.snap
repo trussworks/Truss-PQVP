@@ -1,7 +1,0 @@
-exports[`test Header renders 1`] = `
-<div>
-  <h1>
-    The Emergency Alert App Header
-  </h1>
-</div>
-`;

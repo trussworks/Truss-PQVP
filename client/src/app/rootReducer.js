@@ -7,6 +7,6 @@ const appReducer = combineReducers({
   form,
 });
 
-const rootReducer = (state, action) => appReducer(newState, action);
+const rootReducer = (state, action) => appReducer(state, action);
 
 export default rootReducer;

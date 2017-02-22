@@ -1,14 +1,22 @@
 package main
 
 import (
+	"database/sql"
 	"flag"
 	"fmt"
+	_ "github.com/lib/pq"
+	"github.com/zenazn/goji"
+	"github.com/zenazn/goji/web"
 	"log"
 	"net"
 	"net/http"
+	"sync"
+)
 
-	"github.com/zenazn/goji"
-	"github.com/zenazn/goji/web"
+var (
+	once     sync.Once
+	database *sql.DB
+	mutex    = &sync.Mutex{}
 )
 
 func main() {
@@ -39,4 +47,27 @@ func IndexHandler(entrypoint *string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, *entrypoint)
 	}
+}
+
+func GetDB() *sql.DB {
+	once.Do(func() {
+		// Get connection parameters
+		dns := fmt.Sprintf("user=pqvp password=pqvp dbname=pqvp sslmode=disable")
+		//dns := fmt.Sprintf("postgres://localhost:5432@pqvp:pqvp/pqvp?sslmode=disable")
+		// Open postgres driver
+		var err error = nil
+		database, err = sql.Open("postgres", dns)
+		if err != nil {
+			log.Println("Opening database", err)
+		}
+
+		/* Open does not actually try to connect to the database so we Ping() here as a way of checking the configuration
+		   during the call to OpenDB.
+		*/
+		if err = database.Ping(); err != nil {
+			database.Close()
+			log.Println("Pinging database", err)
+		}
+	})
+	return database
 }

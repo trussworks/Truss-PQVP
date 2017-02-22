@@ -5,6 +5,13 @@ imports:
   version: 69483b4bd14f5845b5a1e55bca19e954e827f1d0
   subpackages:
   - assert
+hash: a4326c33bb00c86975923af126538f8115b94d54f5c3f0c26d7410dd6b948e9c
+updated: 2017-02-22T09:46:02.611659908-08:00
+imports:
+- name: github.com/lib/pq
+  version: ba5d4f7a35561e22fbdf7a39aa0070f4d460cfc0
+  subpackages:
+  - oid
 - name: github.com/zenazn/goji
   version: 64eb34159fe53473206c2b3e70fe396a639452f2
   subpackages:

@@ -31,6 +31,6 @@ WORKDIR /go/src/app/client
 RUN yarn install
 RUN npm run-script prod
 
-ENTRYPOINT /go/src/app/server/server -entry /go/src/app/client/dist/index.html -static /go/src/app/client/dist/
+ENTRYPOINT /go/src/app/server/entrypoint.sh
 
 EXPOSE 80

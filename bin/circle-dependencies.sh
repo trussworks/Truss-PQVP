@@ -11,7 +11,9 @@ mkdir -p ~/docker; docker save pqvp-demo:latest > ~/docker/image.tar
 
 # Pull down and install terraform to run tests
 sudo wget https://releases.hashicorp.com/terraform/0.8.6/terraform_0.8.6_linux_amd64.zip -O /usr/local/bin/terraform.zip
-cd /usr/local/bin && sudo unzip terraform.zip
+pushd /usr/local/bin
+sudo unzip terraform.zip
+popd
 
 # Clone ecs-deploy so we can push task updates to ECS once tests past
 git clone https://github.com/silinternational/ecs-deploy.git

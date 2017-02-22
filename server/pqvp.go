@@ -53,7 +53,6 @@ func GetDB() *sql.DB {
 	once.Do(func() {
 		// Get connection parameters
 		dns := fmt.Sprintf("user=pqvp password=pqvp dbname=pqvp sslmode=disable")
-		//dns := fmt.Sprintf("postgres://localhost:5432@pqvp:pqvp/pqvp?sslmode=disable")
 		// Open postgres driver
 		var err error = nil
 		database, err = sql.Open("postgres", dns)

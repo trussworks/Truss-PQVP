@@ -23,13 +23,15 @@ dependencies:
     # Pull down Sauce Labs Connect
     - wget https://saucelabs.com/downloads/sc-latest-linux.tar.gz
     - tar -xzf sc-latest-linux.tar.gz
+    # install glide to run go tests
+    - curl https://glide.sh/get | sh
 
 test:
   override:
-    # Run server tests from in the container since it has all the dependencies
-    - docker exec pqvp-demo go test ../server/.
     # Run validation checks against all of the terraform files
     - terraform/scripts/run_tests.sh
+    # Run go tests
+    - make server_test
     # Setup Sauce Connect
     - cd sc-*-linux && ./bin/sc --user $SAUCE_USERNAME --api-key $SAUCE_ACCESS_KEY --readyfile ~/sauce_is_ready:
         background: true

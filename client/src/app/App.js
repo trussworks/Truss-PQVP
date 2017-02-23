@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Header } from '../header/Header';
 
-export const App = ({ children }) => (
+const App = ({ children }) => (
   <div>
     <Header />
     <div>

@@ -13,3 +13,8 @@ import:
   version: ^3.0.0
 - package: go.uber.org/zap
   version: ^1.0.0-rc.1
+- package: golang.org/x/crypto
+  subpackages:
+  - bcrypt
+- package: github.com/asaskevich/govalidator
+  version: v5

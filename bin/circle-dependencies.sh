@@ -18,10 +18,22 @@ popd
 # Clone ecs-deploy so we can push task updates to ECS once tests past
 git clone https://github.com/silinternational/ecs-deploy.git
 
+
+# Get go environment setup
+go get github.com/Masterminds/glide
+go get github.com/mattes/migrate
+pushd server
+glide install
+popd
+createdb pqvp
+migrate -url "postgres://postgres@localhost:5432/pqvp?sslmode=disable" -path server/sql up
+cp -R server/vendor/* ~/.go_workspace/src/
+
 # Install client deps
 pushd client
 yarn install
 popd
+
 
 # Pull down Sauce Labs Connect
 # FIXME: disabled due to Sauce just not working. --mark

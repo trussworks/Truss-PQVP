@@ -9,6 +9,8 @@ dependencies:
   cache_directories:
     - "~/docker"
   override:
+    # clear go cache
+    - rm -rf ~/.go_workspace/*
     - bin/circle-dependencies.sh
 compile:
   override:

@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y \
 
 # install glide for vendoring go libs
 RUN go get github.com/Masterminds/glide
+# install postgres migrations tool
 RUN go get github.com/mattes/migrate
 
 RUN mkdir -p /go/src/app
@@ -25,7 +26,7 @@ WORKDIR /go/src/app
 ADD . /go/src/app
 
 # build backend binary
-RUN make server
+RUN make server_build
 
 # package frontend files
 WORKDIR /go/src/app/client

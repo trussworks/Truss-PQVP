@@ -19,6 +19,18 @@ var (
 	mutex    = &sync.Mutex{}
 )
 
+// key is an unexported type for keys defined in this package.
+type key int
+
+// User contains an email and a password
+type User struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+// userKey is the key for user.User values in Contexts. It is unexported.
+var userKey key = 1
+
 func main() {
 
 	entry := flag.String("entry", "../client/dist/index.html", "the entrypoint to serve.")
@@ -26,13 +38,20 @@ func main() {
 	port := flag.String("port", ":80", "the `port` to listen on.")
 	flag.Parse()
 
-	mux := goji.NewMux()
+	root := goji.NewMux()
+	admin := goji.SubMux()
 
-	mux.HandleFunc(pat.Get("/hello/:name"), hello)
-	mux.HandleFunc(pat.Get("/"), IndexHandler(entry))
-	mux.Handle(pat.Get("/:file.:ext"), http.FileServer(http.Dir(*static)))
+	// Admin routes
+	root.Handle(pat.Get("/admin/*"), admin)
+	admin.Use(authMiddleware)
 
-	http.ListenAndServe(*port, mux)
+	// Base routes
+	root.HandleFunc(pat.Get("/hello/:name"), hello)
+	root.HandleFunc(pat.Get("/"), IndexHandler(entry))
+	root.Handle(pat.Get("/:file.:ext"), http.FileServer(http.Dir(*static)))
+
+	// Start the server
+	http.ListenAndServe(*port, root)
 }
 
 // Hello takes a request along with params and responds with hello :name
@@ -46,6 +65,11 @@ func IndexHandler(entrypoint *string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, *entrypoint)
 	}
+}
+
+// whoami is a dummy admin handler
+func whoami(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "you are clearly admin")
 }
 
 // GetDB sets up our database connection

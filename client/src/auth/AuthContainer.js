@@ -23,7 +23,8 @@ class AuthContainer extends React.Component {
   submitSignUp(values) {
     this.props.signUpUser(values.email, values.password);
   }
-  toggleAuthType() {
+  toggleAuthType(e) {
+    e.preventDefault();
     this.setState({ isLoggingIn: !this.state.isLoggingIn });
   }
   render() {
@@ -37,7 +38,7 @@ class AuthContainer extends React.Component {
           (<LoginForm onSubmit={this.submitLogin} />) :
           (<SignUpForm onSubmit={this.submitSignUp} />)
         }
-        <a onClick={this.toggleAuthType} >{switchAuthText}</a>
+        <a href="" onClick={this.toggleAuthType} >{switchAuthText}</a>
       </div>
     );
   }

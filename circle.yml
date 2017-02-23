@@ -9,6 +9,10 @@ dependencies:
     - "~/docker"
   override:
     - bin/circle-dependencies.sh
+  post:
+    # clear go cache
+    - rm -rf ~/.go_workspace/*
+
 
 test:
   override:

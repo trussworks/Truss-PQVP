@@ -49,20 +49,20 @@ func TestHello(t *testing.T) {
 // Verifies a user can signup
 func TestSignup(t *testing.T) {
 	res := httptest.NewRecorder()
-	req := generatePost(t, "/signup", userGood)
+	req := generatePost(t, "/api/signup", userGood)
 	Signup(res, req)
 	// make sure we get a 200 response and the body matches the string
 	assert.Equal(t, 200, res.Code)
 	//TODO check for session token
 
 	res = httptest.NewRecorder()
-	req = generatePost(t, "/signup", userBad)
+	req = generatePost(t, "/api/signup", userBad)
 	Signup(res, req)
 	/// make sure we bail on bad input
 	assert.Equal(t, 400, res.Code)
 
 	res = httptest.NewRecorder()
-	req = generatePost(t, "/signup", invalidJSON)
+	req = generatePost(t, "/api/signup", invalidJSON)
 	Signup(res, req)
 	/// make sure we bail on bad json
 	assert.Equal(t, 400, res.Code)
@@ -73,20 +73,20 @@ func TestLogin(t *testing.T) {
 	CreateUser(User{Email: "joe@gmail.com", Password: "peanutbutter"})
 
 	res := httptest.NewRecorder()
-	req := generatePost(t, "/login", userGood)
+	req := generatePost(t, "/api/login", userGood)
 	Login(res, req)
 	// make sure we get a 200 response and the body matches the string
 	assert.Equal(t, 200, res.Code)
 
 	res = httptest.NewRecorder()
-	req = generatePost(t, "/login", userBad)
+	req = generatePost(t, "/api/login", userBad)
 	Login(res, req)
 	// make sure we get a 200 response and the body matches the string
 	assert.Equal(t, 400, res.Code)
 
 	var badPass = []byte(`{"email":"asd@gomasd.com", "password":"asdsss"}`)
 	res = httptest.NewRecorder()
-	req = generatePost(t, "/login", badPass)
+	req = generatePost(t, "/api/login", badPass)
 	Login(res, req)
 
 	// 404 if login is not found

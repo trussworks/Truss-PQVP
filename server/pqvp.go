@@ -41,11 +41,13 @@ func main() {
 	root := goji.NewMux()
 	admin := goji.SubMux()
 
-	mux.HandleFunc(pat.Get("/hello/:name"), hello)
-	mux.HandleFunc(pat.Post("/api/login"), Login)
-	mux.HandleFunc(pat.Post("/api/signup"), Signup)
-	mux.HandleFunc(pat.Get("/"), IndexHandler(entry))
-	mux.Handle(pat.Get("/:file.:ext"), http.FileServer(http.Dir(*static)))
+	// Base routes
+	root.HandleFunc(pat.Get("/hello/:name"), hello)
+	root.HandleFunc(pat.Post("/api/login"), Login)
+	root.HandleFunc(pat.Post("/api/signup"), Signup)
+	root.HandleFunc(pat.Get("/"), IndexHandler(entry))
+	root.Handle(pat.Get("/:file.:ext"), http.FileServer(http.Dir(*static)))
+
 	// Admin routes
 	root.Handle(pat.Get("/admin/*"), admin)
 	admin.Use(authMiddleware)

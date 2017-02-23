@@ -1,0 +1,33 @@
+hash: 45f1b3512b78291420b8c79bfb320eff07841bc1f93dc14ee6a33f7262fc4be6
+updated: 2017-02-22T16:07:14.716529199-08:00
+imports:
+- name: github.com/lib/pq
+  version: ba5d4f7a35561e22fbdf7a39aa0070f4d460cfc0
+  subpackages:
+  - oid
+- name: github.com/mattes/migrate
+  version: eb02bc77fbff74a86a688f227e4254b3c397710c
+- name: github.com/stretchr/testify
+  version: 69483b4bd14f5845b5a1e55bca19e954e827f1d0
+  subpackages:
+  - assert
+- name: goji.io
+  version: 0d89ff54b2c18c9c4ba530e32496aef902d3c6cd
+  subpackages:
+  - internal
+  - pat
+  - pattern
+- name: golang.org/x/crypto
+  version: 453249f01cfeb54c3d549ddb75ff152ca243f9d8
+  subpackages:
+  - bcrypt
+  - blowfish
+testImports:
+- name: github.com/davecgh/go-spew
+  version: 6d212800a42e8ab5c146b8ace3490ee17e5225f9
+  subpackages:
+  - spew
+- name: github.com/pmezard/go-difflib
+  version: d8ed2627bdf02c080bf22230dbb337003b7aba2d
+  subpackages:
+  - difflib

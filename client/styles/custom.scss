@@ -1,0 +1,17 @@
+$mobile: new-breakpoint(max-width 500px);
+$tablet: new-breakpoint(min-width 500px);
+$desktop: new-breakpoint(min-width 800px);
+
+.container {
+  @include span-columns(10);
+  @include shift(1);
+  @include media($tablet) {
+    @include span-columns(8);
+    @include shift(2);
+    padding: 34px 0 34px 0;
+  }
+  @include media($desktop) {
+    @include span-columns(6);
+    @include shift(3);
+  }
+}

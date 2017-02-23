@@ -2,6 +2,7 @@ const path                          = require('path');
 const webpack                       = require('webpack');
 const HTMLWebpackPlugin             = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const neatPaths = require("bourbon-neat").includePaths;
 
 const HTMLWebpackPluginConfig = new HTMLWebpackPlugin({
   template: path.join(__dirname + '/src/index.html'),
@@ -58,7 +59,12 @@ module.exports = {
         use: [
           'style-loader',
           'css-loader',
-          'sass-loader'
+          {
+            loader: 'sass-loader',
+            options: {
+              includePaths: neatPaths,
+            }
+          },
         ]
       },
       { test: /\.(png|jpg|svg|mp4)$/,

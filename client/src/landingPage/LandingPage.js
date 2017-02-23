@@ -1,20 +1,17 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 import AuthContainer from '../auth/AuthContainer';
 
-export class LandingPage extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { remote: 'Have Not Talked To Server' };
-    const resp = fetch('/hello/PQVP');
-    resp.then(response => response.text()).then((text) => {
-      this.setState({ remote: `Server says: ${text}` });
-    });
+class LandingPage extends React.Component {
+  componentDidMount() {
+    if (this.props.isLoggedIn) {
+      this.props.dispatch(push('/profile'));
+    }
   }
-
   render() {
     return (
-      <div>
+      <div className="container">
         <h1>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h1>
         <AuthContainer />
       </div>
@@ -22,4 +19,15 @@ export class LandingPage extends React.Component {
   }
 }
 
-export default LandingPage;
+LandingPage.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
+};
+
+function mapStateToProps(state) {
+  return {
+    isLoggedIn: !!state.auth.get('user').email,
+  };
+}
+
+export default connect(mapStateToProps)(LandingPage);

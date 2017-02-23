@@ -1,12 +1,9 @@
 import React from 'react';
 import App from '../App';
-import renderer from 'react-test-renderer';
+import { shallow } from 'enzyme';
 
 test('App renders', () => {
-  const component = renderer.create(
-    <App />
-  );
-
-  let tree = component.toJSON();
-  expect(tree).toMatchSnapshot();
+  it('should render without throwing an error'), () => {
+    expect(shallow(<App />).contains(<Header />)).toBe(true);
+  }
 });

@@ -16,14 +16,18 @@
     ]
   },
   "dependencies": {
+    "bourbon-neat": "^2.0.0",
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.26.1",
+    "enzyme": "^2.7.1",
     "fetch-mock": "^5.9.4",
     "file-loader": "^0.10.0",
     "immutable": "^3.8.1",
     "isomorphic-fetch": "^2.2.1",
+    "jest": "^19.0.1",
     "node-sass": "^4.5.0",
     "react": "^15.3.2",
+    "react-addons-test-utils": "^15.4.2",
     "react-dom": "^15.3.2",
     "react-hot-loader": "^3.0.0-beta.6",
     "react-redux": "^5.0.2",

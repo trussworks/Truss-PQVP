@@ -1,14 +1,9 @@
 import React from 'react';
 import LandingPage from '../LandingPage';
-import renderer from 'react-test-renderer';
+import { shallow } from 'enzyme';
 
 test('LandingPage renders', () => {
-  fetchMock.get('*', {text: 'hello, PQVP!'});
-
-  const component = renderer.create(
-    <LandingPage />
-  );
-
-  let tree = component.toJSON();
-  expect(tree).toBeDefined();
+  it('should render without throwing an error'), () => {
+    expect(shallow(<LandingPage />).contains(<h1>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h1>)).toBe(true);
+  }
 });

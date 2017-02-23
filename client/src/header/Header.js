@@ -1,9 +1,11 @@
 import React from 'react';
 
 export const Header = () => (
-  <div>
-    <h1>The Emergency Alert App Header</h1>
-  </div>
+  <header className="usa-header usa-header-basic">
+    <div className="container">
+      The Emergency Alert App Header
+    </div>
+  </header>
 );
 
 export default Header;

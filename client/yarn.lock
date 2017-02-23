@@ -872,6 +872,10 @@ boom@2.x.x:
   dependencies:
     hoek "2.x.x"
 
+bourbon-neat@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/bourbon-neat/-/bourbon-neat-2.0.0.tgz#16079272c3941e767da041e75ee86cf4d5ab4c9e"
+
 "bourbon-neat@github:thoughtbot/neat#neat-1.8.0-node-sass":
   version "1.8.0"
   resolved "https://codeload.github.com/thoughtbot/neat/tar.gz/bef91b781ad5a13ebde9324bba18d8685768a3f5"

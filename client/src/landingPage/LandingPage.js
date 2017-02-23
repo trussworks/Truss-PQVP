@@ -5,8 +5,8 @@ import AuthContainer from '../auth/AuthContainer';
 
 class LandingPage extends React.Component {
   componentDidMount() {
-    if (!this.props.isLoggedIn) {
-      console.log(this.props);
+    if (this.props.isLoggedIn) {
+      this.props.dispatch(push('/profile'));
     }
   }
   render() {
@@ -20,6 +20,7 @@ class LandingPage extends React.Component {
 }
 
 LandingPage.propTypes = {
+  dispatch: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
 };
 

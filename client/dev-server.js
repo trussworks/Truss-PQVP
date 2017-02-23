@@ -11,9 +11,7 @@ if (isDev) {
     hot: true,
     historyApiFallback: true,
     proxy: {
-      "/hello": {
-        target: 'http://localhost:80',
-      }
+      "/api/*" : "http://localhost:80"
     },
   }).listen(3001, 'localhost', function (err, result) {
     if (err) { console.log(err) }

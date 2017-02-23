@@ -1,47 +1,49 @@
-hash: 1d9a2c3beaa4bd0d7b8aa57c2e65cca7c8fcec49cac0cf93ba807863d65d7724                                                                                                                                      
-updated: 2017-02-23T10:50:36.759471275-08:00                                                                                                                                                                
-imports:                                                                                                                                                                                                    
-- name: github.com/dgrijalva/jwt-go                                                                                                                                                                         
-  version: d2709f9f1f31ebcda9651b03077758c1f3a0018c                                                                                                                                                         
-  subpackages:                                                                                                                                                                                              
-  - request                                                                                                                                                                                                 
-- name: github.com/lib/pq                                                                                                                                                                                   
-  version: ba5d4f7a35561e22fbdf7a39aa0070f4d460cfc0                                                                                                                                                         
-  subpackages:                                                                                                                                                                                              
-  - oid                                                                                                                                                                                                     
-- name: github.com/mattes/migrate                                                                                                                                                                           
-  version: eb02bc77fbff74a86a688f227e4254b3c397710c                                                                                                                                                         
-- name: github.com/stretchr/testify                                                                                                                                                                         
-  version: 69483b4bd14f5845b5a1e55bca19e954e827f1d0                                                                                                                                                         
-  subpackages:                                                                                                                                                                                              
-  - assert                                                                                                                                                                                                  
-- name: go.uber.org/atomic                                                                                                                                                                                  
-  version: 3b8db5e93c4c02efbc313e17b2e796b0914a01fb                                                                                                                                                         
-- name: go.uber.org/zap                                                                                                                                                                                     
-  version: 72313cde80537dd4dc9b7b80eda6d7ed796c4232                                                                                                                                                         
-  subpackages:                                                                                                                                                                                              
-  - buffer                                                                                                                                                                                                  
-  - internal/bufferpool                                                                                                                                                                                     
-  - internal/exit                                                                                                                                                                                           
-  - internal/multierror                                                                                                                                                                                     
-  - zapcore                                                                                                                                                                                                 
-- name: goji.io                                                                                                                                                                                             
-  version: 0d89ff54b2c18c9c4ba530e32496aef902d3c6cd                                                                                                                                                         
-  subpackages:                                                                                                                                                                                              
-  - internal                                                                                                                                                                                                
-  - pat                                                                                                                                                                                                     
-  - pattern                                                                                                                                                                                                 
-- name: golang.org/x/crypto                                                                                                                                                                                 
-  version: 453249f01cfeb54c3d549ddb75ff152ca243f9d8                                                                                                                                                         
-  subpackages:                                                                                                                                                                                              
-  - bcrypt                                                                                                                                                                                                  
-  - blowfish                                                                                                                                                                                                
-testImports:                                                                                                                                                                                                
-- name: github.com/davecgh/go-spew                                                                                                                                                                          
-  version: 6d212800a42e8ab5c146b8ace3490ee17e5225f9                                                                                                                                                         
-  subpackages:                                                                                                                                                                                              
-  - spew                                                                                                                                                                                                    
-- name: github.com/pmezard/go-difflib                                                                                                                                                                       
-  version: d8ed2627bdf02c080bf22230dbb337003b7aba2d                                                                                                                                                         
-  subpackages:                                                                                                                                                                                              
-  - difflib   
+hash: dc4c524521829e05a6b26a93c550b870117c6b25687eb59f80adf8d24984b0dc
+updated: 2017-02-23T11:05:29.348480044-08:00
+imports:
+- name: github.com/asaskevich/govalidator
+  version: 7b3beb6df3c42abd3509abfc3bcacc0fbfb7c877
+- name: github.com/dgrijalva/jwt-go
+  version: d2709f9f1f31ebcda9651b03077758c1f3a0018c
+  subpackages:
+  - request
+- name: github.com/lib/pq
+  version: ba5d4f7a35561e22fbdf7a39aa0070f4d460cfc0
+  subpackages:
+  - oid
+- name: github.com/mattes/migrate
+  version: eb02bc77fbff74a86a688f227e4254b3c397710c
+- name: github.com/stretchr/testify
+  version: 69483b4bd14f5845b5a1e55bca19e954e827f1d0
+  subpackages:
+  - assert
+- name: go.uber.org/atomic
+  version: 3b8db5e93c4c02efbc313e17b2e796b0914a01fb
+- name: go.uber.org/zap
+  version: 72313cde80537dd4dc9b7b80eda6d7ed796c4232
+  subpackages:
+  - buffer
+  - internal/bufferpool
+  - internal/exit
+  - internal/multierror
+  - zapcore
+- name: goji.io
+  version: 0d89ff54b2c18c9c4ba530e32496aef902d3c6cd
+  subpackages:
+  - internal
+  - pat
+  - pattern
+- name: golang.org/x/crypto
+  version: 453249f01cfeb54c3d549ddb75ff152ca243f9d8
+  subpackages:
+  - bcrypt
+  - blowfish
+testImports:
+- name: github.com/davecgh/go-spew
+  version: 6d212800a42e8ab5c146b8ace3490ee17e5225f9
+  subpackages:
+  - spew
+- name: github.com/pmezard/go-difflib
+  version: d8ed2627bdf02c080bf22230dbb337003b7aba2d
+  subpackages:
+  - difflib

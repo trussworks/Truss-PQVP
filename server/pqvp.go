@@ -19,6 +19,12 @@ var (
 	mutex    = &sync.Mutex{}
 )
 
+// User contains an email and a password
+type User struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
 func main() {
 
 	entry := flag.String("entry", "../client/dist/index.html", "the entrypoint to serve.")

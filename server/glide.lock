@@ -1,6 +1,8 @@
-hash: 0c18fe10ac0c333b766edd4d30499f103539283b86af68f6272383562f774d42
-updated: 2017-02-22T15:46:08.842496254-05:00
+hash: c7364229a86fcf1f471978579ddde89095b332ac4b12d5d396e1736da18811e0
+updated: 2017-02-22T19:55:12.299229271-05:00
 imports:
+- name: github.com/dgrijalva/jwt-go
+  version: d2709f9f1f31ebcda9651b03077758c1f3a0018c
 - name: github.com/lib/pq
   version: ba5d4f7a35561e22fbdf7a39aa0070f4d460cfc0
   subpackages:
@@ -11,10 +13,16 @@ imports:
   version: 69483b4bd14f5845b5a1e55bca19e954e827f1d0
   subpackages:
   - assert
-- name: github.com/zenazn/goji
-  version: 64eb34159fe53473206c2b3e70fe396a639452f2
+- name: go.uber.org/atomic
+  version: 3b8db5e93c4c02efbc313e17b2e796b0914a01fb
+- name: go.uber.org/zap
+  version: 72313cde80537dd4dc9b7b80eda6d7ed796c4232
   subpackages:
-  - web
+  - buffer
+  - internal/bufferpool
+  - internal/exit
+  - internal/multierror
+  - zapcore
 - name: goji.io
   version: 0d89ff54b2c18c9c4ba530e32496aef902d3c6cd
   subpackages:

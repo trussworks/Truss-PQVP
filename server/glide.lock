@@ -1,6 +1,8 @@
-hash: 45f1b3512b78291420b8c79bfb320eff07841bc1f93dc14ee6a33f7262fc4be6
-updated: 2017-02-22T16:07:14.716529199-08:00
+hash: 032f0db580a2af3199b6381f2e1f8255f95affea56c90023afa6d6e3dc88d099
+updated: 2017-02-22T23:05:11.4433494-08:00
 imports:
+- name: github.com/asaskevich/govalidator
+  version: 7b3beb6df3c42abd3509abfc3bcacc0fbfb7c877
 - name: github.com/lib/pq
   version: ba5d4f7a35561e22fbdf7a39aa0070f4d460cfc0
   subpackages:

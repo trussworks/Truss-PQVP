@@ -8,7 +8,6 @@ server_build: server_deps
 	go build
 server_test: server_build
 	cd server && \
-	golint && \
 	go vet && \
 	go test -cover
 server_run: server_build server_test

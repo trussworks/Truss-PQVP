@@ -8,14 +8,14 @@ dependencies:
   cache_directories:
     - "~/docker"
   override:
+    # clear go cache
+    - rm -rf ~/.go_workspace/*
     - bin/circle-dependencies.sh
 
 test:
   override:
     - bin/circle-test.sh
   post:
-    # clear go cache
-    - rm -rf ~/.go_workspace/*
     # Wait for Sauce Connect to close the tunnel
     # - killall --wait sc
 

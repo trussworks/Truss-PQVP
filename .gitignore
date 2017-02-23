@@ -15,5 +15,3 @@ client/yarn-error.log*
 server/.glide/
 server/server
 server/vendor
-server/glide.lock
-

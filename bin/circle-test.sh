@@ -4,7 +4,7 @@ set -eux -o pipefail
 # Run validation checks against all of the terraform files
 terraform/scripts/run_tests.sh
 
-# Run backend servee tests
+# Run backend server tests
 make server_test
 
 # Setup Sauce Connect

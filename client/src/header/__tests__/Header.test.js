@@ -1,12 +1,9 @@
 import React from 'react';
 import Header from '../Header';
-import renderer from 'react-test-renderer';
+import { shallow } from 'enzyme';
 
 test('Header renders', () => {
-  const component = renderer.create(
-    <Header />
-  );
-
-  let tree = component.toJSON();
-  expect(tree).toMatchSnapshot();
+  it('should render without throwing an error'), () => {
+    expect(shallow(<Header />).contains(<h1>The Emergency Alert App Header</h1>)).toBe(true);
+  }
 });

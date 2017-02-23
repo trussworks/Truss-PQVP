@@ -14,6 +14,11 @@ terraform/scripts/run_tests.sh
 docker run -d -p 80:80 pqvp-demo:latest; sleep 10
 curl -sSf --retry 10 --retry-delay 5 localhost:80
 
+# Run client tests
+pushd client
+npm test
+popd
+
 # TODO: Add calls to selenium tests here
 # Verify Sauce Connect is working
 # - curl -sSf localhost:4445

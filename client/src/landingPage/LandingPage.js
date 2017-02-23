@@ -1,5 +1,5 @@
 import React from 'react';
-import LoginContainer from '../auth/LoginContainer';
+import AuthContainer from '../auth/AuthContainer';
 
 export class LandingPage extends React.Component {
   constructor(props) {
@@ -16,7 +16,7 @@ export class LandingPage extends React.Component {
     return (
       <div>
         <h1>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h1>
-        <LoginContainer />
+        <AuthContainer />
       </div>
     );
   }

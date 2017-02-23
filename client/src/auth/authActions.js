@@ -1,3 +1,5 @@
+import { push } from 'react-router-redux';
+
 import { SAVE_USER } from './authReducer';
 
 export function saveUser(email, authToken) {
@@ -10,6 +12,7 @@ export function authenticateUser(email, password) {
     .then(response => response.text())
     .then((text) => {
       dispatch(saveUser(email, text));
+      dispatch(push('/profile'));
     })
     .catch(error => error);
 }
@@ -19,6 +22,7 @@ export function signUpUser(email, password) {
     .then(response => response.text())
     .then((text) => {
       dispatch(saveUser(email, text));
+      dispatch(push('/profile'));
     })
     .catch(error => error);
 }

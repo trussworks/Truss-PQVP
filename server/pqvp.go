@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
@@ -11,6 +12,7 @@ import (
 	_ "github.com/lib/pq"
 	"goji.io"
 	"goji.io/pat"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var (
@@ -18,6 +20,12 @@ var (
 	database *sql.DB
 	mutex    = &sync.Mutex{}
 )
+
+// User contains an email and a password
+type User struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
 
 func main() {
 
@@ -29,6 +37,7 @@ func main() {
 	mux := goji.NewMux()
 
 	mux.HandleFunc(pat.Get("/hello/:name"), hello)
+	mux.HandleFunc(pat.Post("/login"), Login)
 	mux.HandleFunc(pat.Get("/"), IndexHandler(entry))
 	mux.Handle(pat.Get("/:file.:ext"), http.FileServer(http.Dir(*static)))
 
@@ -39,6 +48,42 @@ func main() {
 func hello(w http.ResponseWriter, r *http.Request) {
 	name := pat.Param(r, "name")
 	fmt.Fprintf(w, "hello, %s!\n", name)
+}
+
+// Login takes a json document with a user name and password
+func Login(c web.C, w http.ResponseWriter, r *http.Request) {
+
+	var user User
+
+	err := json.NewDecoder(r.Body).Decode(&user)
+	if err != nil {
+		http.Error(w, http.StatusText(500), 500)
+		return
+	}
+	err = createUser(user)
+	if err != nil {
+		http.Error(w, http.StatusText(500), 500)
+		return
+	}
+
+}
+
+func createUser(u User) error {
+	db := GetDB()
+	hash, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
+	stmt, err := db.Prepare("INSERT INTO users(email, password_hash) VALUES($1, $2) RETURNING id")
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	var id int64
+	err = stmt.QueryRow(u.Email, hash).Scan(&id)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	fmt.Println("id is:", id)
+	return err
 }
 
 // IndexHandler serves up our index.html

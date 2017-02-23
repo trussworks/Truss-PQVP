@@ -16,7 +16,7 @@ curl -sSf --retry 10 --retry-delay 5 localhost:80
 
 # Run client tests
 pushd client
-npm test
+npm run-script test
 popd
 
 # TODO: Add calls to selenium tests here

@@ -1,4 +1,6 @@
 machine:
+  node:
+    version: 6.1.0
   services:
     - docker
   environment:
@@ -8,6 +10,9 @@ dependencies:
     - "~/docker"
   override:
     - bin/circle-dependencies.sh
+compile:
+  override:
+    - bin/circle-compile.sh
 test:
   override:
     - bin/circle-test.sh

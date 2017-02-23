@@ -18,6 +18,11 @@ popd
 # Clone ecs-deploy so we can push task updates to ECS once tests past
 git clone https://github.com/silinternational/ecs-deploy.git
 
+# Install client deps
+pushd client
+yarn install
+popd
+
 # Pull down Sauce Labs Connect
 # FIXME: disabled due to Sauce just not working. --mark
 # - wget https://saucelabs.com/downloads/sc-latest-linux.tar.gz

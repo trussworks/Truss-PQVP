@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"sync"
 
+	"github.com/asaskevich/govalidator"
 	"goji.io"
 	"goji.io/pat"
 )
@@ -20,8 +21,8 @@ var (
 
 // User contains an email and a password
 type User struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email    string `json:"email" valid:"required,email"`
+	Password string `json:"password" valid:"required"`
 }
 
 func main() {
@@ -34,8 +35,8 @@ func main() {
 	mux := goji.NewMux()
 
 	mux.HandleFunc(pat.Get("/hello/:name"), hello)
-	mux.HandleFunc(pat.Post("/login"), Login)
-	mux.HandleFunc(pat.Post("/signup"), Signup)
+	mux.HandleFunc(pat.Post("/api/login"), Login)
+	mux.HandleFunc(pat.Post("/api/signup"), Signup)
 	mux.HandleFunc(pat.Get("/"), IndexHandler(entry))
 	mux.Handle(pat.Get("/:file.:ext"), http.FileServer(http.Dir(*static)))
 
@@ -56,15 +57,18 @@ curl -H "Content-Type: application/json" -d '{"email":"Joe@gmail.com", "pass":"1
 func Login(w http.ResponseWriter, r *http.Request) {
 	var user User
 	err := json.NewDecoder(r.Body).Decode(&user)
+	// handle incorrect JSON
 	if err != nil {
-		http.Error(w, http.StatusText(500), 500)
+		http.Error(w, http.StatusText(400), 400)
+		return
+	}
+	valid, err := govalidator.ValidateStruct(user)
+	// make sure the input matches the User struct
+	if !valid {
+		http.Error(w, http.StatusText(400), 400)
 		return
 	}
 	success := LoginUser(user)
-	if err != nil {
-		http.Error(w, http.StatusText(500), 500)
-		return
-	}
 	if !success {
 		http.Error(w, http.StatusText(404), 404)
 	}
@@ -72,16 +76,23 @@ func Login(w http.ResponseWriter, r *http.Request) {
 }
 
 /*
-Signup creates a user.
+Signup creates a new user.
 Test with this curl command:
 curl -H "Content-Type: application/json" -d '{"email":"Joe@gmail.com", "pass":"1234"}' http://localhost:8080/signup
 */
 func Signup(w http.ResponseWriter, r *http.Request) {
 	var user User
-
 	err := json.NewDecoder(r.Body).Decode(&user)
+	// handle incorrect JSON
 	if err != nil {
-		http.Error(w, http.StatusText(500), 500)
+		http.Error(w, http.StatusText(400), 400)
+		return
+	}
+	valid, err := govalidator.ValidateStruct(user)
+	// make sure the input matches the User struct
+	if !valid {
+		fmt.Println(err)
+		http.Error(w, http.StatusText(400), 400)
 		return
 	}
 	err = CreateUser(user)

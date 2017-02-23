@@ -27,7 +27,6 @@ popd
 createdb pqvp
 migrate -url "postgres://postgres@localhost:5432/pqvp?sslmode=disable" -path server/sql up
 cp -R server/vendor/* ~/.go_workspace/src/
-make server_test
 
 # Pull down Sauce Labs Connect
 # FIXME: disabled due to Sauce just not working. --mark

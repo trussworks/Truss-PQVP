@@ -4,6 +4,9 @@ set -eux -o pipefail
 # Run validation checks against all of the terraform files
 terraform/scripts/run_tests.sh
 
+# Run backend servee tests
+make server_test
+
 # Setup Sauce Connect
 # - cd sc-*-linux && ./bin/sc --user $SAUCE_USERNAME --api-key $SAUCE_ACCESS_KEY --readyfile ~/sauce_is_ready:
 #    background: true

@@ -18,10 +18,11 @@ func LoginUser(u User) bool {
 	if err != nil {
 		log.Println(err)
 		return false
+
 	}
 	err = bcrypt.CompareHashAndPassword([]byte(pass), []byte(u.Password))
 	if err != nil {
-		log.Println(err)
+		log.Printf("login failed %s: %s", u.Email, err)
 		return false
 	}
 	return true
@@ -42,6 +43,7 @@ func CreateUser(u User) error {
 		log.Println(err)
 		return err
 	}
+	log.Printf("created user %s with id %d", u.Email, id)
 	return err
 }
 

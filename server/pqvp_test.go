@@ -12,6 +12,21 @@ import (
 	"goji.io/pattern"
 )
 
+var (
+	invalidJSON = []byte(`"email":"joe@gmail.com", "fail":"peanutbutter"`)
+	userGood    = []byte(`{"email":"joe@gmail.com", "password":"peanutbutter"}`)
+	userBad     = []byte(`{"email":"joe@gmail.com", "address":"peanutbutter"}`)
+)
+
+func generatePost(t *testing.T, endpoint string, json []byte) *http.Request {
+	req, err := http.NewRequest("POST", endpoint, bytes.NewBuffer(json))
+	req.Header.Set("Content-Type", "application/json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	return req
+}
+
 // Boilerplate check to test goji/web is setup correctly
 func TestHello(t *testing.T) {
 	res := httptest.NewRecorder()
@@ -28,58 +43,50 @@ func TestHello(t *testing.T) {
 	expected := []byte("hello, pqvp!\n")
 	// make sure we get a 200 response and the body matches the string
 	assert.Equal(t, res.Body.Bytes(), expected)
-	assert.Equal(t, res.Code, 200)
+	assert.Equal(t, 200, res.Code)
 }
 
 // Verifies a user can signup
 func TestSignup(t *testing.T) {
 	res := httptest.NewRecorder()
-	var json = []byte(`{"email":"joe@gmail.com", "password":"peanutbutter"}`)
-	req, err := http.NewRequest("POST", "/signup", bytes.NewBuffer(json))
-	req.Header.Set("Content-Type", "application/json")
-	if err != nil {
-		t.Fatal(err)
-	}
-
+	req := generatePost(t, "/signup", userGood)
 	Signup(res, req)
-
 	// make sure we get a 200 response and the body matches the string
-	assert.Equal(t, res.Code, 200)
+	assert.Equal(t, 200, res.Code)
 	//TODO check for session token
 
-	var badJSON = []byte(`"email":"joe@gmail.com", "fail":"peanutbutter"`)
-	req, err = http.NewRequest("POST", "/signup", bytes.NewBuffer(badJSON))
-	req.Header.Set("Content-Type", "application/json")
+	res = httptest.NewRecorder()
+	req = generatePost(t, "/signup", userBad)
 	Signup(res, req)
+	/// make sure we bail on bad input
+	assert.Equal(t, 400, res.Code)
 
+	res = httptest.NewRecorder()
+	req = generatePost(t, "/signup", invalidJSON)
+	Signup(res, req)
 	/// make sure we bail on bad json
-	assert.Equal(t, res.Code, 500)
+	assert.Equal(t, 400, res.Code)
 }
 
 // Verifies login endpoint is working
 func TestLogin(t *testing.T) {
-	CreateUser(User{Email: "asd@gomasd.com", Password: "asd"})
+	CreateUser(User{Email: "joe@gmail.com", Password: "peanutbutter"})
 
 	res := httptest.NewRecorder()
-	var json = []byte(`{"email":"asd@gomasd.com", "password":"asd"}`)
-	req, err := http.NewRequest("POST", "/login", bytes.NewBuffer(json))
-	req.Header.Set("Content-Type", "application/json")
-	if err != nil {
-		t.Fatal(err)
-	}
-
+	req := generatePost(t, "/login", userGood)
 	Login(res, req)
-
 	// make sure we get a 200 response and the body matches the string
-	assert.Equal(t, res.Code, 200)
+	assert.Equal(t, 200, res.Code)
+
+	res = httptest.NewRecorder()
+	req = generatePost(t, "/login", userBad)
+	Login(res, req)
+	// make sure we get a 200 response and the body matches the string
+	assert.Equal(t, 400, res.Code)
 
 	var badPass = []byte(`{"email":"asd@gomasd.com", "password":"asdsss"}`)
-	req, err = http.NewRequest("POST", "/login", bytes.NewBuffer(badPass))
-	req.Header.Set("Content-Type", "application/json")
-	if err != nil {
-		t.Fatal(err)
-	}
-
+	res = httptest.NewRecorder()
+	req = generatePost(t, "/login", badPass)
 	Login(res, req)
 
 	// 404 if login is not found

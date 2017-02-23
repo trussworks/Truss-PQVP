@@ -1,12 +1,14 @@
 NAME = pqvp-demo
 
-
-server_build:
+server_deps:
 	cd server && \
-	glide install && \
+	glide install
+server_build: server_deps
+	cd server && \
 	go build
 server_test: server_build
 	cd server && \
+	golint && \
 	go vet && \
 	go test -cover
 server_run: server_build server_test

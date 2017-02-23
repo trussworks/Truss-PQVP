@@ -51,7 +51,7 @@ func hello(w http.ResponseWriter, r *http.Request) {
 }
 
 // Login takes a json document with a user name and password
-func Login(c web.C, w http.ResponseWriter, r *http.Request) {
+func Login(w http.ResponseWriter, r *http.Request) {
 
 	var user User
 

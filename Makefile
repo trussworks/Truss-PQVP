@@ -1,9 +1,11 @@
 NAME = pqvp-demo
 
+
 server:
 	cd server && \
 	glide install && \
-	go test && \
+	go vet && \
+	go test -cover && \
 	go build
 
 server_run: server

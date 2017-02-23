@@ -52,11 +52,6 @@ func main() {
 	root.Handle(pat.Get("/admin/*"), admin)
 	admin.Use(authMiddleware)
 
-	// Base routes
-	root.HandleFunc(pat.Get("/hello/:name"), hello)
-	root.HandleFunc(pat.Get("/"), IndexHandler(entry))
-	root.Handle(pat.Get("/:file.:ext"), http.FileServer(http.Dir(*static)))
-
 	// Start the server
 	http.ListenAndServe(*port, root)
 }

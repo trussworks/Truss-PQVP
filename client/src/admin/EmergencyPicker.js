@@ -10,7 +10,14 @@ class EmergencyPicker extends React.Component {
       lat: 37.7,
       lng: -122.4,
       zoom: 8,
+      slectedFeature: undefined,
     };
+
+    this.selectFeature = this.selectFeature.bind(this);
+  }
+
+  selectFeature(feature) {
+    this.setState({ selectedFeature: feature });
   }
 
   render() {
@@ -23,7 +30,11 @@ class EmergencyPicker extends React.Component {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
           />
-          <FeatureLayer url="https://igems.doi.gov/arcgis/rest/services/igems_haz/MapServer/14" />
+          <FeatureLayer
+            url="https://igems.doi.gov/arcgis/rest/services/igems_haz/MapServer/14"
+            selectFeature={this.selectFeature}
+            selectedFeatureId={this.state.selectedFeature && this.state.selectedFeature.id}
+          />
           <Marker position={position}>
             <Popup>
               <span>A pretty CSS3 popup. <br /> Easily customizable.</span>

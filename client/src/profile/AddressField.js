@@ -19,10 +19,6 @@ const styles = {
     padding: '2px 6px',
     cursor: 'default',
   },
-
-  menu: {
-    border: 'solid 1px #ccc',
-  },
 };
 
 function getURL(baseURL, getParams) {
@@ -57,11 +53,10 @@ class AddressField extends React.Component {
   }
 
 // TODO: rate limiting, making sure you only show suggestions monotonically increasingly.
-
   render() {
     return (
       <div>
-        <label htmlFor="input-type-text">Address:</label>
+        <label htmlFor="input-type-text">Add Address:</label>
         <AutoComplete
           value={this.state.value}
           items={this.state.suggestions}

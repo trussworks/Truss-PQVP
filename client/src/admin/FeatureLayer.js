@@ -29,9 +29,10 @@ class FeatureLayer extends React.Component {
 
   componentDidMount() {
     this.state.esriLayer.addTo(this.context.map);
-    this.state.esriLayer.bindPopup((evt) => {
-      this.props.selectFeature(evt.feature);
-      return L.Util.template('<p>{event}<br>{id}</p>', evt.feature.properties);
+    this.state.esriLayer.bindPopup((fLayer) => {
+      const feature = fLayer.toGeoJSON();
+      this.props.selectFeature(feature);
+      return L.Util.template('<p>{event}<br>{id}</p>', feature.properties);
     });
     this.state.esriLayer.setStyle(UNSELECTED_STYLE);
   }

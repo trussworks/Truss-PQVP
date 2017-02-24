@@ -8,6 +8,7 @@ import App from './app/App';
 import LandingPage from './landingPage/LandingPage';
 import ProfileContainer from './profile/ProfileContainer';
 import { rootReducer } from './rootReducer';
+import EmergencyPicker from './admin/EmergencyPicker';
 
 const middleware = routerMiddleware(browserHistory);
 const store = createStore(rootReducer, applyMiddleware(thunk, middleware));
@@ -18,6 +19,7 @@ export const Root = () => (
       <Route component={App}>
         <Route path="/" component={LandingPage} />
         <Route path="/profile" component={ProfileContainer} />
+        <Route path="/admin" component={EmergencyPicker} />
       </Route>
     </Router>
   </Provider>

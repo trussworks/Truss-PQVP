@@ -20,7 +20,7 @@ class EmergencyPicker extends React.Component {
   }
   render() {
     const position = [this.state.lat, this.state.lng];
-    
+
     return (
       <div>
         <h1>hello team</h1>

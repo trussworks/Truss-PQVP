@@ -26,4 +26,9 @@ $desktop: new-breakpoint(min-width 800px);
   background: hsl(200, 50%, 50%);
   padding: 2px 6px;
   cursor: default;
+
+.leaflet-container {
+    height: 400px;
+    width: 500px;
+
 }

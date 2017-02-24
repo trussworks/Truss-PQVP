@@ -7,10 +7,10 @@ machine:
     AWS_DEFAULT_REGION: us-west-2
 dependencies:
   cache_directories:
-    - "~/docker"
+    - "client/node_modules"
   override:
     # clear go cache
-    - rm -rf ~/.go_workspace/*
+    # - rm -rf ~/.go_workspace/*
     - bin/circle-dependencies.sh
 compile:
   override:

@@ -8,7 +8,7 @@ const ChangePasswordForm = ({
   submitting,
   updatingPassword,
   togglePasswordForm,
-  valid
+  valid,
 }) => (
   <div>
     <a href="" onClick={togglePasswordForm}>Change password</a>

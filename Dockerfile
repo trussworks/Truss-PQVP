@@ -33,6 +33,9 @@ WORKDIR /go/src/app/client
 RUN yarn install
 RUN npm run-script prod
 
+# generate swagger docs
+RUN ./node_modules/bootprint/bin/bootprint.js openapi ../server/docs/swagger.yaml dist/docs
+
 ENTRYPOINT /go/src/app/server/entrypoint.sh
 
 EXPOSE 80

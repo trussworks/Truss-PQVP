@@ -9,8 +9,9 @@ dependencies:
   cache_directories:
     - "client/node_modules"
   override:
-    # clear go cache
-    # - rm -rf ~/.go_workspace/*
+    # clear go cache so that migrate and glide get installed without
+    # complaining.
+    - rm -rf ~/.go_workspace/*
     - bin/circle-dependencies.sh
 compile:
   override:

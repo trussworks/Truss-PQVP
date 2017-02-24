@@ -10,7 +10,7 @@ class ProfileContainer extends React.Component {
 
     this.state = {
       updatingPassword: false,
-    }
+    };
 
     this.submitUpdate = this.submitUpdate.bind(this);
     this.togglePasswordForm = this.togglePasswordForm.bind(this);

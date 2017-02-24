@@ -1,5 +1,8 @@
 NAME = pqvp-demo
 
+client_build:
+	cd client && \
+	npm run-script prod
 docs:
 	bootprint openapi server/docs/swagger.yaml client/dist/docs
 server_deps:
@@ -18,9 +21,7 @@ server_run: server_build server_test
 		-static client/dist/ \
 		-docs client/dist/docs/ \
 		-port :8080
-local_docker:
-	docker build -t pqvp-demo .
-	$(if $(shell docker ps -q -f "name=$(NAME)"), docker rm -f $(shell docker ps -q -f "name=$(NAME)"))
-	docker run -d -p 80:80 --name $(NAME) $(NAME)
+local_docker: client_build
+	bin/local-docker.sh $(NAME)
 
-.PHONY: server
+.PHONY: client_build docs server_deps server_build server_test server_run local_docker

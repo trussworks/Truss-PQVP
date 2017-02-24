@@ -9,3 +9,6 @@ popd
 
 # Generate swagger docs
 bootprint openapi server/docs/swagger.yaml client/dist/docs
+
+# Server build
+docker build --rm=false -t pqvp-demo:latest .

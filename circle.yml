@@ -7,9 +7,10 @@ machine:
     AWS_DEFAULT_REGION: us-west-2
 dependencies:
   cache_directories:
-    - "~/docker"
+    - "client/node_modules"
   override:
-    # clear go cache
+    # clear go cache so that migrate and glide get installed without
+    # complaining.
     - rm -rf ~/.go_workspace/*
     - bin/circle-dependencies.sh
 compile:

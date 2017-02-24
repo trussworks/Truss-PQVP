@@ -1,1 +1,4 @@
-client/node_modules
+# Ignore all of the client files except for the webpacked, production ready
+# stuff.
+client
+!client/dist/*

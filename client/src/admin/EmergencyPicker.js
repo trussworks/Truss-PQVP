@@ -5,7 +5,6 @@ import FeatureLayer from './FeatureLayer';
 class EmergencyPicker extends React.Component {
   constructor(props) {
     super(props);
-    console.log('construct Picker');
     this.state = {
       lat: 37.7,
       lng: -122.4,

@@ -28,17 +28,18 @@ class AuthContainer extends React.Component {
     this.setState({ isLoggingIn: !this.state.isLoggingIn });
   }
   render() {
-    const switchAuthText = this.state.isLoggingIn ?
-      'Sign up for an account' :
-      'Log in to an existing account';
-
     return (
       <div>
         {this.state.isLoggingIn ?
-          (<LoginForm onSubmit={this.submitLogin} />) :
-          (<SignUpForm onSubmit={this.submitSignUp} />)
+          (<LoginForm
+            onSubmit={this.submitLogin}
+            switchForm={this.toggleAuthType}
+          />) :
+          (<SignUpForm
+            onSubmit={this.submitSignUp}
+            switchForm={this.toggleAuthType}
+          />)
         }
-        <a href="" onClick={this.toggleAuthType} >{switchAuthText}</a>
       </div>
     );
   }

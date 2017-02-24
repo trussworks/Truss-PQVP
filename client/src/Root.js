@@ -6,7 +6,7 @@ import { routerMiddleware } from 'react-router-redux';
 import { Router, Route, browserHistory } from 'react-router';
 import App from './app/App';
 import LandingPage from './landingPage/LandingPage';
-import Profile from './profile/Profile';
+import ProfileContainer from './profile/ProfileContainer';
 import { rootReducer } from './rootReducer';
 import EmergencyPicker from './admin/EmergencyPicker';
 
@@ -18,7 +18,7 @@ export const Root = () => (
     <Router history={browserHistory} >
       <Route component={App}>
         <Route path="/" component={LandingPage} />
-        <Route path="/profile" component={Profile} />
+        <Route path="/profile" component={ProfileContainer} />
         <Route path="/admin" component={EmergencyPicker} />
       </Route>
     </Router>

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ChangePasswordForm from './ChangePasswordForm';
 import ProfileForm from './ProfileForm';
+import AddressField from './AddressField';
 
 class ProfileContainer extends React.Component {
   constructor(props) {
@@ -23,6 +24,11 @@ class ProfileContainer extends React.Component {
     e.preventDefault();
     this.setState({ updatingPassword: !this.state.updatingPassword });
   }
+  saveNewAddress(address) {
+    console.log('ADD ADDRESS:');
+    console.log(this.state);
+    console.log(address); // I believe this is GeoJSON so probably what we want to store.
+  }
   render() {
     return (
       <div className="container">
@@ -31,6 +37,7 @@ class ProfileContainer extends React.Component {
           togglePasswordForm={this.togglePasswordForm}
           updatingPassword={this.state.updatingPassword}
         />
+        <AddressField saveAddress={this.saveNewAddress} />
       </div>
     );
   }

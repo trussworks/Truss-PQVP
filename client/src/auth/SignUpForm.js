@@ -3,37 +3,43 @@ import { reduxForm, Field } from 'redux-form';
 import { AuthField } from './AuthField';
 import authValidation from './authValidation';
 
-const SignUpForm = ({ handleSubmit, submitting, valid }) => (
-  <form onSubmit={handleSubmit}>
-    <Field
-      component={AuthField}
-      label="Email"
-      name="email"
-      placeholder="Email address"
-      type="email"
-    />
-    <Field
-      component={AuthField}
-      name="password"
-      placeholder="Password"
-      type="password"
-    />
-    <div>
-      <button
-        data-backdrop="static"
-        disabled={submitting || !valid}
-        type="submit"
-      >
-        Sign Up
-      </button>
-    </div>
+const SignUpForm = ({ handleSubmit, submitting, switchForm, valid }) => (
+  <form className="usa-form" onSubmit={handleSubmit}>
+    <fieldset>
+      <legend className="usa-drop_text">Sign up</legend>
+      <span>
+        or <a href="" onClick={switchForm}>log in with an existing account</a>
+      </span>
+      <Field
+        component={AuthField}
+        label="Email"
+        name="email"
+        placeholder="Email address"
+        type="email"
+      />
+      <Field
+        component={AuthField}
+        name="password"
+        placeholder="Password"
+        type="password"
+      />
+      <div>
+        <input
+          data-backdrop="static"
+          disabled={submitting || !valid}
+          type="submit"
+          value="Sign up"
+        />
+      </div>
+    </fieldset>
   </form>
 );
 
 SignUpForm.propTypes = {
-  handleSubmit: PropTypes.func,
-  submitting: PropTypes.bool,
-  valid: PropTypes.bool,
+  handleSubmit: PropTypes.func.isRequired,
+  submitting: PropTypes.bool.isRequired,
+  switchForm: PropTypes.func.isRequired,
+  valid: PropTypes.bool.isRequired,
 };
 
 export default reduxForm({

@@ -35,6 +35,8 @@ func main() {
 
 	entry := flag.String("entry", "../client/dist/index.html", "the entrypoint to serve.")
 	static := flag.String("static", "../client/dist", "the directory to serve static files from.")
+	docs := flag.String("docs", "../client/dist/docs", "the directory to serve swagger documentation from.")
+
 	port := flag.String("port", ":80", "the `port` to listen on.")
 	flag.Parse()
 
@@ -42,20 +44,21 @@ func main() {
 	admin := goji.SubMux()
 
 	// Base routes
-	root.HandleFunc(pat.Get("/hello/:name"), hello)
-	root.HandleFunc(pat.Post("/api/login"), Login)
-	root.HandleFunc(pat.Post("/api/signup"), Signup)
 	root.HandleFunc(pat.Get("/"), IndexHandler(entry))
 	root.Handle(pat.Get("/:file.:ext"), http.FileServer(http.Dir(*static)))
+	root.HandleFunc(pat.Get("/hello/:name"), hello)
+
+	// API routes
+	root.HandleFunc(pat.Post("/api/login"), Login)
+	root.HandleFunc(pat.Post("/api/signup"), Signup)
+
+	// Documentation routes
+	root.Handle(pat.Get("/docs"), http.RedirectHandler("/docs/", 301))
+	root.Handle(pat.Get("/docs/*"), http.StripPrefix("/docs/", http.FileServer(http.Dir(*docs))))
 
 	// Admin routes
 	root.Handle(pat.Get("/admin/*"), admin)
 	admin.Use(authMiddleware)
-
-	// Base routes
-	root.HandleFunc(pat.Get("/hello/:name"), hello)
-	root.HandleFunc(pat.Get("/"), IndexHandler(entry))
-	root.Handle(pat.Get("/:file.:ext"), http.FileServer(http.Dir(*static)))
 
 	// Start the server
 	http.ListenAndServe(*port, root)

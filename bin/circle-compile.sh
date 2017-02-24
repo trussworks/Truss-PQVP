@@ -6,3 +6,6 @@ set -eux -o pipefail
 pushd client
 npm run-script prod
 popd
+
+# Generate swagger docs
+bootprint openapi server/docs/swagger.yaml client/dist/docs

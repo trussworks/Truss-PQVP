@@ -1,0 +1,243 @@
+{
+ "currentVersion": 10.21,
+ "id": 10,
+ "name": "Wildfires",
+ "type": "Feature Layer",
+ "description": "Active wildland fires in the continental United States from the Geospatial Multi-Agency Coordination (GeoMAC) application (http://geomac.gov). IGEMS accesses this layer directly from GeoMAC.",
+ "geometryType": "esriGeometryPoint",
+ "copyrightText": "",
+ "parentLayer": null,
+ "subLayers": [],
+ "minScale": 0,
+ "maxScale": 0,
+ "drawingInfo": {
+  "renderer": {
+   "type": "simple",
+   "symbol": {
+    "type": "esriPMS",
+    "url": "42b693210fbb7b1812e92fcc18e8e020",
+    "imageData": "iVBORw0KGgoAAAANSUhEUgAAAA8AAAAMCAYAAAC9QufkAAAAAXNSR0IB2cksfwAAAAlwSFlzAAAOxAAADsQBlSsOGwAAARZJREFUKJGVkDFLw0AYhp9AIXMztUqFYkVzWTp3E0un6tB06ubsnD+gY/E3dBOhEUTjVuzm3EFShBTqEOp0nW86h1hrSErwXd7vvrvnXr6vRI7GDueOADHmOe9+o1Jec7niyTkxAWX8GwawezX8RaQB+jMMv8lvXQhv1O6a+Cjd7ppMAlWcXD9I3PUaSRFETAKVSs2F/Sba9Row6MDrffLJrYVxJjPzZ2BxaG4PVSvxlSR0TS0e1O7koYXes4HBJRBD+RjWH1C1sG8shtNIe7JwYXFildbW70b8BTOwJzHqgdLu1ecPtA/AvH/NyzS96d3JlRZ8vcF8BCuJ3asRLiKQBbA44kLrGNbvUBZACKcdxGMEs/Tbb+OlVOrf6iMjAAAAAElFTkSuQmCC",
+    "contentType": "image/png",
+    "width": 11,
+    "height": 9,
+    "angle": 0,
+    "xoffset": 0,
+    "yoffset": 0
+   },
+   "label": "Current Wildfire",
+   "description": ""
+  },
+  "transparency": 0,
+  "labelingInfo": null
+ },
+ "defaultVisibility": true,
+ "extent": {
+  "xmin": -2.0037507842788246E7,
+  "ymin": -3.024097145838617E7,
+  "xmax": 2.0037507842788246E7,
+  "ymax": 3.0240971458386205E7,
+  "spatialReference": {
+   "wkid": 102100,
+   "latestWkid": 3857
+  }
+ },
+ "hasAttachments": false,
+ "htmlPopupType": "esriServerHTMLPopupTypeNone",
+ "displayField": "incidentname",
+ "typeIdField": null,
+ "fields": [
+  {
+   "name": "objectid",
+   "type": "esriFieldTypeOID",
+   "alias": "OBJECTID",
+   "domain": null
+  },
+  {
+   "name": "latitude",
+   "type": "esriFieldTypeDouble",
+   "alias": "latitude",
+   "domain": null
+  },
+  {
+   "name": "longitude",
+   "type": "esriFieldTypeDouble",
+   "alias": "longitude",
+   "domain": null
+  },
+  {
+   "name": "acres",
+   "type": "esriFieldTypeDouble",
+   "alias": "acres",
+   "domain": null
+  },
+  {
+   "name": "gacc",
+   "type": "esriFieldTypeString",
+   "alias": "gacc",
+   "length": 4,
+   "domain": null
+  },
+  {
+   "name": "hotlink",
+   "type": "esriFieldTypeString",
+   "alias": "hotlink",
+   "length": 60,
+   "domain": null
+  },
+  {
+   "name": "state",
+   "type": "esriFieldTypeString",
+   "alias": "state",
+   "length": 2,
+   "domain": null
+  },
+  {
+   "name": "shape",
+   "type": "esriFieldTypeGeometry",
+   "alias": "SHAPE",
+   "domain": null
+  },
+  {
+   "name": "status",
+   "type": "esriFieldTypeString",
+   "alias": "status",
+   "length": 1,
+   "domain": null
+  },
+  {
+   "name": "firecause",
+   "type": "esriFieldTypeString",
+   "alias": "firecause",
+   "length": 15,
+   "domain": null
+  },
+  {
+   "name": "reportdatetime",
+   "type": "esriFieldTypeDate",
+   "alias": "reportdatetime",
+   "length": 36,
+   "domain": null
+  },
+  {
+   "name": "percentcontained",
+   "type": "esriFieldTypeSmallInteger",
+   "alias": "percentcontained",
+   "domain": null
+  },
+  {
+   "name": "uniquefireidentifier",
+   "type": "esriFieldTypeString",
+   "alias": "uniquefireidentifier",
+   "length": 22,
+   "domain": null
+  },
+  {
+   "name": "firediscoverydatetime",
+   "type": "esriFieldTypeDate",
+   "alias": "firediscoverydatetime",
+   "length": 36,
+   "domain": null
+  },
+  {
+   "name": "complexparentirwinid",
+   "type": "esriFieldTypeGUID",
+   "alias": "complexparentirwinid",
+   "length": 38,
+   "domain": null
+  },
+  {
+   "name": "pooresponsibleunit",
+   "type": "esriFieldTypeString",
+   "alias": "pooresponsibleunit",
+   "length": 6,
+   "domain": null
+  },
+  {
+   "name": "incidentname",
+   "type": "esriFieldTypeString",
+   "alias": "incidentname",
+   "length": 50,
+   "domain": null
+  },
+  {
+   "name": "iscomplex",
+   "type": "esriFieldTypeString",
+   "alias": "iscomplex",
+   "length": 5,
+   "domain": null
+  },
+  {
+   "name": "irwinid",
+   "type": "esriFieldTypeGUID",
+   "alias": "irwinid",
+   "length": 38,
+   "domain": null
+  },
+  {
+   "name": "irwinmodifiedon",
+   "type": "esriFieldTypeDate",
+   "alias": "irwinmodifiedon",
+   "length": 36,
+   "domain": null
+  },
+  {
+   "name": "mapsymbol",
+   "type": "esriFieldTypeString",
+   "alias": "mapsymbol",
+   "length": 1,
+   "domain": null
+  },
+  {
+   "name": "datecurrent",
+   "type": "esriFieldTypeDate",
+   "alias": "datecurrent",
+   "length": 36,
+   "domain": null
+  },
+  {
+   "name": "pooownerunit",
+   "type": "esriFieldTypeString",
+   "alias": "pooownerunit",
+   "length": 6,
+   "domain": null
+  },
+  {
+   "name": "fireyear",
+   "type": "esriFieldTypeSmallInteger",
+   "alias": "fireyear",
+   "domain": null
+  },
+  {
+   "name": "localincidentidentifier",
+   "type": "esriFieldTypeString",
+   "alias": "localincidentidentifier",
+   "length": 10,
+   "domain": null
+  },
+  {
+   "name": "incidenttypecategory",
+   "type": "esriFieldTypeString",
+   "alias": "incidenttypecategory",
+   "length": 2,
+   "domain": null
+  },
+  {
+   "name": "owneragency",
+   "type": "esriFieldTypeString",
+   "alias": "owneragency",
+   "length": 15,
+   "domain": null
+  }
+ ],
+ "relationships": [],
+ "canModifyLayer": false,
+ "canScaleSymbols": false,
+ "hasLabels": false,
+ "capabilities": "Map,Query,Data",
+ "maxRecordCount": 1000,
+ "supportsStatistics": true,
+ "supportsAdvancedQueries": true,
+ "supportedQueryFormats": "JSON, AMF",
+ "ownershipBasedAccessControlForFeatures": {"allowOthersToQuery": true},
+ "useStandardizedQueries": true
+}

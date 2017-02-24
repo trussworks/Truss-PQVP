@@ -7,6 +7,7 @@ import { Router, Route, browserHistory } from 'react-router';
 import App from './app/App';
 import LandingPage from './landingPage/LandingPage';
 import Profile from './profile/Profile';
+import Admin from './admin/Admin';
 import { rootReducer } from './rootReducer';
 
 const middleware = routerMiddleware(browserHistory);
@@ -18,6 +19,7 @@ export const Root = () => (
       <Route component={App}>
         <Route path="/" component={LandingPage} />
         <Route path="/profile" component={Profile} />
+        <Route path="/admin" component={Admin} />
       </Route>
     </Router>
   </Provider>

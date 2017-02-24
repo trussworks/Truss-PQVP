@@ -2,13 +2,12 @@ $mobile: new-breakpoint(max-width 500px);
 $tablet: new-breakpoint(min-width 500px);
 $desktop: new-breakpoint(min-width 800px);
 
-.container {
+.container--content {
   @include span-columns(10);
   @include shift(1);
   @include media($tablet) {
     @include span-columns(8);
     @include shift(2);
-    padding: 34px 0 34px 0;
   }
   @include media($desktop) {
     @include span-columns(6);
@@ -30,12 +29,23 @@ $desktop: new-breakpoint(min-width 800px);
   cursor: default;
 }
 
+.icon--dismiss {
+  height: 16px;
+  position: absolute;
+  width: 16px;
+  top: 5px;
+  right: 5px;
+}
+
 // Leaflet required class
 
 .leaflet-container {
     height: 400px;
     width: 500px;
+}
 
+.margin--none {
+  margin: 0;
 }
 
 // Util
@@ -47,5 +57,3 @@ $desktop: new-breakpoint(min-width 800px);
   clear: both;
   height: 0;
 }
-* html .group             { zoom: 1; } /* IE6 */
-*:first-child+html .group { zoom: 1; } /* IE7 */

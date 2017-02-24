@@ -31,7 +31,7 @@ class ProfileContainer extends React.Component {
   }
   render() {
     return (
-      <div className="container">
+      <div className="container--content">
         <ProfileForm onSubmit={this.submitUpdate} />
         <ChangePasswordForm
           togglePasswordForm={this.togglePasswordForm}

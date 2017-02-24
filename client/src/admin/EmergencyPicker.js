@@ -1,26 +1,26 @@
 import React from 'react';
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
+import { Map, TileLayer } from 'react-leaflet';
 import FeatureLayer from './FeatureLayer';
 
 class EmergencyPicker extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       lat: 37.7,
       lng: -122.4,
       zoom: 8,
-      slectedFeature: undefined,
+      selectedFeature: undefined,
     };
 
     this.selectFeature = this.selectFeature.bind(this);
   }
-
   selectFeature(feature) {
     this.setState({ selectedFeature: feature });
   }
-
   render() {
     const position = [this.state.lat, this.state.lng];
+    
     return (
       <div>
         <h1>hello team</h1>
@@ -34,11 +34,6 @@ class EmergencyPicker extends React.Component {
             selectFeature={this.selectFeature}
             selectedFeatureId={this.state.selectedFeature && this.state.selectedFeature.id}
           />
-          <Marker position={position}>
-            <Popup>
-              <span>A pretty CSS3 popup. <br /> Easily customizable.</span>
-            </Popup>
-          </Marker>
         </Map>
       </div>
     );

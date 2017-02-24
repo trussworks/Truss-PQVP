@@ -26,7 +26,8 @@ class FeatureLayer extends React.Component {
     const myFeatures = new esri.FeatureLayer({ url: this.props.url });
     this.setState({ esriLayer: myFeatures });
   }
-
+  // Qs.
+  // * What happens if we don't hit the server? How do we error?
   componentDidMount() {
     this.state.esriLayer.addTo(this.context.map);
     this.state.esriLayer.bindPopup((fLayer) => {
@@ -37,9 +38,6 @@ class FeatureLayer extends React.Component {
     this.state.esriLayer.setStyle(UNSELECTED_STYLE);
   }
 
-// Qs.
-// * What happens if we don't hit the server? How do we error?
-
   render() {
     this.state.esriLayer.eachFeature((wrapper) => {
       const feature = wrapper.feature;
@@ -48,6 +46,7 @@ class FeatureLayer extends React.Component {
     if (this.props.selectedFeatureId) {
       this.state.esriLayer.setFeatureStyle(this.props.selectedFeatureId, SELECTED_STYLE);
     }
+
     return (<div />);
   }
 }

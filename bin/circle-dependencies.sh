@@ -34,6 +34,9 @@ pushd client
 yarn install
 popd
 
+# swagger doc generation dependencies
+npm install -g bootprint
+npm install -g bootprint-openapi
 
 # Pull down Sauce Labs Connect
 # FIXME: disabled due to Sauce just not working. --mark

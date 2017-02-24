@@ -7,9 +7,11 @@ graph.png
 # Client side excludes
 client/node_modules
 client/dist/index*
+client/dist/docs
 client/npm-debug.log*
 client/yarn-debug.log*
 client/yarn-error.log*
+npm-debug.log
 
 # Server side exclude
 server/.glide/

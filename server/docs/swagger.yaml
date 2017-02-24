@@ -1,0 +1,69 @@
+---
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: PQVP
+  description: |
+    #### API for PQVP Emergency Response Prototype
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+host: demo.pqvp.truss.works
+basePath: /api
+paths:
+  /login:
+    post:
+      description: Logs user into the application
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Login Successful
+        400:
+          description: Invalid Request
+        401:
+          description: Authorization Failed
+        500:
+          description: Internal Server Failure
+      parameters:
+        - name: email
+          in: query
+          description: users email address to login
+          type: string
+          required: true
+        - name: password
+          in: query
+          description: users password to login
+          type: string
+          required: true
+  /signup:
+    post:
+      description: Creates a new user account
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Login Successful
+        400:
+          description: Invalid Request
+        500:
+          description: Internal Server Failure
+      parameters:
+        - name: email
+          in: query
+          description: email address of user to access account
+          type: string
+          required: true
+        - name: password
+          in: query
+          description: password to access account
+          type: string
+          required: true
+        - name: admin
+          in: query
+          description: boolean flag to determine if a user should be an admin
+          type: boolean
+          required: false

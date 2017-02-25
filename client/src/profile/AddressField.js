@@ -63,7 +63,7 @@ class AddressField extends React.Component {
           onChange={this.onChange}
           renderItem={(item, isHighlighted) => (
             <div
-              className={isHighlighted ? 'highlightedAutocompleteItem' : 'autocompleteItem'}
+              className={isHighlighted ? 'autocomplete__item--highlighted' : 'autocomplete__item'}
             >{item.properties.label}</div>
           )}
         />

@@ -20,7 +20,7 @@ type customClaims struct {
 var signingKey = []byte("truss-pqvp-demo")
 
 // CreateJwt takes a User and returns a jwt token that has custom claims set.
-func CreateJwt(u User) string {
+func CreateJwt(u User) (string, error) {
 	claims := customClaims{
 		u.Email,
 		jwt.StandardClaims{
@@ -34,8 +34,9 @@ func CreateJwt(u User) string {
 		logger.Fatal("could not sign the token with our key",
 			zap.Error(err),
 		)
+		return "", err
 	}
-	return ss
+	return ss, nil
 }
 
 // Allowed takes a request and verifies if the user is allowed to access

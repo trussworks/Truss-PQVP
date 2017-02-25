@@ -80,20 +80,26 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&user)
 	// handle incorrect JSON
 	if err != nil {
-		http.Error(w, http.StatusText(400), 400)
+		http.Error(w, http.StatusText(400), http.StatusBadRequest)
 		return
 	}
 	valid, err := govalidator.ValidateStruct(user)
 	// make sure the input matches the User struct
 	if !valid {
-		http.Error(w, http.StatusText(400), 400)
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
 	success := LoginUser(user)
 	if !success {
-		http.Error(w, http.StatusText(404), 404)
+		w.WriteHeader(http.StatusNotFound)
+		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 	}
-	//TODO add session token in the response
+
+	token, err := CreateJwt(user)
+	if err != nil {
+		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
+	}
+	fmt.Fprintf(w, "%s", token)
 }
 
 /*
@@ -106,21 +112,26 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&user)
 	// handle incorrect JSON
 	if err != nil {
-		http.Error(w, http.StatusText(400), 400)
+		http.Error(w, http.StatusText(400), http.StatusBadRequest)
 		return
 	}
 	valid, err := govalidator.ValidateStruct(user)
 	// make sure the input matches the User struct
 	if !valid {
-		fmt.Println(err)
-		http.Error(w, http.StatusText(400), 400)
+		http.Error(w, http.StatusText(400), http.StatusBadRequest)
 		return
 	}
 	err = CreateUser(user)
 	if err != nil {
-		http.Error(w, http.StatusText(500), 500)
+		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
 		return
 	}
+	w.Header().Set("Content-Type", "application/json")
+	token, err := CreateJwt(user)
+	if err != nil {
+		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
+	}
+	fmt.Fprintf(w, "%s", token)
 }
 
 // IndexHandler serves up our index.html

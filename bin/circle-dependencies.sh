@@ -17,9 +17,8 @@ go get github.com/mattes/migrate
 pushd server
 glide install
 popd
-createdb pqvp
-migrate -url "postgres://postgres@localhost:5432/pqvp?sslmode=disable" -path server/sql up
-cp -R server/vendor/* ~/.go_workspace/src/
+
+# cp -R server/vendor/* ~/.go_workspace/src/
 
 # Install client deps
 pushd client
@@ -27,8 +26,8 @@ yarn install
 popd
 
 # swagger doc generation dependencies
-npm install -g bootprint
-npm install -g bootprint-openapi
+yarn install -g bootprint
+yarn install -g bootprint-openapi
 
 # Pull down Sauce Labs Connect
 # FIXME: disabled due to Sauce just not working. --mark

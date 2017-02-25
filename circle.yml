@@ -7,11 +7,11 @@ machine:
     AWS_DEFAULT_REGION: us-west-2
 dependencies:
   cache_directories:
-    - "client/node_modules"
+    - "~/.cache/yarn"
   override:
     # clear go cache so that migrate and glide get installed without
     # complaining.
-    - rm -rf ~/.go_workspace/*
+    # - rm -rf ~/.go_workspace/*
     - bin/circle-dependencies.sh
 compile:
   override:

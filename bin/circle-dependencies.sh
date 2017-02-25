@@ -26,8 +26,8 @@ yarn install
 popd
 
 # swagger doc generation dependencies
-yarn install -g bootprint
-yarn install -g bootprint-openapi
+yarn global add bootprint
+yarn global add bootprint-openapi
 
 # Pull down Sauce Labs Connect
 # FIXME: disabled due to Sauce just not working. --mark

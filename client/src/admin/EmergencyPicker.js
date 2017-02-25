@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Map, TileLayer } from 'react-leaflet';
 import FeatureLayer from './FeatureLayer';
 
@@ -10,14 +10,9 @@ class EmergencyPicker extends React.Component {
       lat: 37.7,
       lng: -122.4,
       zoom: 8,
-      selectedFeature: undefined,
     };
+  }
 
-    this.selectFeature = this.selectFeature.bind(this);
-  }
-  selectFeature(feature) {
-    this.setState({ selectedFeature: feature });
-  }
   render() {
     const position = [this.state.lat, this.state.lng];
 
@@ -31,13 +26,18 @@ class EmergencyPicker extends React.Component {
           />
           <FeatureLayer
             url="https://igems.doi.gov/arcgis/rest/services/igems_haz/MapServer/14"
-            selectFeature={this.selectFeature}
-            selectedFeatureId={this.state.selectedFeature && this.state.selectedFeature.id}
+            selectFeature={this.props.selectFeature}
+            selectedFeatureId={this.props.selectedFeature && this.props.selectedFeature.id}
           />
         </Map>
       </div>
     );
   }
 }
+
+EmergencyPicker.propTypes = {
+  selectFeature: PropTypes.func.isRequired,
+  selectedFeature: PropTypes.object,
+};
 
 export default EmergencyPicker;

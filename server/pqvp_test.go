@@ -51,8 +51,8 @@ func TestSignup(t *testing.T) {
 	res := httptest.NewRecorder()
 	req := generatePost(t, "/api/signup", userGood)
 	Signup(res, req)
-	// make sure we get a 200 response and the body matches the string
-	assert.Equal(t, 200, res.Code)
+	// make sure we get a 201 response and the body matches the string
+	assert.Equal(t, 201, res.Code)
 	//TODO check for session token
 
 	res = httptest.NewRecorder()

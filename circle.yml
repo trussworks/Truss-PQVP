@@ -9,9 +9,6 @@ dependencies:
   cache_directories:
     - "~/.cache/yarn"
   override:
-    # clear go cache so that migrate and glide get installed without
-    # complaining.
-    # - rm -rf ~/.go_workspace/*
     - bin/circle-dependencies.sh
 compile:
   override:

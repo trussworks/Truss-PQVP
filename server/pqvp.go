@@ -70,6 +70,12 @@ func hello(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "hello, %s!\n", name)
 }
 
+type resAuthUser struct {
+	Email       string `json:"email"`
+	AccessToken string `json:"access_token"`
+	ExpiresIn   int    `json:"expires_in"`
+}
+
 /*
 Login logs in a user, returns the session token.
 Test with this curl command:
@@ -99,7 +105,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
 	}
-	fmt.Fprintf(w, "%s", token)
+	ru, _ := json.Marshal(resAuthUser{user.Email, token, 15000})
+	fmt.Fprintf(w, "%s", ru)
 }
 
 /*
@@ -126,12 +133,15 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
 		return
 	}
-	w.Header().Set("Content-Type", "application/json")
+
 	token, err := CreateJwt(user)
 	if err != nil {
 		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
 	}
-	fmt.Fprintf(w, "%s", token)
+
+	w.WriteHeader(http.StatusCreated)
+	ru, _ := json.Marshal(resAuthUser{user.Email, token, 15000})
+	fmt.Fprintf(w, "%s", ru)
 }
 
 // IndexHandler serves up our index.html

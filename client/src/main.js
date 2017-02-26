@@ -5,7 +5,6 @@ import { AppContainer } from 'react-hot-loader';
 import { Root } from './Root';
 
 require('../styles/main.scss');
-require('leaflet-css');
 
 const rootElement = document.getElementById('app');
 

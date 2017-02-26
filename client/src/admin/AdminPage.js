@@ -2,6 +2,8 @@ import React from 'react';
 import EmergencyPicker from './EmergencyPicker';
 import AlertForm from './AlertForm';
 
+const initialValues = { isEmergency: false };
+
 class AdminPage extends React.Component {
   constructor(props) {
     super(props);
@@ -27,7 +29,11 @@ class AdminPage extends React.Component {
       <div className="container">
         <h1>Admin Page</h1>
         <EmergencyPicker selectFeature={this.selectFeature} selectedFeature={this.state.feature} />
-        <AlertForm featurePicked={!!this.state.feature} onSubmit={this.handleSubmit} />
+        <AlertForm
+          featurePicked={!!this.state.feature}
+          onSubmit={this.handleSubmit}
+          initialValues={initialValues}
+        />
       </div>
     );
   }

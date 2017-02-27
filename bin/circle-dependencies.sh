@@ -6,11 +6,11 @@ set -eux -o pipefail
 rm -rf ~/.go_workspace/src/github.com/mattes
 go get github.com/Masterminds/glide
 go get github.com/mattes/migrate
-pushd server
+pushd server/src/pqvp
 glide install
 popd
 # This feels like a huge hack? --mark
-cp -R server/vendor/* ~/.go_workspace/src/
+# cp -R server/vendor/* ~/.go_workspace/src/
 
 # Install client deps
 pushd client

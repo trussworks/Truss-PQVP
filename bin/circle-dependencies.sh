@@ -9,6 +9,8 @@ go get github.com/mattes/migrate
 pushd server
 glide install
 popd
+# This feels like a huge hack? --mark
+cp -R server/vendor/* ~/.go_workspace/src/
 
 # Install client deps
 pushd client

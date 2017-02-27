@@ -21,7 +21,7 @@ popd
 # swagger doc generation dependencies
 # --ignore-engines is needed because bootprint sets very aggressive
 # engine deps that npm doesn't honor, but yarn does!
-yarn global install --ignore-engines bootprint bootprint-openapi
+yarn global add --ignore-engines bootprint bootprint-openapi
 
 # Pull down and install terraform to run tests
 sudo wget https://releases.hashicorp.com/terraform/0.8.6/terraform_0.8.6_linux_amd64.zip -O /usr/local/bin/terraform.zip

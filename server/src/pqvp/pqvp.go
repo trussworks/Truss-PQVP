@@ -62,6 +62,11 @@ func main() {
 	admin.Use(authMiddleware)
 	admin.Handle(pat.Get("/admin/*"), IndexHandler(entry))
 
+	// Profile routes
+	root.Handle(pat.Get("/profile"), http.RedirectHandler("/profile/", 301))
+	root.Handle(pat.Get("/profile/*"), admin)
+	admin.Handle(pat.Get("/profile/*"), IndexHandler(entry))
+
 	// Start the server
 	http.ListenAndServe(*port, root)
 }

@@ -4,6 +4,9 @@ set -eux -o pipefail
 # Run validation checks against all of the terraform files
 terraform/scripts/run_tests.sh
 
+createdb pqvp
+migrate -url "postgres://postgres@localhost:5432/pqvp?sslmode=disable" -path server/sql up
+
 # Run backend server tests
 make server_test
 

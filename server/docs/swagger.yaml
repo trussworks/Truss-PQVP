@@ -45,7 +45,7 @@ paths:
       produces:
         - application/json
       responses:
-        200:
+        201:
           description: Login Successful
         400:
           description: Invalid Request

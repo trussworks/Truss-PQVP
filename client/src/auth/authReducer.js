@@ -1,10 +1,9 @@
 import { Map } from 'immutable';
-
-export const SAVE_USER = 'SAVE_USER';
+import * as types from '../constants/actionTypes';
 
 const authReducer = (state = new Map({ user: {} }), action) => {
   switch (action.type) {
-    case SAVE_USER: {
+    case types.SAVE_USER: {
       return state.set('user', action.userInfo);
     }
     default: {

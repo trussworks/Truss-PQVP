@@ -44,7 +44,7 @@
     "sass-loader": "^6.0.2",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
-    "uswds": "^0.14.0"
+    "uswds": "^1.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.17.0",

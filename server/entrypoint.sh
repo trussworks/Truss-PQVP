@@ -9,7 +9,7 @@ su postgres -c "createdb pqvp"
 su postgres -c "psql -c \"ALTER USER postgres PASSWORD '';\""
 /go/bin/migrate -url "postgres://postgres@localhost:5432/pqvp?sslmode=disable" -path /go/src/app/server/sql up
 
-/go/src/app/server/server \
+/go/src/app/server/src/pqvp/pqvp \
     -entry /go/src/app/client/dist/index.html \
     -static /go/src/app/client/dist/ \
     -docs /go/src/app/client/dist/docs/

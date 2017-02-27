@@ -1,4 +1,5 @@
 NAME = pqvp-demo
+GOPATH := $(CURDIR)/server:$(GOPATH)
 
 client_build:
 	cd client && \
@@ -6,17 +7,17 @@ client_build:
 docs:
 	bootprint openapi server/docs/swagger.yaml client/dist/docs
 server_deps:
-	cd server && \
+	cd server/src/pqvp && \
 	glide install
 server_build: server_deps
-	cd server && \
+	cd server/src/pqvp && \
 	go build
 server_test: server_build
-	cd server && \
+	cd server/src/pqvp && \
 	go vet && \
 	go test -cover
 server_run: server_build server_test
-	./server/server \
+	./server/src/pqvp \
 		-entry client/dist/index.html \
 		-static client/dist/ \
 		-docs client/dist/docs/ \

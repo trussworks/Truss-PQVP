@@ -53,6 +53,8 @@ func main() {
 	// API routes
 	root.HandleFunc(pat.Post("/api/login"), Login)
 	root.HandleFunc(pat.Post("/api/signup"), Signup)
+	root.HandleFunc(pat.Get("/api/profile"), GetProfile)
+	root.HandleFunc(pat.Post("/api/profile"), UpdateProfile)
 
 	// Documentation routes
 	root.Handle(pat.Get("/docs"), http.RedirectHandler("/docs/", 301))
@@ -152,6 +154,60 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 	ru, _ := json.Marshal(resAuthUser{user.Email, token, 15000})
 	fmt.Fprintf(w, "%s", ru)
+}
+
+type ProfileAddress struct {
+	Address   string `json:"address"`
+	Latitude  float64
+	Longitude float64
+}
+
+type Profile struct {
+	Phone     string           `json:"phone"`
+	Addresses []ProfileAddress `json:"addresses"`
+}
+
+func dummyProfile() Profile {
+	addresses := make([]ProfileAddress, 0)
+	profile := Profile{"1234567890", addresses}
+	addy := ProfileAddress{"9 Germania St., San Francisco, CA 94117",
+		37.770970,
+		-122.428730}
+	profile.Addresses = append(profile.Addresses, addy)
+	return profile
+}
+
+/*
+GetProfile gets a users profile.
+curl -H "Content-Type: application/json" http://localhost:80/api/profile
+*/
+func GetProfile(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	// Read profile from DB here.
+	profile := dummyProfile()
+	rp, _ := json.Marshal(profile)
+	fmt.Fprintf(w, "%s", rp)
+}
+
+/*
+UpdateProfile updates a users profile.
+curl -H "Content-Type: application/json" -d '{"phone":"4434567890","addresses":[{"address":"9 Germania St., San Francisco, CA 94117","Latitude":37.77097,"Longitude":-122.42873}]}' http://localhost:80/api/profile
+*/
+func UpdateProfile(w http.ResponseWriter, r *http.Request) {
+	var profile Profile
+	err := json.NewDecoder(r.Body).Decode(&profile)
+	if err != nil {
+		http.Error(w, http.StatusText(400), http.StatusBadRequest)
+		return
+	}
+	valid, err := govalidator.ValidateStruct(profile)
+	if !valid {
+		http.Error(w, http.StatusText(400), http.StatusBadRequest)
+		return
+	}
+	// Write profile into DB here.
+	rp, _ := json.Marshal(profile)
+	fmt.Fprintf(w, "%s", rp)
 }
 
 // IndexHandler serves up our index.html

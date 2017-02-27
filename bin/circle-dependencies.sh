@@ -2,7 +2,6 @@
 
 set -eux -o pipefail
 
-
 # Get go environment setup
 rm -rf ~/.go_workspace/src/github.com/mattes
 go get github.com/Masterminds/glide
@@ -10,8 +9,6 @@ go get github.com/mattes/migrate
 pushd server
 glide install
 popd
-
-# cp -R server/vendor/* ~/.go_workspace/src/
 
 # Install client deps
 pushd client

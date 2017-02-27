@@ -20,7 +20,10 @@ module.exports = {
   output: {
     filename: 'index_bundle.js',
     path: path.join(__dirname, 'dist'),
-    publicPath: '/'
+    // The bundled output will be loaded by the Dojo AMD loader
+    // that is included in the ArcGIS API (aka, esri). --mark
+    libraryTarget: 'amd',
+    publicPath: '/',
   },
   plugins: [
     HTMLWebpackPluginConfig,
@@ -44,6 +47,21 @@ module.exports = {
       },
       sourceMap: true
     })
+  ],
+  externals: [
+    function(context, request, callback) {
+      // Exclude any esri or dojo modules from the bundle as they are
+      // included in the ArcGIS API and its Dojo loader will pull them from
+      // its own build output.
+      if (/^dojo/.test(request) ||
+          /^dojox/.test(request) ||
+          /^dijit/.test(request) ||
+          /^esri/.test(request)
+         ) {
+        return callback(null, 'amd ' + request);
+      }
+      callback();
+    }
   ],
   module: {
     rules: [

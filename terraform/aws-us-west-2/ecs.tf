@@ -8,7 +8,7 @@ module "pqvp-demo" {
   ecs_role_policy          = "${file("iam-policies/ecs-role.json")}"
   ecs_instance_role_policy = "${file("iam-policies/ecs-instance-role-policy.json")}"
   ecs_service_role_policy  = "${file("iam-policies/ecs-service-role-policy.json")}"
-  ecs_desired_count        = 2
+  ecs_desired_count        = 1
   vpc_id                   = "${module.vpc.id}"
   subnet_ids               = "${module.vpc.external_subnets}"
   zone_name                = "${module.route53.zone_name}"

@@ -41,7 +41,9 @@ func main() {
 	flag.Parse()
 
 	root := goji.NewMux()
+
 	admin := goji.SubMux()
+	admin.Use(authMiddleware)
 
 	// Base routes
 	root.HandleFunc(pat.Get("/"), IndexHandler(entry))
@@ -57,8 +59,16 @@ func main() {
 	root.Handle(pat.Get("/docs/*"), http.StripPrefix("/docs/", http.FileServer(http.Dir(*docs))))
 
 	// Admin routes
+	root.Handle(pat.Get("/admin"), admin)
 	root.Handle(pat.Get("/admin/*"), admin)
-	admin.Use(authMiddleware)
+	admin.Handle(pat.Get("/admin"), IndexHandler(entry))
+	admin.Handle(pat.Get("/admin/*"), IndexHandler(entry))
+
+	// Profile routes
+	root.Handle(pat.Get("/profile"), admin)
+	root.Handle(pat.Get("/profile/*"), admin)
+	admin.Handle(pat.Get("/profile"), IndexHandler(entry))
+	admin.Handle(pat.Get("/profile/*"), IndexHandler(entry))
 
 	// Start the server
 	http.ListenAndServe(*port, root)

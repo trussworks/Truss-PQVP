@@ -11,7 +11,7 @@ func authMiddleware(i http.Handler) http.Handler {
 		claims, err := Allowed(r)
 		if err != nil {
 			w.WriteHeader(http.StatusForbidden)
-			fmt.Fprintf(w, "user is no allowed")
+			fmt.Fprintf(w, "user is not allowed")
 			return
 		}
 

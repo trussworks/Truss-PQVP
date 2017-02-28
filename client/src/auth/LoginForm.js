@@ -6,7 +6,7 @@ import { AuthField } from '../auth/AuthField';
 const LoginForm = ({ handleSubmit, submitting, switchForm, valid }) => (
   <form className="usa-form" onSubmit={handleSubmit}>
     <fieldset>
-      <legend className="usa-drop_text">Sign in</legend>
+      <legend className="usa-drop_text">Log in</legend>
       <span>
         or <a href="" onClick={switchForm}>create an account</a>
       </span>
@@ -28,7 +28,7 @@ const LoginForm = ({ handleSubmit, submitting, switchForm, valid }) => (
           type="password"
         />
       </div>
-      <input type="submit" disabled={submitting || !valid} value="Sign in" />
+      <input type="submit" disabled={submitting || !valid} value="Log in" />
     </fieldset>
   </form>
   );

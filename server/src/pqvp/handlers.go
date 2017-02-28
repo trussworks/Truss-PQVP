@@ -50,7 +50,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
-	success := LoginUser(user)
+	success := db.LoginUser(user)
 	if !success {
 		logger.Error("could not log in user",
 			zap.String("path", r.URL.Path),
@@ -103,7 +103,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(400), http.StatusBadRequest)
 		return
 	}
-	err = CreateUser(user)
+	err = db.CreateUser(user)
 	if err != nil {
 		logger.Error("could not create user",
 			zap.String("path", r.URL.Path),

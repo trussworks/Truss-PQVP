@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	db     *Postgres
+	db     Datastore
 	logger *zap.Logger
 )
 

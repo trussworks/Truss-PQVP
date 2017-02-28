@@ -4,11 +4,12 @@ import (
 	"bytes"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 
-	"go.uber.org/zap"
-
 	"github.com/stretchr/testify/assert"
+
+	"go.uber.org/zap"
 )
 
 var (
@@ -28,34 +29,45 @@ func generatePost(t *testing.T, endpoint string, json []byte) *http.Request {
 	return req
 }
 
-func init() {
+func TestMain(m *testing.M) {
 	var err error
+	logger, err = zap.NewProduction()
 	db, err = NewDB()
 	if err != nil {
 		logger.Fatal("could not open db connection",
 			zap.Error(err),
 		)
 	}
-	defer db.Close()
+	// Setup a test user
+	db.CreateUser(User{Email: "joe@gmail.com", Password: "peanutbutter"})
+
+	// start and shutdown our tests
+	ret := m.Run()
+	db.Close()
+	os.Exit(ret)
 }
 
 // Verifies a user can signup
-func TestSignup(t *testing.T) {
+func TestGoodSignup(t *testing.T) {
 	res := httptest.NewRecorder()
 	req := generatePost(t, "/api/signup", userGood)
 	Signup(res, req)
 	// make sure we get a 201 response and the body matches the string
 	assert.Equal(t, 201, res.Code)
 	//TODO check for session token
+}
 
-	res = httptest.NewRecorder()
-	req = generatePost(t, "/api/signup", userBad)
+func TestBadSignup(t *testing.T) {
+	res := httptest.NewRecorder()
+	req := generatePost(t, "/api/signup", userBad)
 	Signup(res, req)
 	/// make sure we bail on bad input
 	assert.Equal(t, 400, res.Code)
+}
 
-	res = httptest.NewRecorder()
-	req = generatePost(t, "/api/signup", invalidJSON)
+func TestBadSignupJson(t *testing.T) {
+	res := httptest.NewRecorder()
+	req := generatePost(t, "/api/signup", invalidJSON)
 	Signup(res, req)
 	/// make sure we bail on bad json
 	assert.Equal(t, 400, res.Code)
@@ -63,28 +75,31 @@ func TestSignup(t *testing.T) {
 
 // Verifies login endpoint is working
 func TestLogin(t *testing.T) {
-	CreateUser(User{Email: "joe@gmail.com", Password: "peanutbutter"})
+	db.CreateUser(User{Email: "joe@gmail.com", Password: "peanutbutter"})
 
 	res := httptest.NewRecorder()
 	req := generatePost(t, "/api/login", userGood)
 	Login(res, req)
 	// make sure we get a 200 response and the body matches the string
 	assert.Equal(t, 200, res.Code)
+}
 
-	res = httptest.NewRecorder()
-	req = generatePost(t, "/api/login", userBad)
+func TestBadLogin(t *testing.T) {
+	res := httptest.NewRecorder()
+	req := generatePost(t, "/api/login", userBad)
 	Login(res, req)
 	// make sure we get a 200 response and the body matches the string
 	assert.Equal(t, 400, res.Code)
+}
 
+func TestBadLoginPass(t *testing.T) {
 	var badPass = []byte(`{"email":"asd@gomasd.com", "password":"asdsss"}`)
-	res = httptest.NewRecorder()
-	req = generatePost(t, "/api/login", badPass)
+	res := httptest.NewRecorder()
+	req := generatePost(t, "/api/login", badPass)
 	Login(res, req)
 
 	// 404 if login is not found
 	assert.Equal(t, res.Code, 404)
-
 }
 
 func TestUpdateProfile(t *testing.T) {
@@ -92,9 +107,11 @@ func TestUpdateProfile(t *testing.T) {
 	req := generatePost(t, "/api/profile", profileGood)
 	UpdateProfile(res, req)
 	assert.Equal(t, 200, res.Code)
+}
 
-	res = httptest.NewRecorder()
-	req = generatePost(t, "/api/profile", profileBad)
+func TestBadUpdateProfile(t *testing.T) {
+	res := httptest.NewRecorder()
+	req := generatePost(t, "/api/profile", profileBad)
 	UpdateProfile(res, req)
 	assert.Equal(t, 400, res.Code)
 }

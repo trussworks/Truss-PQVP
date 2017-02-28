@@ -167,16 +167,6 @@ type Profile struct {
 	Addresses []ProfileAddress `json:"addresses" valid:"required"`
 }
 
-func dummyProfile() Profile {
-	addresses := make([]ProfileAddress, 0)
-	profile := Profile{"1234567890", addresses}
-	addy := ProfileAddress{"9 Germania St., San Francisco, CA 94117",
-		37.770970,
-		-122.428730}
-	profile.Addresses = append(profile.Addresses, addy)
-	return profile
-}
-
 /*
 GetProfile gets a users profile.
 curl -H "Content-Type: application/json" http://localhost:80/api/profile
@@ -184,7 +174,12 @@ curl -H "Content-Type: application/json" http://localhost:80/api/profile
 func GetProfile(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	// Read profile from DB here.
-	profile := dummyProfile()
+	profile, err := LoadProfile("ferlatte@gmail.com")
+	if err != nil {
+		http.Error(w, http.StatusText(400), http.StatusBadRequest)
+		// FIXME: zip.log err here
+		return
+	}
 	rp, _ := json.Marshal(profile)
 	fmt.Fprintf(w, "%s", rp)
 }

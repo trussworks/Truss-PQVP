@@ -1,9 +1,9 @@
 import React from 'react';
-import Header from '../Header';
+import Header from '../HeaderContainer';
 import { shallow } from 'enzyme';
 
-test('Header renders', () => {
+test('HeaderContainer renders', () => {
   it('should render without throwing an error'), () => {
-    expect(shallow(<Header />).contains(<h1>The Emergency Alert App Header</h1>)).toBe(true);
+    expect(shallow(<HeaderContainer />).contains(<h1>The Emergency Alert App HeaderContainer</h1>)).toBe(true);
   }
 });

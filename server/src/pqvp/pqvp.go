@@ -231,8 +231,20 @@ func GetProfile(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	// Read profile from DB here.
 	profile := dummyProfile()
-	rp, _ := json.Marshal(profile)
+	rp, err := json.Marshal(profile)
+	if err != nil {
+		logger.Error("could not marshal json",
+			zap.String("path", r.URL.Path),
+			zap.Error(err),
+		)
+		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
+		return
+	}
 	fmt.Fprintf(w, "%s", rp)
+	logger.Info("user profile returned",
+		zap.String("path", r.URL.Path),
+		zap.Error(err),
+	)
 }
 
 /*
@@ -243,18 +255,36 @@ func UpdateProfile(w http.ResponseWriter, r *http.Request) {
 	var profile Profile
 	err := json.NewDecoder(r.Body).Decode(&profile)
 	if err != nil {
+		logger.Error("could not decode json",
+			zap.String("path", r.URL.Path),
+			zap.Error(err),
+		)
 		http.Error(w, http.StatusText(400), http.StatusBadRequest)
 		return
 	}
 	valid, err := govalidator.ValidateStruct(profile)
 	if !valid {
+		logger.Error("could not validate struct",
+			zap.String("path", r.URL.Path),
+			zap.Error(err),
+		)
 		http.Error(w, http.StatusText(400), http.StatusBadRequest)
 		return
 	}
 	// Write profile into DB here.
 	w.WriteHeader(http.StatusOK)
-	rp, _ := json.Marshal(profile)
+	rp, err := json.Marshal(profile)
+	if err != nil {
+		logger.Error("could not marshal json",
+			zap.String("path", r.URL.Path),
+			zap.Error(err),
+		)
+	}
 	fmt.Fprintf(w, "%s", rp)
+	logger.Info("profile updated succesfully",
+		zap.String("path", r.URL.Path),
+		zap.Error(err),
+	)
 }
 
 // IndexHandler serves up our index.html

@@ -7,15 +7,15 @@ const profileValidation = (values) => {
     errors.email = 'Invalid email address';
   }
 
-  if (!values.phoneNumber) {
-    errors.phoneNumber = 'Required';
+  if (!values.phone) {
+    errors.phone = 'Required';
   } else {
-    const strippedNum = values.phoneNumber.replace(/[^0-9]/g, '');
+    const strippedNum = values.phone.replace(/[^0-9]/g, '');
     console.log('stripped: ');
     console.log(strippedNum);
     if (strippedNum.length < 10 || strippedNum.length > 11 ||
         (strippedNum.length === 11 && strippedNum.charAt(0) !== '1')) {
-      errors.phoneNumber = 'Invalid Phone Number. We expect a phone number to contain 10 digits.';
+      errors.phone = 'Invalid Phone Number. We expect a phone number to contain 10 digits.';
     }
   }
 

@@ -17,6 +17,7 @@ class ProfileContainer extends React.Component {
     this.componentWillMount = this.componentWillMount.bind(this);
     this.submitUpdate = this.submitUpdate.bind(this);
     this.togglePasswordForm = this.togglePasswordForm.bind(this);
+    this.saveNewAddress = this.saveNewAddress.bind(this);
   }
   componentWillMount() {
     console.log('fetching profile');
@@ -39,8 +40,13 @@ class ProfileContainer extends React.Component {
     console.log('ADD ADDRESS:');
     console.log(this.state);
     console.log(address); // I believe this is GeoJSON so probably what we want to store.
-    const newProfile = this.props.profile.copy();
-    newProfile.addresses.append(address);
+    const newAddress = {
+      address: address.properties.name,
+      latitude: address.geometry.coordinates[1],
+      longitude: address.geometry.coordinates[0],
+    };
+    const newProfile = this.props.profile;
+    newProfile.addresses.push(newAddress);
     this.props.dispatch(updateProfile(newProfile));
   }
   render() {
@@ -61,9 +67,9 @@ class ProfileContainer extends React.Component {
                 initialValues={this.props.profile}
               />
               { this.props.profile.addresses.map(address => (
-                <div key={address.properties.name}>
+                <div key={address.address}>
                   <div>Address:</div>
-                  <div>{address.properties.name}</div>
+                  <div>{address.address}</div>
                   <button>removeme</button>
                 </div>
               ))}

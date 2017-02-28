@@ -10,7 +10,7 @@ const ProfileForm = ({ handleSubmit, submitting, valid }) => {
       <fieldset>
         <Field
           component={AuthField}
-          name="phoneNumber"
+          name="phone"
           placeholder="Phone number"
           type="tel"
         />

@@ -47,33 +47,10 @@ export function getProfile() {
       // insert code to display error to user.
     } else {
       console.log('got back a good profile');
-      response.text().then((profile) => {
+      response.json().then((profile) => {
         console.log('heres a profile');
         console.log(profile);
-        const fakeprofile = {
-          phoneNumber: '6154180745',
-          alertEmail: true,
-          alertPhone: true,
-          onlyEmergencies: true,
-          addresses: [
-          // addresses should just be GEOJSON
-            {
-              type: 'Feature',
-              geometry: {
-                type: 'Point',
-                coordinates: [-122.423909, 37.746034],
-              },
-              properties: {
-                label: '175 Duncan St, San Francisco, CA, USA',
-                name: '175 Duncan St',
-              },
-            },
-          ],
-        };
-
-        console.log('setting profile: ');
-        console.log(fakeprofile);
-        dispatch(saveProfile(fakeprofile));
+        dispatch(saveProfile(profile));
       });
     }
   }).catch((error) => {

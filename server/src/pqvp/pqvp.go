@@ -51,7 +51,6 @@ func main() {
 	// Base routes
 	root.HandleFunc(pat.Get("/"), IndexHandler(entry))
 	root.Handle(pat.Get("/:file.:ext"), http.FileServer(http.Dir(*static)))
-	root.HandleFunc(pat.Get("/hello/:name"), hello)
 
 	// API routes
 	root.HandleFunc(pat.Post("/api/login"), Login)
@@ -70,19 +69,11 @@ func main() {
 	admin.HandleFunc(pat.Get("/"), whoami)
 
 	// Profile routes
-	root.Handle(pat.Get("/profile"), admin)
-	root.Handle(pat.Get("/profile/*"), admin)
-	admin.Handle(pat.Get("/profile"), IndexHandler(entry))
-	admin.Handle(pat.Get("/profile/*"), IndexHandler(entry))
+	root.Handle(pat.New("/profile/*"), admin)
+	admin.Handle(pat.Get("/"), IndexHandler(entry))
 
 	// Start the server
 	http.ListenAndServe(*port, root)
-}
-
-// Hello takes a request along with params and responds with hello :name
-func hello(w http.ResponseWriter, r *http.Request) {
-	name := pat.Param(r, "name")
-	fmt.Fprintf(w, "hello, %s!\n", name)
 }
 
 type resAuthUser struct {

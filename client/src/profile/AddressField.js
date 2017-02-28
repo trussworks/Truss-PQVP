@@ -14,7 +14,6 @@ class AddressField extends React.Component {
 
     return `${baseURL}?${query}`;
   }
-
   static suggestionsRequest(value) {
     const params = {
       api_key: MAPZEN_API_KEY,
@@ -26,12 +25,10 @@ class AddressField extends React.Component {
 
     return fetch(reqURL).then(rsp => rsp.json());
   }
-
   constructor(props) {
     super(props);
 
     this.state = {
-      value: '',
       suggestions: [],
       loading: false,
     };
@@ -40,13 +37,18 @@ class AddressField extends React.Component {
   }
 
   onChange(event, value) {
-    this.setState({ value, loading: true });
+    console.log('we changing');
+    console.log(value);
+    this.props.updateAddressState(value);
+    this.setState({ loading: true });
     AddressField.suggestionsRequest(value).then((result) => {
-      this.setState({ suggestions: result.features });
+      console.log('got back suggestions');
+      this.setState({ suggestions: result.features, loading: false });
     });
   }
   onSelect(value, item) {
-    this.setState({ value });
+    this.setState({ suggestions: [] });
+    this.props.updateAddressState({ value });
     this.props.saveAddress(item);
   }
 
@@ -56,7 +58,7 @@ class AddressField extends React.Component {
       <div>
         <label htmlFor="input-type-text">Add Address:</label>
         <AutoComplete
-          value={this.state.value}
+          value={this.props.fieldState}
           items={this.state.suggestions}
           getItemValue={item => item.properties.label}
           onSelect={this.onSelect}
@@ -74,6 +76,8 @@ class AddressField extends React.Component {
 
 AddressField.propTypes = {
   saveAddress: PropTypes.func.isRequired,
+  fieldState: PropTypes.string.isRequired,
+  updateAddressState: PropTypes.func.isRequired,
 };
 
 export default AddressField;

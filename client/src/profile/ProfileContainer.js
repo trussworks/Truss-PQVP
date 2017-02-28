@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 // import { bindActionCreators } from 'redux';
 import UserForm from './UserForm';
 import ProfileForm from './ProfileForm';
-import AddressField from './AddressField';
+import Addresses from './Addresses';
 import { getProfile, updateProfile } from './profileActions';
 
 class ProfileContainer extends React.Component {
@@ -12,42 +12,50 @@ class ProfileContainer extends React.Component {
 
     this.state = {
       updatingPassword: false,
+      newAddressState: '',
     };
 
     this.componentWillMount = this.componentWillMount.bind(this);
     this.submitUpdate = this.submitUpdate.bind(this);
     this.togglePasswordForm = this.togglePasswordForm.bind(this);
     this.saveNewAddress = this.saveNewAddress.bind(this);
+    this.updateAddressState = this.updateAddressState.bind(this);
+    this.removeAddress = this.removeAddress.bind(this);
   }
   componentWillMount() {
-    console.log('fetching profile');
     this.props.dispatch(getProfile());
   }
   submitUpdate(values) {
-    console.log('updating Profile');
-    console.log(this.props);
-    console.log(values);
-    const newProfile = {};
-    Object.assign(newProfile, this.props.profile, values);
-    console.log(newProfile);
+    const newProfile = Object.assign({}, this.props.profile, values);
     this.props.dispatch(updateProfile(newProfile));
   }
   togglePasswordForm(e) {
     e.preventDefault();
     this.setState({ updatingPassword: !this.state.updatingPassword });
   }
+  updateAddressState(newState) {
+    this.setState({ newAddressState: newState });
+  }
+  removeAddress(address) {
+    const newProfile = Object.assign({}, this.props.profile);
+    const loc = newProfile.addresses.indexOf(address);
+    if (loc === -1) {
+      console.log('Attempting to remove an address that is not in the list');
+      return;
+    }
+    newProfile.addresses.splice(loc, 1);
+    this.props.dispatch(updateProfile(newProfile));
+  }
   saveNewAddress(address) {
-    console.log('ADD ADDRESS:');
-    console.log(this.state);
-    console.log(address); // I believe this is GeoJSON so probably what we want to store.
     const newAddress = {
       address: address.properties.name,
       latitude: address.geometry.coordinates[1],
       longitude: address.geometry.coordinates[0],
     };
-    const newProfile = this.props.profile;
+    const newProfile = Object.assign({}, this.props.profile);
     newProfile.addresses.push(newAddress);
     this.props.dispatch(updateProfile(newProfile));
+    this.setState({ newAddressState: '' });
   }
   render() {
     return (
@@ -57,7 +65,7 @@ class ProfileContainer extends React.Component {
           togglePasswordForm={this.togglePasswordForm}
           updatingPassword={this.state.updatingPassword}
         />
-        { !this.props.profile ? (
+        { !(this.props.profile && this.props.profile.addresses) ? (
           <div>loading profile...</div>
           ) : (
             <div>
@@ -66,14 +74,13 @@ class ProfileContainer extends React.Component {
                 onSubmit={this.submitUpdate}
                 initialValues={this.props.profile}
               />
-              { this.props.profile.addresses.map(address => (
-                <div key={address.address}>
-                  <div>Address:</div>
-                  <div>{address.address}</div>
-                  <button>removeme</button>
-                </div>
-              ))}
-              <AddressField saveAddress={this.saveNewAddress} />
+              <Addresses
+                addresses={this.props.profile.addresses}
+                saveNewAddress={this.saveNewAddress}
+                updateAddressState={this.updateAddressState}
+                addressFieldState={this.state.newAddressState}
+                removeAddress={this.removeAddress}
+              />
             </div>
           )}
       </div>

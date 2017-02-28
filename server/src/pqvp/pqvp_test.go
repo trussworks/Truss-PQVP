@@ -6,6 +6,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"go.uber.org/zap"
+
 	"github.com/stretchr/testify/assert"
 )
 
@@ -24,6 +26,17 @@ func generatePost(t *testing.T, endpoint string, json []byte) *http.Request {
 		t.Fatal(err)
 	}
 	return req
+}
+
+func init() {
+	var err error
+	db, err = NewDB()
+	if err != nil {
+		logger.Fatal("could not open db connection",
+			zap.Error(err),
+		)
+	}
+	defer db.Close()
 }
 
 // Verifies a user can signup

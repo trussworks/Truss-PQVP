@@ -59,29 +59,34 @@ func CreateUser(u User) error {
 	return err
 }
 
-// GetDB sets up our database connection
-func GetDB() *sql.DB {
-	once.Do(func() {
-		// Get connection parameters
-		dns := fmt.Sprintf("user=pqvp password=pqvp dbname=pqvp sslmode=disable")
-		// Open postgres driver
-		var err error
-		db, err = sql.Open("postgres", dns)
-		if err != nil {
-			logger.Fatal("could not open database",
-				zap.Error(err),
-			)
-		}
+// Postgres wraps our DB initialization
+type Postgres struct{ *sql.DB }
 
-		/* Open does not actually try to connect to the database so we Ping() here as a way of checking the configuration
-		   during the call to OpenDB.
-		*/
-		if err = db.Ping(); err != nil {
-			db.Close()
-			logger.Fatal("could not ping database",
-				zap.Error(err),
-			)
-		}
-	})
-	return db
+// Close implements io.Closer
+func (p *Postgres) Close() error {
+	return p.Close()
+
+}
+
+// NewDB creates a new Postgres db connection
+func NewDB() (*Postgres, error) {
+	// Get connection parameters
+	dns := fmt.Sprintf("user=pqvp password=pqvp dbname=pqvp sslmode=disable")
+	// Open postgres driver
+	database, err := sql.Open("postgres", dns)
+	if err != nil {
+		logger.Fatal("could not open database",
+			zap.Error(err),
+		)
+		return nil, err
+	}
+
+	// Ping to check if the connection is ok
+	if err = database.Ping(); err != nil {
+		logger.Fatal("could not ping database",
+			zap.Error(err),
+		)
+		return nil, err
+	}
+	return &Postgres{database}, nil
 }

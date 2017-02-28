@@ -120,6 +120,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 			zap.Error(err),
 		)
 		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
+		return
 	}
 
 	w.WriteHeader(http.StatusCreated)

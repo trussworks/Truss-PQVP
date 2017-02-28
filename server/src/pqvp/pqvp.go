@@ -1,10 +1,8 @@
 package main
 
 import (
-	"database/sql"
 	"flag"
 	"net/http"
-	"sync"
 
 	"go.uber.org/zap"
 	"goji.io"
@@ -12,9 +10,7 @@ import (
 )
 
 var (
-	once   sync.Once
-	db     *sql.DB
-	mutex  = &sync.Mutex{}
+	db     *Postgres
 	logger *zap.Logger
 )
 
@@ -25,17 +21,22 @@ type key int
 var userKey key = 1
 
 func main() {
-
 	entry := flag.String("entry", "../client/dist/index.html", "the entrypoint to serve.")
 	static := flag.String("static", "../client/dist", "the directory to serve static files from.")
 	docs := flag.String("docs", "../client/dist/docs", "the directory to serve swagger documentation from.")
 	port := flag.String("port", ":80", "the `port` to listen on.")
 	flag.Parse()
 
-	db = GetDB()
-	defer db.Close()
-
 	logger, _ = zap.NewProduction()
+
+	var err error
+	db, err = NewDB()
+	if err != nil {
+		logger.Fatal("could not open db connection",
+			zap.Error(err),
+		)
+	}
+	defer db.Close()
 
 	root := goji.NewMux()
 

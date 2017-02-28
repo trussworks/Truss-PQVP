@@ -1,11 +1,6 @@
 import { Map } from 'immutable';
 import * as types from '../constants/actionTypes';
 
-/* Alert Types
-*  Alert type should be one of the following USWDS classes:
-*  'usa-alert-success', 'usa-alert-warning', usa-alert-error, 'usa-alert-info'
-*/
-
 const app = (state = new Map({
   alertHeader: '',
   alertMessage: '',

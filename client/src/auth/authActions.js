@@ -1,6 +1,7 @@
 import { push } from 'react-router-redux';
 import actionHelpers from '../utils/actionHelpers';
 import * as types from '../constants/actionTypes';
+import { displayAlert } from '../app/appActions';
 
 export function logOutUser() {
   return { type: types.USER_LOGOUT };
@@ -22,12 +23,19 @@ export function authenticateUser(email, password) {
   };
 
   return dispatch => fetch('api/login', config)
+  .then(actionHelpers.checkStatus)
   .then(actionHelpers.parseJSON)
   .then((response) => {
     dispatch(saveUser(response));
     dispatch(push('/profile'));
   })
-  .catch(error => error);
+  .catch(() => {
+    dispatch(displayAlert(
+      'usa-alert-error',
+      'Error',
+      'Unable to log in, please try again'
+    ));
+  });
 }
 
 export function signUpUser(email, password) {
@@ -41,10 +49,17 @@ export function signUpUser(email, password) {
   };
 
   return dispatch => fetch('api/signup', config)
+  .then(actionHelpers.checkStatus)
   .then(actionHelpers.parseJSON)
   .then((response) => {
     dispatch(saveUser(response));
     dispatch(push('/profile'));
   })
-  .catch(error => error);
+  .catch(() => {
+    dispatch(displayAlert(
+      'usa-alert-error',
+      'Error',
+      'Unable to create account, please try again later'
+    ));
+  });
 }

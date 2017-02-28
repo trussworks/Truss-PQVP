@@ -3,7 +3,8 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"log"
+
+	"go.uber.org/zap"
 
 	_ "github.com/lib/pq"
 	"golang.org/x/crypto/bcrypt"
@@ -16,13 +17,18 @@ func LoginUser(u User) bool {
 	var pass string
 	err := row.Scan(&pass)
 	if err != nil {
-		log.Println(err)
+		logger.Error("could not select user",
+			zap.Error(err),
+		)
 		return false
 
 	}
 	err = bcrypt.CompareHashAndPassword([]byte(pass), []byte(u.Password))
 	if err != nil {
-		log.Printf("login failed %s: %s", u.Email, err)
+		logger.Error("could not login user",
+			zap.String("user", u.Email),
+			zap.Error(err),
+		)
 		return false
 	}
 	return true
@@ -34,16 +40,24 @@ func CreateUser(u User) error {
 	hash, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
 	stmt, err := db.Prepare("INSERT INTO users(email, password_hash) VALUES($1, $2) RETURNING id")
 	if err != nil {
-		log.Println(err)
+		logger.Error("could not insert user",
+			zap.Error(err),
+		)
 		return err
 	}
+
 	var id int64
 	err = stmt.QueryRow(u.Email, hash).Scan(&id)
 	if err != nil {
-		log.Println(err)
+		logger.Error("could not insert user",
+			zap.Error(err),
+		)
 		return err
 	}
-	log.Printf("created user %s with id %d", u.Email, id)
+	logger.Info("user created successfully",
+		zap.String("email", u.Email),
+		zap.Int64("id", id),
+	)
 	return err
 }
 
@@ -56,7 +70,9 @@ func GetDB() *sql.DB {
 		var err error
 		database, err = sql.Open("postgres", dns)
 		if err != nil {
-			log.Fatal("Opening database", err)
+			logger.Fatal("could not open database",
+				zap.Error(err),
+			)
 		}
 
 		/* Open does not actually try to connect to the database so we Ping() here as a way of checking the configuration
@@ -64,7 +80,9 @@ func GetDB() *sql.DB {
 		*/
 		if err = database.Ping(); err != nil {
 			database.Close()
-			log.Fatal("Pinging database", err)
+			logger.Fatal("could not ping database",
+				zap.Error(err),
+			)
 		}
 	})
 	return database

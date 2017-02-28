@@ -15,10 +15,10 @@ import (
 )
 
 var (
-	once     sync.Once
-	database *sql.DB
-	mutex    = &sync.Mutex{}
-	logger   *zap.Logger
+	once   sync.Once
+	db     *sql.DB
+	mutex  = &sync.Mutex{}
+	logger *zap.Logger
 )
 
 // User contains an email and a password
@@ -40,6 +40,9 @@ func main() {
 	docs := flag.String("docs", "../client/dist/docs", "the directory to serve swagger documentation from.")
 	port := flag.String("port", ":80", "the `port` to listen on.")
 	flag.Parse()
+
+	db = GetDB()
+	defer db.Close()
 
 	logger, _ = zap.NewProduction()
 

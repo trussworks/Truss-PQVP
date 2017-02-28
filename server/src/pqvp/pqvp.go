@@ -55,6 +55,7 @@ func main() {
 	root.HandleFunc(pat.Post("/api/signup"), Signup)
 	root.HandleFunc(pat.Get("/api/profile"), GetProfile)
 	root.HandleFunc(pat.Post("/api/profile"), UpdateProfile)
+	root.HandleFunc(pat.Post("/api/alert"), SendAlert)
 
 	// Documentation routes
 	root.Handle(pat.Get("/docs"), http.RedirectHandler("/docs/", 301))

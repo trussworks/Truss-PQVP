@@ -15,5 +15,5 @@ npm-debug.log
 
 # Server side exclude
 # server/.glide/
-server/src/pqvp
+server/src/pqvp/pqvp
 server/src/pqvp/vendor

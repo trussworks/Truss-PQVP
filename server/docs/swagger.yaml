@@ -64,6 +64,40 @@ paths:
           required: true
         - name: admin
           in: query
-          description: boolean flag to determine if a user should be an admin
+          description: boolean flag to determine if a user should be an admin (for prototype purposes only, this would be removed for production)
           type: boolean
           required: false
+  /profile:
+    get:
+      description: Returns a logged in user profile
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Profile returned
+        400:
+          description: Invalid Request
+        400:
+          description: Internal Server Failure
+    post:
+      description: Updates a logged in user profile
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Profile updated
+        400:
+          description: Invalid Request
+        500:
+          description: Internal Server Failure
+      parameters:
+        - name: phone
+          in: query
+          description: phone number of the user
+          type: string
+          required: true
+        - name: addresses
+          in: query
+          description: Array of address, latitude, longitude
+          type: array
+          required: true

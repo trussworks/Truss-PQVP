@@ -16,6 +16,8 @@ var (
 	invalidJSON = []byte(`"email":"joe@gmail.com", "fail":"peanutbutter"`)
 	userGood    = []byte(`{"email":"joe@gmail.com", "password":"peanutbutter"}`)
 	userBad     = []byte(`{"email":"joe@gmail.com", "address":"peanutbutter"}`)
+	profileGood = []byte(`{"phone":"1234567890", "addresses":[{"address": "1 My Address", "latitude":37.770070, "longitude":-122.428790}]}`)
+	profileBad  = []byte(`{"phone":"1231231231", "addresses":[{"address": "address string"}]}`)
 )
 
 func generatePost(t *testing.T, endpoint string, json []byte) *http.Request {
@@ -92,4 +94,16 @@ func TestLogin(t *testing.T) {
 	// 404 if login is not found
 	assert.Equal(t, res.Code, 404)
 
+}
+
+func TestUpdateProfile(t *testing.T) {
+	res := httptest.NewRecorder()
+	req := generatePost(t, "/api/profile", profileGood)
+	UpdateProfile(res, req)
+	assert.Equal(t, 200, res.Code)
+
+	res = httptest.NewRecorder()
+	req = generatePost(t, "/api/profile", profileBad)
+	UpdateProfile(res, req)
+	assert.Equal(t, 400, res.Code)
 }

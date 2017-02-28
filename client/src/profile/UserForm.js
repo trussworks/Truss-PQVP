@@ -3,7 +3,8 @@ import { reduxForm, Field } from 'redux-form';
 import { AuthField } from '../auth/AuthField';
 import authValidation from '../auth/authValidation';
 
-const ChangePasswordForm = ({
+const UserForm = ({
+  user,
   handleSubmit,
   submitting,
   updatingPassword,
@@ -11,6 +12,8 @@ const ChangePasswordForm = ({
   valid,
 }) => (
   <div>
+    <div>Email Address</div>
+    <div>{user.email}</div>
     <a href="" onClick={togglePasswordForm}>Change password</a>
     {updatingPassword ?
       (<form className="usa-form" onSubmit={handleSubmit}>
@@ -43,7 +46,8 @@ const ChangePasswordForm = ({
   </div>
 );
 
-ChangePasswordForm.propTypes = {
+UserForm.propTypes = {
+  user: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func,
   submitting: PropTypes.bool,
   togglePasswordForm: PropTypes.func.isRequired,
@@ -54,4 +58,4 @@ ChangePasswordForm.propTypes = {
 export default reduxForm({
   form: 'ChangePassword', // a unique name for this form
   validate: authValidation,
-})(ChangePasswordForm);
+})(UserForm);

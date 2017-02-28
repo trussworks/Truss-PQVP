@@ -37,12 +37,9 @@ class AddressField extends React.Component {
   }
 
   onChange(event, value) {
-    console.log('we changing');
-    console.log(value);
     this.props.updateAddressState(value);
     this.setState({ loading: true });
     AddressField.suggestionsRequest(value).then((result) => {
-      console.log('got back suggestions');
       this.setState({ suggestions: result.features, loading: false });
     });
   }

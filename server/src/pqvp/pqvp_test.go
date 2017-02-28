@@ -16,7 +16,7 @@ var (
 	invalidJSON = []byte(`"email":"joe@gmail.com", "fail":"peanutbutter"`)
 	userGood    = []byte(`{"email":"joe@gmail.com", "password":"peanutbutter"}`)
 	userBad     = []byte(`{"email":"joe@gmail.com", "address":"peanutbutter"}`)
-	profileGood = []byte(`{"phone":"1234567890", addresses:[{"address": "14 Super Monkey Ball Way, San Francisco, CA 94123", 37.770070, -122.428790}]}`)
+	profileGood = []byte(`{"phone":"1234567890", "addresses":[{"address": "1 My Address", "latitude":37.770070, "longitude":-122.428790}]}`)
 	profileBad  = []byte(`{"phone":"1231231231", "addresses":[{"address": "address string"}]}`)
 )
 
@@ -106,5 +106,4 @@ func TestUpdateProfile(t *testing.T) {
 	req = generatePost(t, "/api/profile", profileBad)
 	UpdateProfile(res, req)
 	assert.Equal(t, 400, res.Code)
-
 }

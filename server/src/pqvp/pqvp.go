@@ -157,14 +157,14 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 }
 
 type ProfileAddress struct {
-	Address   string `json:"address"`
-	Latitude  float64
-	Longitude float64
+	Address   string  `json:"address" valid:"required"`
+	Latitude  float64 `json:"latitude" valid:"required"`
+	Longitude float64 `json:"longitude" valid:"required"`
 }
 
 type Profile struct {
-	Phone     string           `json:"phone"`
-	Addresses []ProfileAddress `json:"addresses"`
+	Phone     string           `json:"phone" valid:"required"`
+	Addresses []ProfileAddress `json:"addresses" valid:"required"`
 }
 
 func dummyProfile() Profile {
@@ -206,6 +206,7 @@ func UpdateProfile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// Write profile into DB here.
+	w.WriteHeader(http.StatusOK)
 	rp, _ := json.Marshal(profile)
 	fmt.Fprintf(w, "%s", rp)
 }

@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"net/http"
+	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
 	request "github.com/dgrijalva/jwt-go/request"
@@ -21,17 +22,19 @@ var signingKey = []byte("truss-pqvp-demo")
 
 // CreateJwt takes a User and returns a jwt token that has custom claims set.
 func CreateJwt(u User) (string, error) {
+
 	claims := customClaims{
 		u.Email,
+		/// expire the json web token after 15 minutes
 		jwt.StandardClaims{
-			ExpiresAt: 15000,
+			ExpiresAt: time.Now().Add(time.Minute * 15).Unix(),
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	ss, err := token.SignedString(signingKey)
 	if err != nil {
 		logger, _ := zap.NewProduction()
-		logger.Fatal("could not sign the token with our key",
+		logger.Error("could not sign the token with our key",
 			zap.Error(err),
 		)
 		return "", err
@@ -41,13 +44,21 @@ func CreateJwt(u User) (string, error) {
 
 // Allowed takes a request and verifies if the user is allowed to access
 // the requested resource
-func Allowed(r *http.Request) (jwt.MapClaims, error) {
-	token, err := request.ParseFromRequestWithClaims(r, request.AuthorizationHeaderExtractor, customClaims{}, func(token *jwt.Token) (interface{}, error) {
+func Allowed(r *http.Request) (string, error) {
+	var claims customClaims
+	token, err := request.ParseFromRequestWithClaims(r, request.AuthorizationHeaderExtractor, &claims, func(token *jwt.Token) (interface{}, error) {
 		return signingKey, nil
 	})
-	if err == nil && token.Valid {
-		return token.Claims.(jwt.MapClaims), nil
+	if err != nil {
+		logger, _ := zap.NewProduction()
+		logger.Error("could not parse authorization request",
+			zap.Error(err),
+		)
 	}
 
-	return nil, errors.New("user is not allowed")
+	if err == nil && token.Valid {
+		return claims.Email, nil
+	}
+
+	return claims.Email, errors.New("user is not allowed")
 }

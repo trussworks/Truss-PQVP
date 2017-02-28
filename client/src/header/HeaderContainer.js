@@ -24,7 +24,7 @@ class HeaderContainer extends React.Component {
     return (
       <header className="usa-header usa-header-basic">
         <div className="group">
-          <div className="container">
+          <div className="container--content">
             { this.props.alertType ?
               (<Alert
                 dismiss={this.dismissAlert}

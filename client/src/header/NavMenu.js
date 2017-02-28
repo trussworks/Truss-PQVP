@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 
 const NavMenu = ({ loggedIn, logOutUser, userEmail }) => (
-  <div className="usa-nav-container">
+  <div>
     <div className="usa-navbar">
       <button className="usa-menu-btn">Menu</button>
       <div className="usa-logo" id="logo">

@@ -18,3 +18,5 @@ import:
   - bcrypt
 - package: github.com/asaskevich/govalidator
   version: v5
+- package: github.com/paulmach/go.geojson
+  version: v1.3

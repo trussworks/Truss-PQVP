@@ -10,7 +10,7 @@ import (
 
 func authMiddleware(i http.Handler) http.Handler {
 	mw := func(w http.ResponseWriter, r *http.Request) {
-		email, err := Allowed(r)
+		claims, err := Allowed(r)
 		if err != nil {
 			w.WriteHeader(http.StatusForbidden)
 			fmt.Fprintf(w, "user is not allowed")
@@ -20,9 +20,10 @@ func authMiddleware(i http.Handler) http.Handler {
 			return
 		}
 		ctx := context.WithValue(r.Context(), userKey, User{
-			Email: email,
+			Email: claims.Email,
 		})
 		r = r.WithContext(ctx)
+		i.ServeHTTP(w, r)
 	}
 	return http.HandlerFunc(mw)
 }

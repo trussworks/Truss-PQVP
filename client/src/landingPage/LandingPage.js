@@ -11,7 +11,7 @@ class LandingPage extends React.Component {
   }
   render() {
     return (
-      <div className="container">
+      <div className="container--content">
         <h1>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h1>
         <AuthContainer />
       </div>

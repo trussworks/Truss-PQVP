@@ -24,6 +24,8 @@ const NavMenu = ({ loggedIn, logOutUser, userEmail }) => (
             <span>{ loggedIn ? userEmail : 'Menu' }</span>
           </button>
           <ul id="side-nav-1" className="usa-nav-submenu">
+            <li><a href="http://www.cio.ca.gov/">CA Department of Technology</a></li>
+            <li><a href="https://truss.works/">About Truss</a></li>
             <li>
               { loggedIn ?
                 (<a href="" onClick={logOutUser}>Log out</a>) : (null)

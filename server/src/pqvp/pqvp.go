@@ -156,12 +156,14 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "%s", ru)
 }
 
+// ProfileAddress represents an address
 type ProfileAddress struct {
 	Address   string  `json:"address" valid:"required"`
 	Latitude  float64 `json:"latitude" valid:"required"`
 	Longitude float64 `json:"longitude" valid:"required"`
 }
 
+// Profile represents a profile
 type Profile struct {
 	Phone     string           `json:"phone" valid:"required"`
 	Addresses []ProfileAddress `json:"addresses" valid:"required"`

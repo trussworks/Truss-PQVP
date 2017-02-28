@@ -117,7 +117,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
 	}
-	ru, _ := json.Marshal(resAuthUser{user.Email, token, 15000})
+	ru, _ := json.Marshal(resAuthUser{user.Email, token, 900})
 	fmt.Fprintf(w, "%s", ru)
 }
 
@@ -152,7 +152,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusCreated)
-	ru, _ := json.Marshal(resAuthUser{user.Email, token, 15000})
+	ru, _ := json.Marshal(resAuthUser{user.Email, token, 900})
 	fmt.Fprintf(w, "%s", ru)
 }
 

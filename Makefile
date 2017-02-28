@@ -17,7 +17,7 @@ server_test: server_build
 	go vet && \
 	go test -cover
 server_run: server_build server_test
-	./server/src/pqvp \
+	./server/src/pqvp/pqvp \
 		-entry client/dist/index.html \
 		-static client/dist/ \
 		-docs client/dist/docs/ \

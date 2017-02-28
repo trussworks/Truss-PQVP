@@ -14,6 +14,6 @@ module "pqvp-demo" {
   zone_name                = "${module.route53.zone_name}"
   s3_logs_bucket           = "${module.logs.aws_logs_bucket}"
   alb_security_group_ids   = ["${aws_security_group.alb-sg.id}"]
-  maximum_percent          = "150"
+  maximum_percent          = "200"
   minimum_healthy_percent  = "50"
 }

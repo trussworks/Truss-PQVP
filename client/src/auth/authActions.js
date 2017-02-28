@@ -1,10 +1,14 @@
 import { push } from 'react-router-redux';
 import actionHelpers from '../utils/actionHelpers';
-import { SAVE_USER } from './authReducer';
+import * as types from '../constants/actionTypes';
+
+export function logOutUser() {
+  return { type: types.USER_LOGOUT };
+}
 
 export function saveUser(email, authToken) {
   const userInfo = { email, authToken };
-  return { type: SAVE_USER, userInfo };
+  return { type: types.SAVE_USER, userInfo };
 }
 
 export function authenticateUser(email, password) {

@@ -4,10 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
-	"os"
-	"path"
 
 	"github.com/paulmach/go.geojson"
 )

@@ -154,29 +154,50 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&user)
 	// handle incorrect JSON
 	if err != nil {
+		logger.Error("could not decode json",
+			zap.String("path", r.URL.Path),
+			zap.Error(err),
+		)
 		http.Error(w, http.StatusText(400), http.StatusBadRequest)
 		return
 	}
 	valid, err := govalidator.ValidateStruct(user)
 	// make sure the input matches the User struct
 	if !valid {
+		logger.Error("request not valid",
+			zap.String("path", r.URL.Path),
+			zap.Error(err),
+		)
 		http.Error(w, http.StatusText(400), http.StatusBadRequest)
 		return
 	}
 	err = CreateUser(user)
 	if err != nil {
+		logger.Error("could not create user",
+			zap.String("path", r.URL.Path),
+			zap.Error(err),
+		)
 		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
 		return
 	}
 
 	token, err := CreateJwt(user)
 	if err != nil {
+		logger.Error("could not create jwt",
+			zap.String("path", r.URL.Path),
+			zap.Error(err),
+		)
 		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
 	}
 
 	w.WriteHeader(http.StatusCreated)
 	ru, _ := json.Marshal(resAuthUser{user.Email, token, 900})
 	fmt.Fprintf(w, "%s", ru)
+
+	logger.Info("user signup successful",
+		zap.String("path", r.URL.Path),
+		zap.String("user", user.Email),
+	)
 }
 
 // ProfileAddress represents an address

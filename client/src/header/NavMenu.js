@@ -12,7 +12,7 @@ const NavMenu = ({ loggedIn, logOutUser, userEmail }) => (
     </div>
     <nav role="navigation" className="usa-nav">
       <button className="usa-nav-close">
-        <img src="/close.svg" alt="close" />
+        <img src="../dist/public/img/close.svg" alt="close" />
       </button>
       <ul className="usa-nav-primary usa-accordion">
         <li>

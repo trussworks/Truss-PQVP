@@ -2,6 +2,8 @@ package main
 
 import (
 	"bytes"
+	"context"
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -114,4 +116,21 @@ func TestBadUpdateProfile(t *testing.T) {
 	req := generatePost(t, "/api/profile", profileBad)
 	UpdateProfile(res, req)
 	assert.Equal(t, 400, res.Code)
+}
+
+func TestFindRecipients(t *testing.T) {
+	json, err := ioutil.ReadFile("test/sample-feature.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	res := httptest.NewRecorder()
+	req := generatePost(t, "/api/alert", json)
+	SendAlert(res, req)
+
+	// make sure we get a 200 response and the body matches the string
+	assert.Equal(t, 404, res.Code)
+
+	//TODO insert geopoints and profiles once the plumbing is hooked up
+
 }

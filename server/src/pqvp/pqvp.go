@@ -9,6 +9,7 @@ import (
 	"sync"
 
 	"github.com/asaskevich/govalidator"
+	"go.uber.org/zap"
 	"goji.io"
 	"goji.io/pat"
 )
@@ -17,6 +18,7 @@ var (
 	once     sync.Once
 	database *sql.DB
 	mutex    = &sync.Mutex{}
+	logger   *zap.Logger
 )
 
 // User contains an email and a password
@@ -36,9 +38,10 @@ func main() {
 	entry := flag.String("entry", "../client/dist/index.html", "the entrypoint to serve.")
 	static := flag.String("static", "../client/dist", "the directory to serve static files from.")
 	docs := flag.String("docs", "../client/dist/docs", "the directory to serve swagger documentation from.")
-
 	port := flag.String("port", ":80", "the `port` to listen on.")
 	flag.Parse()
+
+	logger, _ = zap.NewProduction()
 
 	root := goji.NewMux()
 
@@ -98,25 +101,45 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&user)
 	// handle incorrect JSON
 	if err != nil {
+		logger.Error("could not decode json",
+			zap.String("path", r.URL.Path),
+			zap.Error(err),
+		)
 		http.Error(w, http.StatusText(400), http.StatusBadRequest)
 		return
 	}
 	valid, err := govalidator.ValidateStruct(user)
 	// make sure the input matches the User struct
 	if !valid {
+		logger.Error("request not valid",
+			zap.String("path", r.URL.Path),
+			zap.Error(err),
+		)
 		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
 	success := LoginUser(user)
 	if !success {
+		logger.Error("could not log in user",
+			zap.String("path", r.URL.Path),
+			zap.Error(err),
+		)
 		w.WriteHeader(http.StatusNotFound)
 		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 	}
 
 	token, err := CreateJwt(user)
 	if err != nil {
+		logger.Error("could not create jwt",
+			zap.String("path", r.URL.Path),
+			zap.Error(err),
+		)
 		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
 	}
+	logger.Info("user login successful",
+		zap.String("path", r.URL.Path),
+		zap.String("user", user.Email),
+	)
 	ru, _ := json.Marshal(resAuthUser{user.Email, token, 900})
 	fmt.Fprintf(w, "%s", ru)
 }

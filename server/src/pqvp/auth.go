@@ -33,7 +33,6 @@ func CreateJwt(u User) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	ss, err := token.SignedString(signingKey)
 	if err != nil {
-		logger, _ := zap.NewProduction()
 		logger.Error("could not sign the token with our key",
 			zap.Error(err),
 		)
@@ -50,7 +49,6 @@ func Allowed(r *http.Request) (string, error) {
 		return signingKey, nil
 	})
 	if err != nil {
-		logger, _ := zap.NewProduction()
 		logger.Error("could not parse authorization request",
 			zap.Error(err),
 		)

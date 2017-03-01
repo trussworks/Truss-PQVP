@@ -36,6 +36,13 @@
                 "ecr:GetAuthorizationToken"
             ],
             "Resource": "*"
+        },
+        {
+            "Action": [
+                "sns:*"
+            ],
+            "Effect": "Allow",
+            "Resource": "*"
         }
     ]
 }

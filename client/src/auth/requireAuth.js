@@ -43,7 +43,7 @@ export default function requireAuth(Component) {
 
   function mapStateToProps(state) {
     return {
-      loggedIn: !!state.auth.get('user').email,
+      loggedIn: !!state.auth.get('email'),
     };
   }
 

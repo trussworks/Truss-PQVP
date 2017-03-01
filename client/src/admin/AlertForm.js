@@ -20,7 +20,7 @@ const AlertForm = ({ featurePicked, handleSubmit, submitting, valid }) => (
           component="input"
           type="checkbox"
         />
-        <label htmlFor="isEmergency">Is this an immdeiate emergency?</label>
+        <label htmlFor="isEmergency">Is this an immediate emergency?</label>
       </div>
       <input type="submit" disabled={submitting || !(valid && featurePicked)} value="Send Alert!" />
     </fieldset>

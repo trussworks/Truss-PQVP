@@ -26,7 +26,7 @@ LandingPage.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    isLoggedIn: !!state.auth.get('user').email,
+    isLoggedIn: !!state.auth.get('email'),
   };
 }
 

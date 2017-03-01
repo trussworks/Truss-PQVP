@@ -58,8 +58,8 @@ function mapStateToProps(state) {
     alertHeader: state.app.get('alertHeader'),
     alertMessage: state.app.get('alertMessage'),
     alertType: state.app.get('alertType'),
-    email: state.auth.get('user').email ? state.auth.get('user').email.email : '',
-    loggedIn: !!state.auth.get('user').email,
+    email: state.auth.get('email') ? state.auth.get('email') : '',
+    loggedIn: !!state.auth.get('email'),
   };
 }
 

@@ -23,11 +23,11 @@ class ProfileContainer extends React.Component {
     this.updatePassword = this.updatePassword.bind(this);
   }
   componentWillMount() {
-    this.props.getProfile(this.props.user.access_token);
+    this.props.getProfile(this.props.accessToken);
   }
   submitUpdate(values) {
     const newProfile = Object.assign({}, this.props.profile, values);
-    this.props.updateProfile(this.props.user.access_token, newProfile);
+    this.props.updateProfile(this.props.accessToken, newProfile);
   }
   togglePasswordForm(e) {
     e.preventDefault();
@@ -44,7 +44,7 @@ class ProfileContainer extends React.Component {
       return;
     }
     newProfile.addresses.splice(loc, 1);
-    this.props.updateProfile(this.props.user.access_token, newProfile);
+    this.props.updateProfile(this.props.accessToken, newProfile);
   }
   saveNewAddress(address) {
     const newAddress = {
@@ -54,7 +54,7 @@ class ProfileContainer extends React.Component {
     };
     const newProfile = Object.assign({}, this.props.profile);
     newProfile.addresses.push(newAddress);
-    this.props.updateProfile(this.props.user.access_token, newProfile);
+    this.props.updateProfile(this.props.accessToken, newProfile);
     this.setState({ newAddressState: '' });
   }
   updatePassword(values) {
@@ -66,7 +66,7 @@ class ProfileContainer extends React.Component {
     return (
       <div className="container--content">
         <UserForm
-          userEmail={this.props.user.email}
+          userEmail={this.props.email}
           togglePasswordForm={this.togglePasswordForm}
           updatingPassword={this.state.updatingPassword}
           onSubmit={this.updatePassword}
@@ -95,16 +95,18 @@ class ProfileContainer extends React.Component {
 }
 
 ProfileContainer.propTypes = {
-  profile: PropTypes.object,
-  user: PropTypes.object.isRequired,
+  accessToken: PropTypes.string,
+  email: PropTypes.string,
   getProfile: PropTypes.func.isRequired,
+  profile: PropTypes.object,
   updateProfile: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
   return {
+    accessToken: state.auth.get('accessToken'),
+    email: state.auth.get('email'),
     profile: state.profile.get('profile'),
-    user: state.auth.get('user'),
   };
 }
 

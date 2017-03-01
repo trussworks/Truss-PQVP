@@ -18,7 +18,6 @@ class EmergencyPicker extends React.Component {
 
     return (
       <div>
-        <h1>hello team</h1>
         <Map center={position} zoom={this.state.zoom}>
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

@@ -19,7 +19,7 @@ export const Root = () => (
     <Router history={browserHistory} >
       <Route component={App}>
         <Route path="/" component={LandingPage} />
-        <Route path="/profile" component={requireAuth(ProfileContainer)} />
+        <Route path="/profile" component={ProfileContainer} />
         <Route path="/admin" component={AdminPage} />
       </Route>
     </Router>

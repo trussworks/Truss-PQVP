@@ -28,7 +28,8 @@ export function authenticateUser(email, password) {
     dispatch(saveUser(response));
     dispatch(push('/profile'));
   })
-  .catch(() => {
+  .catch((err) => {
+    // TODO: handle bad password.
     console.error('Error in Login: ', err);
     dispatch(displayAlert(
       'usa-alert-error',

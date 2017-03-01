@@ -23,11 +23,11 @@ class ProfileContainer extends React.Component {
     this.updatePassword = this.updatePassword.bind(this);
   }
   componentWillMount() {
-    this.props.getProfile();
+    this.props.getProfile(this.props.user.access_token);
   }
   submitUpdate(values) {
     const newProfile = Object.assign({}, this.props.profile, values);
-    this.props.updateProfile(newProfile);
+    this.props.updateProfile(this.props.user.access_token, newProfile);
   }
   togglePasswordForm(e) {
     e.preventDefault();
@@ -40,11 +40,11 @@ class ProfileContainer extends React.Component {
     const newProfile = Object.assign({}, this.props.profile);
     const loc = newProfile.addresses.indexOf(address);
     if (loc === -1) {
-      console.log('Attempting to remove an address that is not in the list');
+      console.error('Attempting to remove an address that is not in the list');
       return;
     }
     newProfile.addresses.splice(loc, 1);
-    this.props.updateProfile(newProfile);
+    this.props.updateProfile(this.props.user.access_token, newProfile);
   }
   saveNewAddress(address) {
     const newAddress = {
@@ -54,7 +54,7 @@ class ProfileContainer extends React.Component {
     };
     const newProfile = Object.assign({}, this.props.profile);
     newProfile.addresses.push(newAddress);
-    this.props.updateProfile(newProfile);
+    this.props.updateProfile(this.props.user.access_token, newProfile);
     this.setState({ newAddressState: '' });
   }
   updatePassword(values) {

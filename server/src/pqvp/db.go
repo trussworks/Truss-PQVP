@@ -133,6 +133,65 @@ AND users.email=$1;`, email)
 	}
 }
 
+func (pg *Postgres) UpdateProfile(email string, profile Profile) error {
+	tx, err := pg.Begin()
+	if err != nil {
+		return err
+	}
+	_, err = tx.Exec(`
+DELETE FROM addresses USING users
+WHERE addresses.profile_id = profiles.id
+AND profile.user_id = users.id
+AND user.email = $1`, email)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	_, err = tx.Exec(`
+DELETE FROM profiles USING users
+WHERE profiles.profile_id = profiles.id
+AND profile.user_id = user.id
+AND user.email = $1`, email)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	var user_id int32
+	row := tx.QueryRow("SELECT id FROM users WHERE email = $1", email)
+	err = row.Scan(&user_id)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	var res sql.Result
+	res, err = tx.Exec(`
+INSERT INTO profiles (user_id, phone)
+VALUES ($1, $2)`, user_id, profile.Phone)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	profile_id, err := res.LastInsertId()
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	for _, profileAddress := range profile.Addresses {
+		_, err = tx.Exec(`
+INSERT INTO addresses (profile_id, address, point)
+VALUES ($1, $2, ST_SetSRID(ST_Point($3, $4),4326))`,
+			profile_id,
+			profileAddress.Address,
+			profileAddress.Longitude,
+			profileAddress.Latitude)
+		if err != nil {
+			tx.Rollback()
+			return err
+		}
+	}
+	return tx.Commit()
+}
+
 // Close implements io.Closer
 func (pg *Postgres) Close() error {
 	return pg.DB.Close()
@@ -148,6 +207,7 @@ type Datastore interface {
 	DeleteUser(User) error
 	FindRecipients(*geojson.Geometry) ([]string, error)
 	FetchProfile(string) (Profile, error)
+	UpdateProfile(string, Profile) error
 	io.Closer
 }
 

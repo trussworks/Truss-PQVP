@@ -37,6 +37,7 @@ func (pg *Postgres) CreateUser(u User) error {
 	return nil
 }
 
+// DeleteUser takes a user and removes it from pg
 func (pg *Postgres) DeleteUser(u User) error {
 	_, err := pg.Exec("DELETE FROM users WHERE email = $1", u.Email)
 	if err != nil {
@@ -67,6 +68,7 @@ func (pg *Postgres) FindRecipients(geo *geojson.Geometry) ([]string, error) {
 	if err != nil {
 		return phoneNumbers, err
 	}
+	defer rows.Close()
 
 	for rows.Next() {
 		var phoneNumber string

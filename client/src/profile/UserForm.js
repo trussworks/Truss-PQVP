@@ -47,7 +47,7 @@ const UserForm = ({
 );
 
 UserForm.propTypes = {
-  userEmail: PropTypes.string.isRequired,
+  userEmail: PropTypes.string,
   handleSubmit: PropTypes.func,
   submitting: PropTypes.bool,
   togglePasswordForm: PropTypes.func.isRequired,

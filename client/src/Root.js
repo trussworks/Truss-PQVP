@@ -26,7 +26,6 @@ let oldUser;
 store.subscribe(() => {
   const newUser = store.getState().auth.get('user');
   if (oldUser !== newUser) {
-    console.log('writing to local storage');
     localStorage.setItem('userInfo', JSON.stringify(newUser));
   }
   oldUser = newUser;

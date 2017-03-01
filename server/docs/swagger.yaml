@@ -101,3 +101,32 @@ paths:
           description: Array of address, latitude, longitude
           type: array
           required: true
+  /alert:
+    post:
+      description: Looks up addresses in an ArcGIS polygon
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Alerts Sent
+        400:
+          description: Invalid Request
+        404:
+          description: No Alerts Sent
+        500:
+          description: Internal Server Failure
+      parameters:
+        - name: message
+          in: query
+          description: the alert message to send
+          type: string
+          required: true
+        - name: severity
+          in: query
+          description: the level of severity
+          type: string
+          required: true
+        - name: geojson
+          description: ArcGIS feature formatted as GeoJSON
+          type: object
+

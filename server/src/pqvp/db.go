@@ -36,6 +36,14 @@ func (pg *Postgres) CreateUser(u User) error {
 	return nil
 }
 
+func (pg *Postgres) DeleteUser(u User) error {
+	_, err := pg.Exec("DELETE FROM users WHERE email = $1", u.Email)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // Close implements io.Closer
 func (pg *Postgres) Close() error {
 	return pg.DB.Close()
@@ -48,6 +56,7 @@ type Postgres struct{ *sql.DB }
 type Datastore interface {
 	LoginUser(User) bool
 	CreateUser(User) error
+	DeleteUser(User) error
 	io.Closer
 }
 

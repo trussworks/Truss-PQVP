@@ -3,6 +3,10 @@ $tablet: (
   media: 800px,
 );
 
+$uswds: (
+  media: 951px,
+);
+
 
 .container--content {
   @include span-columns(10);
@@ -10,6 +14,26 @@ $tablet: (
   @include grid-media($tablet) {
     @include span-columns(8);
     @include shift(2);
+  }
+}
+
+.container--logo {
+  @include grid-media($uswds) {
+    width: 40% !important;
+  }
+}
+
+.container--logo-image {
+  line-height: 2rem;
+  @include grid-media($uswds) {
+    top: 10px;
+  }
+}
+
+.container--logo-text {
+  @include grid-media($uswds) {
+    float: left;
+    margin-top: 12px;
   }
 }
 
@@ -27,12 +51,23 @@ $tablet: (
   cursor: default;
 }
 
+// Image & Icon Styles
+
 .icon--dismiss {
   height: 16px;
   position: absolute;
   width: 16px;
   top: 10px;
   right: 10px;
+}
+
+.logo--ca {
+  height: 35px;
+  width: 35px;
+  @include grid-media($uswds) {
+    height: 90px;
+    width: 90px;
+  }
 }
 
 // Leaflet required class
@@ -58,4 +93,8 @@ $tablet: (
 
 .hide {
   display: none !important;
+}
+
+.text--dark-blue {
+  color: #046b99;
 }

@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"context"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"

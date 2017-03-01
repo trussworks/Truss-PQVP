@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/asaskevich/govalidator"
+	"github.com/paulmach/go.geojson"
 	"go.uber.org/zap"
 )
 
@@ -230,4 +231,53 @@ func IndexHandler(entrypoint *string) http.HandlerFunc {
 // whoami is a dummy admin handler
 func whoami(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "you are clearly admin")
+}
+
+//Alert stores the message, severity and GeoJSON for a given emergency
+type Alert struct {
+	Geo      *geojson.Feature `json:"geojson"`
+	Message  string           `json:"message"`
+	Severity string           `json:"severity"`
+}
+
+// SendAlert looks up affected users inside an the alert geometry
+// and sends SMS messages with the message
+func SendAlert(w http.ResponseWriter, r *http.Request) {
+	//alert := dummyAlert()
+	var alert Alert
+	err := json.NewDecoder(r.Body).Decode(&alert)
+	// handle incorrect JSON
+	if err != nil {
+		logger.Error("could not decode json",
+			zap.String("path", r.URL.Path),
+			zap.Error(err),
+		)
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		return
+	}
+	recipients, err := db.FindRecipients(alert.Geo.Geometry)
+
+	if err != nil {
+		logger.Error("Error finding alert recipients",
+			zap.String("path", r.URL.Path),
+			zap.Error(err),
+		)
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+
+	if len(recipients) == 0 {
+		logger.Info("Unable to finding alert recipients",
+			zap.String("path", r.URL.Path),
+		)
+		w.WriteHeader(http.StatusNotFound)
+		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
+		return
+	}
+
+	logger.Info("Sending SMS messages to",
+		zap.Strings("recipients", recipients),
+	)
+	// TODO Replace with SNS calls
+
 }

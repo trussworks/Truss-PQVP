@@ -48,7 +48,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 			zap.String("path", r.URL.Path),
 			zap.Error(err),
 		)
-		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		http.Error(w, http.StatusText(http.StatusBadRequest),
+			http.StatusBadRequest)
 		return
 	}
 	success := db.LoginUser(user)
@@ -57,8 +58,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 			zap.String("path", r.URL.Path),
 			zap.Error(err),
 		)
-		w.WriteHeader(http.StatusNotFound)
 		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
+		return
 	}
 
 	token, err := CreateJwt(user)
@@ -68,6 +69,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 			zap.Error(err),
 		)
 		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
+		return
 	}
 	logger.Info("user login successful",
 		zap.String("path", r.URL.Path),
@@ -110,7 +112,8 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 			zap.String("path", r.URL.Path),
 			zap.Error(err),
 		)
-		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
+		http.Error(w, http.StatusText(500),
+			http.StatusInternalServerError)
 		return
 	}
 
@@ -120,7 +123,8 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 			zap.String("path", r.URL.Path),
 			zap.Error(err),
 		)
-		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
+		http.Error(w, http.StatusText(500),
+			http.StatusInternalServerError)
 		return
 	}
 
@@ -143,18 +147,8 @@ type ProfileAddress struct {
 
 // Profile represents a profile
 type Profile struct {
-	Phone     string           `json:"phone" valid:"required"`
-	Addresses []ProfileAddress `json:"addresses" valid:"required"`
-}
-
-func dummyProfile() Profile {
-	addresses := make([]ProfileAddress, 0)
-	profile := Profile{"1234567890", addresses}
-	addy := ProfileAddress{"9 Germania St., San Francisco, CA 94117",
-		37.770970,
-		-122.428730}
-	profile.Addresses = append(profile.Addresses, addy)
-	return profile
+	Phone     string           `json:"phone"`
+	Addresses []ProfileAddress `json:"addresses"`
 }
 
 /*
@@ -162,9 +156,26 @@ GetProfile gets a users profile.
 curl -H "Content-Type: application/json" http://localhost:80/api/profile
 */
 func GetProfile(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
 	// Read profile from DB here.
-	profile := dummyProfile()
+	var user User
+	if u, ok := r.Context().Value(userKey).(User); ok {
+		user = u
+	} else {
+		logger.Error("no user context",
+			zap.String("path", r.URL.Path),
+		)
+		http.Error(w, http.StatusText(400), http.StatusBadRequest)
+		return
+	}
+	profile, err := db.FetchProfile(user.Email)
+	if err != nil {
+		logger.Error("could not fetch profile",
+			zap.String("path", r.URL.Path),
+			zap.Error(err),
+		)
+		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
+		return
+	}
 	rp, err := json.Marshal(profile)
 	if err != nil {
 		logger.Error("could not marshal json",
@@ -174,6 +185,7 @@ func GetProfile(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
 		return
 	}
+	w.WriteHeader(http.StatusOK)
 	fmt.Fprintf(w, "%s", rp)
 	logger.Info("user profile returned",
 		zap.String("path", r.URL.Path),
@@ -187,6 +199,17 @@ curl -H "Content-Type: application/json" -d '{"phone":"4434567890","addresses":[
 */
 func UpdateProfile(w http.ResponseWriter, r *http.Request) {
 	var profile Profile
+	var user User
+	if u, ok := r.Context().Value(userKey).(User); ok {
+		user = u
+	} else {
+		logger.Error("no user context",
+			zap.String("path", r.URL.Path),
+		)
+		http.Error(w, http.StatusText(400), http.StatusBadRequest)
+		return
+	}
+
 	err := json.NewDecoder(r.Body).Decode(&profile)
 	if err != nil {
 		logger.Error("could not decode json",
@@ -205,7 +228,16 @@ func UpdateProfile(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(400), http.StatusBadRequest)
 		return
 	}
-	// Write profile into DB here.
+	err = db.WriteProfile(user.Email, profile)
+	if err != nil {
+		logger.Error("could not write profile into db",
+			zap.String("path", r.URL.Path),
+			zap.Error(err),
+		)
+		http.Error(w, http.StatusText(500),
+			http.StatusInternalServerError)
+		return
+	}
 	w.WriteHeader(http.StatusOK)
 	rp, err := json.Marshal(profile)
 	if err != nil {

@@ -2,11 +2,10 @@ package main
 
 import (
 	"database/sql"
-	"io"
-
 	_ "github.com/lib/pq"
 	"github.com/paulmach/go.geojson"
 	"golang.org/x/crypto/bcrypt"
+	"io"
 )
 
 // LoginUser checks bcrypt hashed passwords match in the users table
@@ -83,6 +82,117 @@ func (pg *Postgres) FindRecipients(geo *geojson.Geometry) ([]string, error) {
 	return phoneNumbers, nil
 }
 
+// FetchProfile fetches a profile from the DB.
+func (pg *Postgres) FetchProfile(email string) (Profile, error) {
+	var profile Profile
+	row := pg.QueryRow(`
+SELECT profiles.id, profiles.phone
+FROM profiles, users
+WHERE profiles.user_id = users.id AND users.email = $1`, email)
+	var phone string
+	var profileID int32
+	err := row.Scan(&profileID, &phone)
+	switch {
+	case err == sql.ErrNoRows:
+		profile.Phone = ""
+	case err != nil:
+		return Profile{}, err
+	default:
+		profile.Phone = phone
+		profile.Addresses = make([]ProfileAddress, 0)
+	}
+	rows, err := pg.Query(`
+SELECT addresses.address,
+ST_X(addresses.point) AS longitude,
+ST_Y(addresses.point) AS latitude
+FROM addresses, profiles, users
+WHERE addresses.profile_id = profiles.id
+AND profiles.user_id = users.id
+AND users.email=$1;`, email)
+	if err != nil {
+		return Profile{}, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var address string
+		var longitude, latitude float64
+		err = rows.Scan(&address, &longitude, &latitude)
+		if err != nil {
+			return Profile{}, err
+		}
+		addy := ProfileAddress{address, latitude, longitude}
+		profile.Addresses = append(profile.Addresses, addy)
+	}
+	err = rows.Err()
+	switch {
+	case err == sql.ErrNoRows:
+		return profile, nil
+	case err != nil:
+		return profile, err
+	default:
+		return profile, nil
+	}
+}
+
+// WriteProfile writes a Profile into the db.
+func (pg *Postgres) WriteProfile(email string, profile Profile) error {
+	tx, err := pg.Begin()
+	if err != nil {
+		return err
+	}
+	_, err = tx.Exec(`
+DELETE FROM addresses USING users, profiles
+WHERE addresses.profile_id = profiles.id
+AND profiles.user_id = users.id
+AND users.email = $1`, email)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	_, err = tx.Exec(`
+DELETE FROM profiles USING users
+WHERE profiles.user_id = users.id
+AND users.email = $1`, email)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	var userID int32
+	row := tx.QueryRow("SELECT id FROM users WHERE email = $1", email)
+	err = row.Scan(&userID)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	var profileID int32
+	row = tx.QueryRow(`
+INSERT INTO profiles (user_id, phone)
+VALUES ($1, $2) RETURNING id`, userID, profile.Phone)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	err = row.Scan(&profileID)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	for _, profileAddress := range profile.Addresses {
+		_, err = tx.Exec(`
+INSERT INTO addresses (profile_id, address, point)
+VALUES ($1, $2, ST_SetSRID(ST_Point($3, $4),4326))`,
+			profileID,
+			profileAddress.Address,
+			profileAddress.Longitude,
+			profileAddress.Latitude)
+		if err != nil {
+			tx.Rollback()
+			return err
+		}
+	}
+	return tx.Commit()
+}
+
 // Close implements io.Closer
 func (pg *Postgres) Close() error {
 	return pg.DB.Close()
@@ -97,6 +207,8 @@ type Datastore interface {
 	CreateUser(User) error
 	DeleteUser(User) error
 	FindRecipients(*geojson.Geometry) ([]string, error)
+	FetchProfile(string) (Profile, error)
+	WriteProfile(string, Profile) error
 	io.Closer
 }
 

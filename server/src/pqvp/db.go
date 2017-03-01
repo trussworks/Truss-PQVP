@@ -2,7 +2,7 @@ package main
 
 import (
 	"database/sql"
-	"github.com/lib/pq"
+	_ "github.com/lib/pq"
 	"github.com/paulmach/go.geojson"
 	"golang.org/x/crypto/bcrypt"
 	"io"

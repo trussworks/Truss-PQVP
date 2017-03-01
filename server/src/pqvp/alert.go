@@ -8,6 +8,7 @@ import (
 )
 
 // SendSMS uses AWS SNS to send SMS messages to a list of phone numbers
+// Return the number of successful sends
 func SendSMS(phoneNumbers []string, message string) int {
 	var successes uint32 = 0
 

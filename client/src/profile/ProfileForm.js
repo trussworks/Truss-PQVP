@@ -1,19 +1,12 @@
 import React, { PropTypes } from 'react';
 import { reduxForm, Field } from 'redux-form';
 import { AuthField } from '../auth/AuthField';
-import authValidation from '../auth/authValidation';
+import profileValidation from './profileValidation';
 
 const ProfileForm = ({ handleSubmit, submitting, valid }) => (
   <form className="usa-form" onSubmit={handleSubmit}>
     <fieldset>
       <legend className="usa-drop_text">Update your profile</legend>
-      <Field
-        component={AuthField}
-        label="Email"
-        name="email"
-        placeholder="Email address"
-        type="email"
-      />
       <Field
         component={AuthField}
         name="phone"
@@ -25,9 +18,37 @@ const ProfileForm = ({ handleSubmit, submitting, valid }) => (
           data-backdrop="static"
           disabled={submitting || !valid}
           type="submit"
-          value="Update"
+          value="Change Phone Number"
         />
       </div>
+      <Field
+        component="input"
+        type="checkbox"
+        name="alertEmail"
+        onChange={() => {
+          setTimeout(handleSubmit);
+        }}
+      />
+      <label htmlFor="alertEmail">Send Alerts To Email?</label>
+      <Field
+        component="input"
+        type="checkbox"
+        name="alertPhone"
+        disabled={!valid}
+        onChange={() => {
+          setTimeout(handleSubmit);
+        }}
+      />
+      <label htmlFor="alertPhone">Text Alerts To Phone?</label>
+      <Field
+        component="input"
+        type="checkbox"
+        name="onlyEmergencies"
+        onChange={() => {
+          setTimeout(handleSubmit);
+        }}
+      />
+      <label htmlFor="onlyEmergencies">Only Receive Notifications For Imminent Emergencies?</label>
     </fieldset>
   </form>
 );
@@ -40,5 +61,5 @@ ProfileForm.propTypes = {
 
 export default reduxForm({
   form: 'Profile', // a unique name for this form
-  validate: authValidation,
+  validate: profileValidation,
 })(ProfileForm);

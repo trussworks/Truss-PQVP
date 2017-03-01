@@ -7,9 +7,8 @@ export function logOutUser() {
   return { type: types.USER_LOGOUT };
 }
 
-export function saveUser(email, authToken) {
-  const userInfo = { email, authToken };
-  return { type: types.SAVE_USER, userInfo };
+export function saveUser(user) {
+  return { type: types.SAVE_USER, userInfo: user };
 }
 
 export function authenticateUser(email, password) {
@@ -30,6 +29,7 @@ export function authenticateUser(email, password) {
     dispatch(push('/profile'));
   })
   .catch(() => {
+    console.error('Error in Login: ', err);
     dispatch(displayAlert(
       'usa-alert-error',
       'Error',
@@ -55,7 +55,8 @@ export function signUpUser(email, password) {
     dispatch(saveUser(response));
     dispatch(push('/profile'));
   })
-  .catch(() => {
+  .catch((err) => {
+    console.error('Error in signup: ', err);
     dispatch(displayAlert(
       'usa-alert-error',
       'Error',

@@ -16,7 +16,6 @@ function authPersistence(store) {
       expires_in: authState.get('expiresIn'),
     };
     if (!(oldUser.email === newUser.email && oldUser.access_token === newUser.access_token)) {
-      console.log('writing to local storage', newUser);
       localStorage.setItem('userInfo', JSON.stringify(newUser));
     }
     oldUser = newUser;

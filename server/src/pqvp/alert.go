@@ -5,8 +5,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"sync/atomic"
 
 	"github.com/paulmach/go.geojson"
+	"github.com/tj/go-sms"
 )
 
 //Alert stores the message, severity and GeoJSON for a given emergency
@@ -34,7 +36,7 @@ func SendAlert(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 		} else {
 			fmt.Printf("Error finding recipients: %s", err)
-			http.Error(w, http.StatusText(500), http.StatusInternalServerError)
+			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 
 		}
 		return
@@ -77,4 +79,24 @@ AND a.profile_id = p.id`
 	}
 
 	return phoneNumbers, nil
+}
+
+// SendSMS uses AWS SNS to send SMS messages to a list of phone numbers
+func SendSMS(phoneNumbers []string, message string) int {
+	var successes uint32 = 0
+
+	// Send SMS messages
+	for i, _ := range phoneNumbers {
+		phoneNumber := phoneNumbers[i]
+		go func() {
+			err := sms.Send(message, phoneNumber)
+			if err != nil {
+				fmt.Printf("SMS send failed: %s", phoneNumber)
+			}
+			atomic.AddUint32(&successes, 1)
+
+		}()
+	}
+
+	return int(atomic.LoadUint32(&successes))
 }

@@ -128,7 +128,7 @@ func TestFindRecipients(t *testing.T) {
 	req := generatePost(t, "/api/alert", json)
 	SendAlert(res, req)
 
-	// make sure we get a 200 response and the body matches the string
+	// make sure we get a 404 because we haven't populated the data
 	assert.Equal(t, 404, res.Code)
 
 	//TODO insert geopoints and profiles once the plumbing is hooked up

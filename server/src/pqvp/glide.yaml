@@ -20,3 +20,4 @@ import:
   version: v5
 - package: github.com/paulmach/go.geojson
   version: v1.3
+- package: github.com/tj/go-sms

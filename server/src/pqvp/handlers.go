@@ -3,11 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
-
 	"github.com/asaskevich/govalidator"
 	"github.com/paulmach/go.geojson"
 	"go.uber.org/zap"
+	"net/http"
 )
 
 // resAuthUser returns a user to the client with
@@ -147,8 +146,11 @@ type ProfileAddress struct {
 
 // Profile represents a profile
 type Profile struct {
-	Phone     string           `json:"phone"`
-	Addresses []ProfileAddress `json:"addresses"`
+	Phone                 string           `json:"phone"`
+	AlertEmail            bool             `json:"alertEmail"`
+	AlertPhone            bool             `json:"alertPhone"`
+	UrgentEmergenciesOnly bool             `json:"onlyEmergencies"`
+	Addresses             []ProfileAddress `json:"addresses"`
 }
 
 /*
@@ -209,7 +211,6 @@ func UpdateProfile(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(400), http.StatusBadRequest)
 		return
 	}
-
 	err := json.NewDecoder(r.Body).Decode(&profile)
 	if err != nil {
 		logger.Error("could not decode json",

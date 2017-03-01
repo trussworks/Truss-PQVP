@@ -11,25 +11,11 @@ import requireAuth from './auth/requireAuth';
 import { rootReducer } from './rootReducer';
 import AdminPage from './admin/AdminPage';
 import NotificationsPage from './admin/NotificationsPage';
-import { saveUser } from './auth/authActions';
+import authPersistence from './auth/authPersistence';
 
 const middleware = routerMiddleware(browserHistory);
 const store = createStore(rootReducer, applyMiddleware(thunk, middleware));
-
-// User State Restoration.
-const savedUser = localStorage.getItem('userInfo');
-if (savedUser) {
-  store.dispatch(saveUser(JSON.parse(savedUser)));
-}
-
-let oldUser;
-store.subscribe(() => {
-  const newUser = store.getState().auth.get('user');
-  if (oldUser !== newUser) {
-    localStorage.setItem('userInfo', JSON.stringify(newUser));
-  }
-  oldUser = newUser;
-});
+authPersistence(store);
 
 export const Root = () => (
   <Provider store={store}>

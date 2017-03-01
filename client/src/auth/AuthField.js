@@ -1,25 +1,49 @@
 import React, { PropTypes } from 'react';
+import classnames from 'classnames';
 
-export const AuthField = ({ input, placeholder, name, type }) => (
-  <div>
+export const AuthField = ({ input, placeholder, meta, type }) => {
+  const errorClass = classnames({
+    'usa-input-error': meta.touched && meta.error,
+  });
+
+  const successClass = classnames({
+    'usa-input-success': meta.touched && !meta.error,
+  });
+
+  const labelId = `input--label--${input.name}`;
+  const errorId = `input--error--${input.name}`;
+
+  return (
     <div>
-      <label htmlFor={name}>{placeholder}</label>
-      <input
-        autoCapitalize="off"
-        autoCorrect="off"
-        id={name}
-        name={name}
-        placeholder={placeholder}
-        type={type}
-        {...input}
-      />
+      <div className={errorClass}>
+        <label htmlFor={input.name} id={labelId} >{placeholder}</label>
+        { meta.touched && meta.error ?
+          (<span
+            className="usa-input-error-message"
+            id={errorId}
+            role="alert"
+          >{meta.error}</span>)
+          : (null)
+        }
+        <input
+          aria-describedby={errorId}
+          aria-labelledby={labelId}
+          autoCapitalize="off"
+          autoCorrect="off"
+          className={successClass}
+          id={input.name}
+          name={input.name}
+          type={type}
+          {...input}
+        />
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 AuthField.propTypes = {
   input: PropTypes.object.isRequired,
-  name: PropTypes.string,
+  meta: PropTypes.object.isRequired,
   placeholder: PropTypes.string,
   type: PropTypes.string.isRequired,
 };

@@ -24,21 +24,19 @@ class HeaderContainer extends React.Component {
     return (
       <header className="usa-header usa-header-basic">
         <div className="group">
-          <div className="container">
-            { this.props.alertType ?
-              (<Alert
-                dismiss={this.dismissAlert}
-                header={this.props.alertHeader}
-                message={this.props.alertMessage}
-                type={this.props.alertType}
-              />) : (null)
-            }
-            <NavMenu
-              loggedIn={this.props.loggedIn}
-              logOutUser={this.logOutUser}
-              userEmail={this.props.email}
-            />
-          </div>
+          { this.props.alertType ?
+            (<Alert
+              dismiss={this.dismissAlert}
+              header={this.props.alertHeader}
+              message={this.props.alertMessage}
+              type={this.props.alertType}
+            />) : (null)
+          }
+          <NavMenu
+            loggedIn={this.props.loggedIn}
+            logOutUser={this.logOutUser}
+            userEmail={this.props.email}
+          />
         </div>
       </header>
     );

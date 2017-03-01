@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "bourbon-neat": "^2.0.0",
+    "classnames": "^2.2.5",
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.26.1",
     "enzyme": "^2.7.1",

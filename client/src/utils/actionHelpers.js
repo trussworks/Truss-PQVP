@@ -1,6 +1,5 @@
 const actionHelpers = {
   checkStatus: (response) => {
-    console.log(response, 'check status');
     if (response.status >= 200 && response.status < 300) {
       return response;
     }

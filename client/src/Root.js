@@ -7,7 +7,7 @@ import { Router, Route, browserHistory } from 'react-router';
 import App from './app/App';
 import LandingPage from './landingPage/LandingPage';
 import ProfileContainer from './profile/ProfileContainer';
-import requireAuth from './auth/requireAuth';
+// import requireAuth from './auth/requireAuth';
 import { rootReducer } from './rootReducer';
 import AdminPage from './admin/AdminPage';
 

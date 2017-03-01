@@ -147,8 +147,8 @@ type ProfileAddress struct {
 
 // Profile represents a profile
 type Profile struct {
-	Phone     string           `json:"phone" valid:"required"`
-	Addresses []ProfileAddress `json:"addresses" valid:"required"`
+	Phone     string           `json:"phone"`
+	Addresses []ProfileAddress `json:"addresses"`
 }
 
 /*
@@ -199,6 +199,17 @@ curl -H "Content-Type: application/json" -d '{"phone":"4434567890","addresses":[
 */
 func UpdateProfile(w http.ResponseWriter, r *http.Request) {
 	var profile Profile
+	var user User
+	if u, ok := r.Context().Value(userKey).(User); ok {
+		user = u
+	} else {
+		logger.Error("no user context",
+			zap.String("path", r.URL.Path),
+		)
+		http.Error(w, http.StatusText(400), http.StatusBadRequest)
+		return
+	}
+
 	err := json.NewDecoder(r.Body).Decode(&profile)
 	if err != nil {
 		logger.Error("could not decode json",
@@ -217,7 +228,16 @@ func UpdateProfile(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(400), http.StatusBadRequest)
 		return
 	}
-	// Write profile into DB here.
+	err = db.WriteProfile(user.Email, profile)
+	if err != nil {
+		logger.Error("could not write profile into db",
+			zap.String("path", r.URL.Path),
+			zap.Error(err),
+		)
+		http.Error(w, http.StatusText(500),
+			http.StatusInternalServerError)
+		return
+	}
 	w.WriteHeader(http.StatusOK)
 	rp, err := json.Marshal(profile)
 	if err != nil {

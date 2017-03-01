@@ -133,25 +133,24 @@ AND users.email=$1;`, email)
 	}
 }
 
-func (pg *Postgres) UpdateProfile(email string, profile Profile) error {
+func (pg *Postgres) WriteProfile(email string, profile Profile) error {
 	tx, err := pg.Begin()
 	if err != nil {
 		return err
 	}
 	_, err = tx.Exec(`
-DELETE FROM addresses USING users
+DELETE FROM addresses USING users, profiles
 WHERE addresses.profile_id = profiles.id
-AND profile.user_id = users.id
-AND user.email = $1`, email)
+AND profiles.user_id = users.id
+AND users.email = $1`, email)
 	if err != nil {
 		tx.Rollback()
 		return err
 	}
 	_, err = tx.Exec(`
 DELETE FROM profiles USING users
-WHERE profiles.profile_id = profiles.id
-AND profile.user_id = user.id
-AND user.email = $1`, email)
+WHERE profiles.user_id = users.id
+AND users.email = $1`, email)
 	if err != nil {
 		tx.Rollback()
 		return err
@@ -163,15 +162,15 @@ AND user.email = $1`, email)
 		tx.Rollback()
 		return err
 	}
-	var res sql.Result
-	res, err = tx.Exec(`
+	var profile_id int32
+	row = tx.QueryRow(`
 INSERT INTO profiles (user_id, phone)
-VALUES ($1, $2)`, user_id, profile.Phone)
+VALUES ($1, $2) RETURNING id`, user_id, profile.Phone)
 	if err != nil {
 		tx.Rollback()
 		return err
 	}
-	profile_id, err := res.LastInsertId()
+	err = row.Scan(&profile_id)
 	if err != nil {
 		tx.Rollback()
 		return err
@@ -207,7 +206,7 @@ type Datastore interface {
 	DeleteUser(User) error
 	FindRecipients(*geojson.Geometry) ([]string, error)
 	FetchProfile(string) (Profile, error)
-	UpdateProfile(string, Profile) error
+	WriteProfile(string, Profile) error
 	io.Closer
 }
 

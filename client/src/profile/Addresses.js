@@ -13,7 +13,7 @@ const Addresses = ({
      {addresses.map(address => (
        <div key={address.address}>
          <div>{address.address}</div>
-         <button onClick={() => removeAddress(address)}>removeme</button>
+         <button onClick={() => removeAddress(address)}>Remove Address</button>
        </div>
      ))}
      <AddressField

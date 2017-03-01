@@ -40,6 +40,8 @@ func main() {
 	// Base routes
 	root.HandleFunc(pat.Get("/"), IndexHandler(entry))
 	root.Handle(pat.Get("/:file.:ext"), http.FileServer(http.Dir(*static)))
+	root.Handle(pat.Get("/dist/*"),
+		http.FileServer(http.Dir(*static)))
 	root.Handle(pat.Get("/public/*"),
 		http.FileServer(http.Dir(*static)))
 	root.HandleFunc(pat.Get("/profile"), IndexHandler(entry))

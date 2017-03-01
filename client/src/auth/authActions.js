@@ -7,9 +7,8 @@ export function logOutUser() {
   return { type: types.USER_LOGOUT };
 }
 
-export function saveUser(email, authToken) {
-  const userInfo = { email, authToken };
-  return { type: types.SAVE_USER, userInfo };
+export function saveUser(user) {
+  return { type: types.SAVE_USER, userInfo: user };
 }
 
 export function authenticateUser(email, password) {
@@ -52,8 +51,7 @@ export function signUpUser(email, password) {
   .then(actionHelpers.checkStatus)
   .then(actionHelpers.parseJSON)
   .then((response) => {
-    dispatch(saveUser(response));
-    dispatch(push('/profile'));
+    dispatch(saveUser(response)).then(dispatch(push('/profile')));
   })
   .catch(() => {
     dispatch(displayAlert(

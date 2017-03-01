@@ -48,7 +48,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 			zap.String("path", r.URL.Path),
 			zap.Error(err),
 		)
-		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		http.Error(w, http.StatusText(http.StatusBadRequest),
+			http.StatusBadRequest)
 		return
 	}
 	success := db.LoginUser(user)
@@ -57,8 +58,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 			zap.String("path", r.URL.Path),
 			zap.Error(err),
 		)
-		w.WriteHeader(http.StatusNotFound)
 		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
+		return
 	}
 
 	token, err := CreateJwt(user)
@@ -68,6 +69,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 			zap.Error(err),
 		)
 		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
+		return
 	}
 	logger.Info("user login successful",
 		zap.String("path", r.URL.Path),
@@ -110,7 +112,8 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 			zap.String("path", r.URL.Path),
 			zap.Error(err),
 		)
-		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
+		http.Error(w, http.StatusText(500),
+			http.StatusInternalServerError)
 		return
 	}
 
@@ -120,7 +123,8 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 			zap.String("path", r.URL.Path),
 			zap.Error(err),
 		)
-		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
+		http.Error(w, http.StatusText(500),
+			http.StatusInternalServerError)
 		return
 	}
 

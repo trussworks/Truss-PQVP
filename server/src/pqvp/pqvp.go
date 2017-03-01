@@ -2,11 +2,10 @@ package main
 
 import (
 	"flag"
-	"net/http"
-
 	"go.uber.org/zap"
 	"goji.io"
 	"goji.io/pat"
+	"net/http"
 )
 
 var (
@@ -26,7 +25,6 @@ func main() {
 	docs := flag.String("docs", "../client/dist/docs", "the directory to serve swagger documentation from.")
 	port := flag.String("port", ":80", "the `port` to listen on.")
 	flag.Parse()
-
 	logger, _ = zap.NewProduction()
 
 	var err error
@@ -37,12 +35,13 @@ func main() {
 		)
 	}
 	defer db.Close()
-
 	root := goji.NewMux()
 
 	// Base routes
 	root.HandleFunc(pat.Get("/"), IndexHandler(entry))
 	root.Handle(pat.Get("/:file.:ext"), http.FileServer(http.Dir(*static)))
+	root.Handle(pat.Get("/public/*"),
+		http.FileServer(http.Dir(*static)))
 	root.HandleFunc(pat.Get("/profile"), IndexHandler(entry))
 	root.HandleFunc(pat.Get("/admin"), IndexHandler(entry))
 	root.HandleFunc(pat.Get("/admin/notifications"), IndexHandler(entry))

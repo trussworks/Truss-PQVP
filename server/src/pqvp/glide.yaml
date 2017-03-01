@@ -25,3 +25,5 @@ import:
 - package: github.com/golang/protobuf
   subpackages:
   - proto
+- package: sourcegraph.com/sourcegraph/go-selenium
+  version: 0.6.0

@@ -43,26 +43,30 @@ func main() {
 	// Base routes
 	root.HandleFunc(pat.Get("/"), IndexHandler(entry))
 	root.Handle(pat.Get("/:file.:ext"), http.FileServer(http.Dir(*static)))
+	root.HandleFunc(pat.Get("/profile"), IndexHandler(entry))
+	root.HandleFunc(pat.Get("/admin"), IndexHandler(entry))
+	root.HandleFunc(pat.Get("/admin/notifications"), IndexHandler(entry))
 
-	// API routes
+	// Login and Signup are unauthed
 	root.HandleFunc(pat.Post("/api/login"), Login)
 	root.HandleFunc(pat.Post("/api/signup"), Signup)
-	root.HandleFunc(pat.Get("/api/profile"), GetProfile)
-	root.HandleFunc(pat.Post("/api/profile"), UpdateProfile)
 
-	// Documentation routes
-	root.Handle(pat.Get("/docs"), http.RedirectHandler("/docs/", 301))
-	root.Handle(pat.Get("/docs/*"), http.StripPrefix("/docs/", http.FileServer(http.Dir(*docs))))
-
-	// Admin routes
+	// Admin routes with auth
 	admin := goji.SubMux()
 	admin.Use(authMiddleware)
 	root.Handle(pat.New("/api/admin/*"), admin)
 	admin.HandleFunc(pat.Get("/"), whoami)
 
-	// Profile routes
-	root.Handle(pat.New("/profile/*"), admin)
-	admin.Handle(pat.Get("/"), IndexHandler(entry))
+	// Non-admin routes with auth
+	auth := goji.SubMux()
+	auth.Use(authMiddleware)
+	root.Handle(pat.New("/api/profile/*"), auth)
+	auth.HandleFunc(pat.Get("/"), GetProfile)
+	auth.HandleFunc(pat.Post("/"), UpdateProfile)
+
+	// Documentation routes
+	root.Handle(pat.Get("/docs"), http.RedirectHandler("/docs/", 301))
+	root.Handle(pat.Get("/docs/*"), http.StripPrefix("/docs/", http.FileServer(http.Dir(*docs))))
 
 	// Start the server
 	http.ListenAndServe(*port, root)

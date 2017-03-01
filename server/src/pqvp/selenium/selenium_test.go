@@ -29,5 +29,5 @@ func TestLoadTitle(t *testing.T) {
 	}
 
 	title, _ := wd.Title()
-	assert.Equal(t, "PQVP", title)
+	assert.Equal(t, "PQVP App", title)
 }

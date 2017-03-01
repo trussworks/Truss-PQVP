@@ -22,6 +22,9 @@ server_run: server_build server_test
 		-static client/dist/ \
 		-docs client/dist/docs/ \
 		-port :8080
+selenium_test:
+	cd server/src/pqvp/selenium && \
+	go test
 local_docker: client_build
 	bin/local-docker.sh $(NAME)
 

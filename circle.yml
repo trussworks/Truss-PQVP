@@ -15,10 +15,13 @@ compile:
     - bin/circle-compile.sh
 test:
   override:
+    # Setup Sauce Connect
+    - cd sc-*-linux && ./bin/sc --user $SAUCE_USERNAME --api-key $SAUCE_ACCESS_KEY --readyfile ~/sauce_is_ready:
+        background: true
     - bin/circle-test.sh
   post:
     # Wait for Sauce Connect to close the tunnel
-    # - killall --wait sc
+     - killall --wait sc
 deployment:
   prod:
     branch: master

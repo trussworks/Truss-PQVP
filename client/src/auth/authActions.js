@@ -29,8 +29,7 @@ export function authenticateUser(email, password) {
     dispatch(push('/profile'));
   })
   .catch(() => {
-    console.log('Error in login.');
-    console.log(err);
+    console.error('Error in Login: ', err);
     dispatch(displayAlert(
       'usa-alert-error',
       'Error',
@@ -57,8 +56,7 @@ export function signUpUser(email, password) {
     dispatch(push('/profile'));
   })
   .catch((err) => {
-    console.log('Error in signup.');
-    console.log(err);
+    console.error('Error in signup: ', err);
     dispatch(displayAlert(
       'usa-alert-error',
       'Error',

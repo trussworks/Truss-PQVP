@@ -25,8 +25,7 @@ export function updateProfile(newProfile) {
   })
   .catch((error) => {
     dispatch(displayAlert('usa-alert-error', 'Error Saving Profile', 'We were unable to save your profile. Please refresh the page and try again.'));
-    console.log('caught error');
-    console.log(error);
+    console.error('updateProfile Error: ', error);
     if (error.isAuthRelatedError) {
       console.log('we failed the auth check, make them login again.');
       dispatch(push('/'));
@@ -44,8 +43,7 @@ export function getProfile() {
   })
   .catch((error) => {
     dispatch(displayAlert('usa-alert-error', 'Error Loading Profile', 'We were unable to load your profile. Please refresh the page and try again.'));
-    console.log('caught error');
-    console.log(error);
+    console.error('getProfile Error: ', error);
     if (error.isAuthRelatedError) {
       console.log('we failed the auth check, make them login again.');
       dispatch(push('/'));

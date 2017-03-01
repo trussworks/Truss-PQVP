@@ -2,15 +2,14 @@ package main
 
 import (
 	"bytes"
+	"context"
+	"github.com/stretchr/testify/assert"
+	"go.uber.org/zap"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"testing"
-
-	"github.com/stretchr/testify/assert"
-
-	"go.uber.org/zap"
 )
 
 var (
@@ -30,6 +29,13 @@ func generatePost(t *testing.T, endpoint string, json []byte) *http.Request {
 	return req
 }
 
+func authRequest(r *http.Request, email string) *http.Request {
+	ctx := context.WithValue(r.Context(), userKey, User{
+		Email: email,
+	})
+	r = r.WithContext(ctx)
+	return r
+}
 func TestMain(m *testing.M) {
 	var err error
 	logger, err = zap.NewProduction()
@@ -106,6 +112,7 @@ func TestBadLoginPass(t *testing.T) {
 func TestUpdateProfile(t *testing.T) {
 	res := httptest.NewRecorder()
 	req := generatePost(t, "/api/profile", profileGood)
+	req = authRequest(req, "joe@gmail.com")
 	UpdateProfile(res, req)
 	assert.Equal(t, 200, res.Code)
 }

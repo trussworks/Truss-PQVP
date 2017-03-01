@@ -37,6 +37,7 @@ func (pg *Postgres) CreateUser(u User) error {
 }
 
 func (pg *Postgres) FetchProfile(email string) (Profile, error) {
+	var profile Profile
 	row := pg.QueryRow(`
 SELECT profiles.id, profiles.phone
 FROM profiles, users
@@ -44,11 +45,15 @@ WHERE profiles.user_id = users.id AND users.email = $1`, email)
 	var phone string
 	var profile_id int32
 	err := row.Scan(&profile_id, &phone)
-	if err != nil {
+	switch {
+	case err == sql.ErrNoRows:
+		profile.Phone = ""
+	case err != nil:
 		return Profile{}, err
+	default:
+		profile.Phone = phone
+		profile.Addresses = make([]ProfileAddress, 0)
 	}
-	addresses := make([]ProfileAddress, 0)
-	profile := Profile{phone, addresses}
 	rows, err := pg.Query(`
 SELECT addresses.address,
 ST_X(addresses.point) AS longitude,
@@ -72,10 +77,14 @@ AND users.email=$1;`, email)
 		profile.Addresses = append(profile.Addresses, addy)
 	}
 	err = rows.Err()
-	if err != nil {
-		return Profile{}, err
+	switch {
+	case err == sql.ErrNoRows:
+		return profile, nil
+	case err != nil:
+		return profile, err
+	default:
+		return profile, nil
 	}
-	return profile, nil
 }
 
 // Close implements io.Closer

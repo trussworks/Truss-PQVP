@@ -129,4 +129,5 @@ paths:
         - name: geojson
           description: ArcGIS feature formatted as GeoJSON
           type: object
+          required: true
 

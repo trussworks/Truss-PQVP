@@ -243,7 +243,6 @@ type Alert struct {
 // SendAlert looks up affected users inside an the alert geometry
 // and sends SMS messages with the message
 func SendAlert(w http.ResponseWriter, r *http.Request) {
-	//alert := dummyAlert()
 	var alert Alert
 	err := json.NewDecoder(r.Body).Decode(&alert)
 	// handle incorrect JSON
@@ -278,6 +277,7 @@ func SendAlert(w http.ResponseWriter, r *http.Request) {
 	logger.Info("Sending SMS messages to",
 		zap.Strings("recipients", recipients),
 	)
-	// TODO Replace with SNS calls
+	successes := SendSMS(recipients, alert.Message)
+	//TODO Store sent alerts in DB
 
 }

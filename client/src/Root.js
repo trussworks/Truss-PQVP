@@ -23,8 +23,8 @@ export const Root = () => (
         <Route path="profile" component={requireAuth(ProfileContainer)} />
       </Route>
       <Route path="admin" component={App}>
-        <IndexRoute component={AdminPage} />
-        <Route path="notifications" component={NotificationsPage} />
+        <IndexRoute component={requireAuth(AdminPage)} />
+        <Route path="notifications" component={requireAuth(NotificationsPage)} />
       </Route>
     </Router>
   </Provider>

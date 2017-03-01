@@ -18,3 +18,10 @@ import:
   - bcrypt
 - package: github.com/asaskevich/govalidator
   version: v5
+- package: github.com/paulmach/go.geojson
+  version: v1.3
+- package: github.com/tj/go-sms
+- package: github.com/ttacon/libphonenumber
+- package: github.com/golang/protobuf
+  subpackages:
+  - proto

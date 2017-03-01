@@ -6,8 +6,6 @@ set -eux -o pipefail
 rm -rf ~/.go_workspace/src/github.com/mattes
 go get github.com/Masterminds/glide
 go get github.com/mattes/migrate
-go get sourcegraph.com/sourcegraph/go-selenium
-
 pushd server/src/pqvp
 glide install
 popd
@@ -34,5 +32,6 @@ popd
 git clone https://github.com/silinternational/ecs-deploy.git
 
 # Pull down Sauce Labs Connect
-wget https://saucelabs.com/downloads/sc-latest-linux.tar.gz
-tar -xzf sc-latest-linux.tar.gz
+# FIXME: disabled due to Sauce just not working. --mark
+# - wget https://saucelabs.com/downloads/sc-latest-linux.tar.gz
+# tar -xzf sc-latest-linux.tar.gz

@@ -1,5 +1,5 @@
-hash: 1c91c7c063f17fd8f812911e15a93fcfe8bb030958b2a59ca60d2f03428026b6
-updated: 2017-03-01T13:16:13.149658816-08:00
+hash: b94d9f64cd36d94aaa034efb0b9f71407825df079840d0b3c665748ad40837f2
+updated: 2017-02-28T20:51:00.755894617-08:00
 imports:
 - name: github.com/asaskevich/govalidator
   version: 7b3beb6df3c42abd3509abfc3bcacc0fbfb7c877
@@ -81,8 +81,6 @@ imports:
   subpackages:
   - bcrypt
   - blowfish
-- name: sourcegraph.com/sourcegraph/go-selenium
-  version: 8c693ec995357f311ffdf5020f64ca93d19068c7
 testImports:
 - name: github.com/davecgh/go-spew
   version: 6d212800a42e8ab5c146b8ace3490ee17e5225f9

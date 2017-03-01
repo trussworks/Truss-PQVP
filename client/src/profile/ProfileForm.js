@@ -48,7 +48,7 @@ const ProfileForm = ({ handleSubmit, submitting, valid }) => (
           setTimeout(handleSubmit);
         }}
       />
-      <label htmlFor="onlyEmergencies">Only Receive Nofitications For Imminent Emergencies?</label>
+      <label htmlFor="onlyEmergencies">Only Receive Notifications For Imminent Emergencies?</label>
     </fieldset>
   </form>
 );

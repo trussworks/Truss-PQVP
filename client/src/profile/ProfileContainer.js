@@ -66,7 +66,7 @@ class ProfileContainer extends React.Component {
     return (
       <div className="container--content">
         <UserForm
-          user={this.props.user}
+          userEmail={this.props.user.email}
           togglePasswordForm={this.togglePasswordForm}
           updatingPassword={this.state.updatingPassword}
           onSubmit={this.updatePassword}

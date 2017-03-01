@@ -4,7 +4,7 @@ import { AuthField } from '../auth/AuthField';
 import authValidation from '../auth/authValidation';
 
 const UserForm = ({
-  user,
+  userEmail,
   handleSubmit,
   submitting,
   updatingPassword,
@@ -13,7 +13,7 @@ const UserForm = ({
 }) => (
   <div>
     <div>Email Address</div>
-    <div>{user.email}</div>
+    <div>{userEmail}</div>
     <a href="" onClick={togglePasswordForm}>Change password</a>
     {updatingPassword ?
       (<form className="usa-form" onSubmit={handleSubmit}>
@@ -47,7 +47,7 @@ const UserForm = ({
 );
 
 UserForm.propTypes = {
-  user: PropTypes.object.isRequired,
+  userEmail: PropTypes.string.isRequired,
   handleSubmit: PropTypes.func,
   submitting: PropTypes.bool,
   togglePasswordForm: PropTypes.func.isRequired,

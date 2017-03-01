@@ -26,7 +26,7 @@ class AdminPage extends React.Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="container--content">
         <h1>Admin Page</h1>
         <EmergencyPicker selectFeature={this.selectFeature} selectedFeature={this.state.feature} />
         <AlertForm

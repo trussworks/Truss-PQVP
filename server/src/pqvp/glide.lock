@@ -1,5 +1,5 @@
-hash: c536a261d511f15da7eb686c376791e4163cc269e8c29d0b12d63b9cb571a0f5
-updated: 2017-02-28T14:54:12.40931896-08:00
+hash: 88febc58b41780196b90af3631bd1055cf3624ebf5adccb7162557e4bbb649cb
+updated: 2017-02-28T20:11:32.622770608-08:00
 imports:
 - name: github.com/asaskevich/govalidator
   version: 7b3beb6df3c42abd3509abfc3bcacc0fbfb7c877
@@ -52,6 +52,8 @@ imports:
   - assert
 - name: github.com/tj/go-sms
   version: e11c16aec8e1eb287ca65bcbf1658345f0948654
+- name: github.com/ttacon/libphonenumber
+  version: 7cae2148c8b6ea3d01e4b2e3f1cc9e7136bb1bcf
 - name: go.uber.org/atomic
   version: 3b8db5e93c4c02efbc313e17b2e796b0914a01fb
 - name: go.uber.org/zap

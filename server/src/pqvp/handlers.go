@@ -278,6 +278,10 @@ func SendAlert(w http.ResponseWriter, r *http.Request) {
 		zap.Strings("recipients", recipients),
 	)
 	successes := SendSMS(recipients, alert.Message)
+	_ = successes
+	logger.Info("Successfully sent",
+		zap.Int("notifications", successes),
+	)
 	//TODO Store sent alerts in DB
 
 }

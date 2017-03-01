@@ -48,7 +48,7 @@ class ProfileContainer extends React.Component {
   }
   saveNewAddress(address) {
     const newAddress = {
-      address: address.properties.name,
+      address: address.properties.label,
       latitude: address.geometry.coordinates[1],
       longitude: address.geometry.coordinates[0],
     };

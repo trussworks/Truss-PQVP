@@ -29,16 +29,12 @@ paths:
         500:
           description: Internal Server Failure
       parameters:
-        - name: email
-          in: query
-          description: users email address to login
-          type: string
+        - name: user
+          in: body
           required: true
-        - name: password
-          in: query
-          description: users password to login
-          type: string
-          required: true
+          description: users email address and password to login
+          schema:
+            $ref: '#/definitions/User'
   /signup:
     post:
       description: Creates a new user account
@@ -52,21 +48,12 @@ paths:
         500:
           description: Internal Server Failure
       parameters:
-        - name: email
-          in: query
+        - name: user
+          in: body
           description: email address of user to access account
-          type: string
           required: true
-        - name: password
-          in: query
-          description: password to access account
-          type: string
-          required: true
-        - name: admin
-          in: query
-          description: boolean flag to determine if a user should be an admin (for prototype purposes only, this would be removed for production)
-          type: boolean
-          required: false
+          schema:
+            $ref: '#/definitions/User'
   /profile:
     get:
       description: Returns a logged in user profile
@@ -77,7 +64,7 @@ paths:
           description: Profile returned
         400:
           description: Invalid Request
-        400:
+        500:
           description: Internal Server Failure
     post:
       description: Updates a logged in user profile
@@ -91,16 +78,12 @@ paths:
         500:
           description: Internal Server Failure
       parameters:
-        - name: phone
-          in: query
-          description: phone number of the user
-          type: string
+        - name: profile
+          in: body
+          description: user profile containing phone number and addresses
           required: true
-        - name: addresses
-          in: query
-          description: Array of address, latitude, longitude
-          type: array
-          required: true
+          schema:
+            $ref: '#/definitions/Profile'
   /alert:
     post:
       description: Looks up addresses in an ArcGIS polygon
@@ -116,17 +99,189 @@ paths:
         500:
           description: Internal Server Failure
       parameters:
-        - name: message
-          in: query
-          description: the alert message to send
-          type: string
+        - name: alert
+          in: body
+          description: Alert containing the message, severity and the ArcGIS coordinates
           required: true
-        - name: severity
-          in: query
-          description: the level of severity
-          type: string
-          required: true
-        - name: geojson
-          description: ArcGIS feature formatted as GeoJSON
-          type: object
+          schema:
+            $ref: '#/definitions/Alert'
+definitions:
+  Alert:
+    type: object
+    required:
+      - message
+      - severity
+      - geojson
+    properties:
+      message:
+        type: string
+        description: the alert message to send
+      severity:
+        type: string
+        description: the level of severity(eg emergency)
+      geojson:
+        $ref: "#/definitions/GeoJSONFeature"
 
+  Address:
+    type: object
+    required:
+      - address
+      - latitude
+      - longitude
+    properties:
+      address:
+        type: string
+        description: Address describing location of coordinates
+      latitude:
+        type: number
+        format: long
+        description: latitude coordinate using 4326 spatial reference
+      longitude:
+        type: number
+        format: long
+        description: longitude coordinate using 4326 spatial reference
+  Profile:
+    type: object
+    required:
+      - phone
+    properties:
+      phone:
+        type: string
+        description: phone number of the user
+      addresses:
+        type: array
+        items:
+          $ref: "#/definitions/Address"
+  User:
+    type: object
+    required:
+      - email
+      - password
+    properties:
+      email:
+        type: string
+        description: email address of user to access account
+      password:
+        type: string
+        format: password
+        description: password to access account
+      admin:
+        type: boolean
+        description: boolean flag to determine if a user should be an admin (for prototype purposes only, this would be removed for production)
+  GeoJSONFeature:
+    type: object
+    description: GeoJSON feature
+    required:
+      - geometry
+    externalDocs:
+      url: http://geojson.org/geojson-spec.html#feature-objects
+    properties:
+      id:
+        type: string
+      geometry:
+        type: string
+        enum:
+          - GeoJSONGeometry
+  GeoJSONGeometry:
+    type: object
+    description: GeoJSON geometry
+    discriminator: type
+    required:
+      - type
+    externalDocs:
+      url: http://geojson.org/geojson-spec.html#geometry-objects
+    properties:
+      type:
+        type: string
+        enum:
+          - GeoJSONPoint
+          - GeoJSONLineString
+          - GeoJSONPolygon
+          - GeoJSONMultiPoint
+          - GeoJSONMultiLineString
+          - GeoJSONMultiPolygon
+        description: the geometry type
+  GeoJSONPoint2D:
+    type: array
+    maxItems: 2
+    minItems: 2
+    items:
+      type: number
+  GeoJSONPoint:
+    type: object
+    description: GeoJSON geometry
+    externalDocs:
+      url: http://geojson.org/geojson-spec.html#id2
+    allOf:
+      - $ref: "#/definitions/GeoJSONGeometry"
+      - properties:
+          coordinates:
+            $ref: '#/definitions/GeoJSONPoint2D'
+  GeoJSONLineString:
+    type: object
+    description: GeoJSON geometry
+    externalDocs:
+      url: http://geojson.org/geojson-spec.html#id3
+    allOf:
+      - $ref: "#/definitions/GeoJSONGeometry"
+      - properties:
+          coordinates:
+            type: array
+            items:
+              $ref: '#/definitions/GeoJSONPoint2D'
+  GeoJSONPolygon:
+    type: object
+    description: GeoJSON geometry
+    externalDocs:
+      url: http://geojson.org/geojson-spec.html#id4
+    allOf:
+      - $ref: "#/definitions/GeoJSONGeometry"
+      - properties:
+          coordinates:
+            type: array
+            items:
+              type: array
+              items:
+                $ref: '#/definitions/GeoJSONPoint2D'
+  GeoJSONMultiPoint:
+    type: object
+    description: GeoJSON geometry
+    externalDocs:
+      url: http://geojson.org/geojson-spec.html#id5
+    allOf:
+      - $ref: "#/definitions/GeoJSONGeometry"
+      - properties:
+          coordinates:
+            type: array
+            items:
+              $ref: '#/definitions/GeoJSONPoint2D'
+  GeoJSONMultiLineString:
+    type: object
+    description: GeoJSON geometry
+    externalDocs:
+      url: http://geojson.org/geojson-spec.html#id6
+    allOf:
+      - $ref: "#/definitions/GeoJSONGeometry"
+      - properties:
+          coordinates:
+            type: array
+            items:
+              type: array
+              items:
+                $ref: '#/definitions/GeoJSONPoint2D'
+  GeoJSONMultiPolygon:
+    type: object
+    description: GeoJSON geometry
+    externalDocs:
+      url: http://geojson.org/geojson-spec.html#id6
+    allOf:
+      - $ref: "#/definitions/GeoJSONGeometry"
+      - properties:
+          coordinates:
+            type: array
+            items:
+              type: array
+              items:
+                type: array
+                items:
+                  $ref: '#/definitions/GeoJSONPoint2D'

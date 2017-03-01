@@ -30,7 +30,6 @@ class AddressField extends React.Component {
 
     this.state = {
       suggestions: [],
-      loading: false,
     };
     this.onChange = this.onChange.bind(this);
     this.onSelect = this.onSelect.bind(this);
@@ -38,9 +37,8 @@ class AddressField extends React.Component {
 
   onChange(event, value) {
     this.props.updateAddressState(value);
-    this.setState({ loading: true });
     AddressField.suggestionsRequest(value).then((result) => {
-      this.setState({ suggestions: result.features, loading: false });
+      this.setState({ suggestions: result.features });
     });
   }
   onSelect(value, item) {

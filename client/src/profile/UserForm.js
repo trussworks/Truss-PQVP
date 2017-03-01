@@ -30,8 +30,8 @@ const UserForm = ({
           <Field
             component={AuthField}
             label="Confirm password"
-            name="password"
-            placeholder="Old password"
+            name="confirmPassword"
+            placeholder="New password"
             type="password"
           />
           <input

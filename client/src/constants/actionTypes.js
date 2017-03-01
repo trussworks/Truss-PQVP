@@ -5,3 +5,6 @@ export const USER_LOGOUT = 'USER_LOGOUT';
 
 // Auth Actions
 export const SAVE_USER = 'SAVE_USER';
+
+// Profile Actions
+export const SAVE_PROFILE = 'SAVE_PROFILE';

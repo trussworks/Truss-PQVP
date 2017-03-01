@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-// import { bindActionCreators } from 'redux';
+import { bindActionCreators } from 'redux';
 import UserForm from './UserForm';
 import ProfileForm from './ProfileForm';
 import Addresses from './Addresses';
@@ -15,19 +15,19 @@ class ProfileContainer extends React.Component {
       newAddressState: '',
     };
 
-    this.componentWillMount = this.componentWillMount.bind(this);
     this.submitUpdate = this.submitUpdate.bind(this);
     this.togglePasswordForm = this.togglePasswordForm.bind(this);
     this.saveNewAddress = this.saveNewAddress.bind(this);
     this.updateAddressState = this.updateAddressState.bind(this);
     this.removeAddress = this.removeAddress.bind(this);
+    this.updatePassword = this.updatePassword.bind(this);
   }
   componentWillMount() {
-    this.props.dispatch(getProfile());
+    this.props.getProfile();
   }
   submitUpdate(values) {
     const newProfile = Object.assign({}, this.props.profile, values);
-    this.props.dispatch(updateProfile(newProfile));
+    this.props.updateProfile(newProfile);
   }
   togglePasswordForm(e) {
     e.preventDefault();
@@ -44,7 +44,7 @@ class ProfileContainer extends React.Component {
       return;
     }
     newProfile.addresses.splice(loc, 1);
-    this.props.dispatch(updateProfile(newProfile));
+    this.props.updateProfile(newProfile);
   }
   saveNewAddress(address) {
     const newAddress = {
@@ -54,8 +54,13 @@ class ProfileContainer extends React.Component {
     };
     const newProfile = Object.assign({}, this.props.profile);
     newProfile.addresses.push(newAddress);
-    this.props.dispatch(updateProfile(newProfile));
+    this.props.updateProfile(newProfile);
     this.setState({ newAddressState: '' });
+  }
+  updatePassword(values) {
+    console.log('updating password');
+    console.log(this);
+    console.log(values);
   }
   render() {
     return (
@@ -64,6 +69,7 @@ class ProfileContainer extends React.Component {
           user={this.props.user}
           togglePasswordForm={this.togglePasswordForm}
           updatingPassword={this.state.updatingPassword}
+          onSubmit={this.updatePassword}
         />
         { !(this.props.profile && this.props.profile.addresses) ? (
           <div>loading profile...</div>
@@ -89,9 +95,10 @@ class ProfileContainer extends React.Component {
 }
 
 ProfileContainer.propTypes = {
-  dispatch: PropTypes.func.isRequired,
   profile: PropTypes.object,
   user: PropTypes.object.isRequired,
+  getProfile: PropTypes.func.isRequired,
+  updateProfile: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -101,8 +108,8 @@ function mapStateToProps(state) {
   };
 }
 
-// function mapDispatchToProps(dispatch) {
-//   return bindActionCreators({}, dispatch);
-// }
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ getProfile, updateProfile }, dispatch);
+}
 
-export default connect(mapStateToProps)(ProfileContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileContainer);

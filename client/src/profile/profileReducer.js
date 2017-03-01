@@ -1,6 +1,5 @@
 import { Map } from 'immutable';
-
-export const SAVE_PROFILE = 'SAVE_PROFILE';
+import { SAVE_PROFILE } from '../constants/actionTypes';
 
 const profileReducer = (state = new Map({ user: {} }), action) => {
   switch (action.type) {

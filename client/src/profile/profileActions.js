@@ -13,7 +13,6 @@ export function updateProfile(authToken, newProfile) {
   const headers = new Headers();
   headers.append('Authorization', `Bearer ${authToken}`);
 
-  // TODO: add the security to our headers.
   const fetchInit = {
     method: 'POST',
     headers,
@@ -29,7 +28,7 @@ export function updateProfile(authToken, newProfile) {
   })
   .catch((error) => {
     if (error.response.status === 403) {
-      console.log('bad user token');
+      // Forbidden means our auth didn't auth
       dispatch(logOutUser());
       dispatch(displayAlert('usa-alert-error', 'Error Loading Profile', 'We were unable to update your profile. Please login and try again.'));
     } else {
@@ -62,7 +61,7 @@ export function getProfile(authToken) {
     console.log(error.response.status);
     console.log(error.response);
     if (error.response.status === 403) {
-      console.log('bad user token');
+      // Forbidden means our auth didn't auth
       dispatch(logOutUser());
       dispatch(displayAlert('usa-alert-error', 'Error Loading Profile', 'We were unable to load your profile. Please login and try again.'));
     } else {

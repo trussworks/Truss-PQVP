@@ -82,6 +82,7 @@ func (pg *Postgres) FindRecipients(geo *geojson.Geometry) ([]string, error) {
 	return phoneNumbers, nil
 }
 
+// FetchProfile fetches a profile from the DB.
 func (pg *Postgres) FetchProfile(email string) (Profile, error) {
 	var profile Profile
 	row := pg.QueryRow(`
@@ -89,8 +90,8 @@ SELECT profiles.id, profiles.phone
 FROM profiles, users
 WHERE profiles.user_id = users.id AND users.email = $1`, email)
 	var phone string
-	var profile_id int32
-	err := row.Scan(&profile_id, &phone)
+	var profileID int32
+	err := row.Scan(&profileID, &phone)
 	switch {
 	case err == sql.ErrNoRows:
 		profile.Phone = ""
@@ -133,6 +134,7 @@ AND users.email=$1;`, email)
 	}
 }
 
+// WriteProfile writes a Profile into the db.
 func (pg *Postgres) WriteProfile(email string, profile Profile) error {
 	tx, err := pg.Begin()
 	if err != nil {
@@ -155,22 +157,22 @@ AND users.email = $1`, email)
 		tx.Rollback()
 		return err
 	}
-	var user_id int32
+	var userID int32
 	row := tx.QueryRow("SELECT id FROM users WHERE email = $1", email)
-	err = row.Scan(&user_id)
+	err = row.Scan(&userID)
 	if err != nil {
 		tx.Rollback()
 		return err
 	}
-	var profile_id int32
+	var profileID int32
 	row = tx.QueryRow(`
 INSERT INTO profiles (user_id, phone)
-VALUES ($1, $2) RETURNING id`, user_id, profile.Phone)
+VALUES ($1, $2) RETURNING id`, userID, profile.Phone)
 	if err != nil {
 		tx.Rollback()
 		return err
 	}
-	err = row.Scan(&profile_id)
+	err = row.Scan(&profileID)
 	if err != nil {
 		tx.Rollback()
 		return err
@@ -179,7 +181,7 @@ VALUES ($1, $2) RETURNING id`, user_id, profile.Phone)
 		_, err = tx.Exec(`
 INSERT INTO addresses (profile_id, address, point)
 VALUES ($1, $2, ST_SetSRID(ST_Point($3, $4),4326))`,
-			profile_id,
+			profileID,
 			profileAddress.Address,
 			profileAddress.Longitude,
 			profileAddress.Latitude)

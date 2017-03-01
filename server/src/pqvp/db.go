@@ -36,6 +36,57 @@ func (pg *Postgres) CreateUser(u User) error {
 	return nil
 }
 
+func (pg *Postgres) FetchProfile(email string) (Profile, error) {
+	var profile Profile
+	row := pg.QueryRow(`
+SELECT profiles.id, profiles.phone
+FROM profiles, users
+WHERE profiles.user_id = users.id AND users.email = $1`, email)
+	var phone string
+	var profile_id int32
+	err := row.Scan(&profile_id, &phone)
+	switch {
+	case err == sql.ErrNoRows:
+		profile.Phone = ""
+	case err != nil:
+		return Profile{}, err
+	default:
+		profile.Phone = phone
+		profile.Addresses = make([]ProfileAddress, 0)
+	}
+	rows, err := pg.Query(`
+SELECT addresses.address,
+ST_X(addresses.point) AS longitude,
+ST_Y(addresses.point) AS latitude
+FROM addresses, profiles, users
+WHERE addresses.profile_id = profiles.id
+AND profiles.user_id = users.id
+AND users.email=$1;`, email)
+	if err != nil {
+		return Profile{}, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var address string
+		var longitude, latitude float64
+		err = rows.Scan(&address, &longitude, &latitude)
+		if err != nil {
+			return Profile{}, err
+		}
+		addy := ProfileAddress{address, latitude, longitude}
+		profile.Addresses = append(profile.Addresses, addy)
+	}
+	err = rows.Err()
+	switch {
+	case err == sql.ErrNoRows:
+		return profile, nil
+	case err != nil:
+		return profile, err
+	default:
+		return profile, nil
+	}
+}
+
 // Close implements io.Closer
 func (pg *Postgres) Close() error {
 	return pg.DB.Close()
@@ -48,6 +99,7 @@ type Postgres struct{ *sql.DB }
 type Datastore interface {
 	LoginUser(User) bool
 	CreateUser(User) error
+	FetchProfile(string) (Profile, error)
 	io.Closer
 }
 

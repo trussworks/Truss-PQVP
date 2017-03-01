@@ -7,8 +7,12 @@ export function saveProfile(profile) {
   return { type: SAVE_PROFILE, userInfo: profile };
 }
 
-export function updateProfile(newProfile) {
+const PROFILE_URL = '/api/profile/';
+
+export function updateProfile(authToken, newProfile) {
   const headers = new Headers();
+  headers.append('Authorization', `Bearer ${authToken}`);
+
   // TODO: add the security to our headers.
   const fetchInit = {
     method: 'POST',
@@ -16,7 +20,7 @@ export function updateProfile(newProfile) {
     body: JSON.stringify(newProfile),
   };
 
-  return dispatch => fetch('/api/profile', fetchInit)
+  return dispatch => fetch(PROFILE_URL, fetchInit)
   .then(actionHelpers.checkStatus)
   .then(actionHelpers.parseJSON)
   .then((profile) => {
@@ -33,12 +37,23 @@ export function updateProfile(newProfile) {
   });
 }
 
-export function getProfile() {
-  return dispatch => fetch('/api/profile')
+export function getProfile(authToken) {
+  const headers = new Headers();
+  headers.append('Authorization', `Bearer ${authToken}`);
+  const fetchInit = {
+    method: 'GET',
+    headers,
+  };
+
+  return dispatch => fetch(PROFILE_URL, fetchInit)
   .then(actionHelpers.checkStatus)
   .then(actionHelpers.parseJSON)
   .then((profile) => {
-    dispatch(saveProfile(profile));
+    const newProfile = Object.assign({}, profile);
+    if (!newProfile.addresses) {
+      newProfile.addresses = [];
+    }
+    dispatch(saveProfile(newProfile));
     dispatch(dismissAlert());
   })
   .catch((error) => {

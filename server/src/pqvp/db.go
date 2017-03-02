@@ -95,6 +95,11 @@ func (pg *Postgres) FindRecipients(geo *geojson.Geometry) ([]AlertRecipient, err
 	return recipients, nil
 }
 
+// FetchAlertHistory returns a slice of all alerts
+func (pg *Postgres) FetchAlertHistory() ([]SentAlert, error) {
+	return make([]SentAlert, 0), nil
+}
+
 // FetchProfile fetches a profile from the DB.
 func (pg *Postgres) FetchProfile(email string) (Profile, error) {
 	var profile Profile
@@ -255,6 +260,7 @@ type Datastore interface {
 	CreateUser(User) error
 	DeleteUser(User) error
 	FindRecipients(*geojson.Geometry) ([]AlertRecipient, error)
+	FetchAlertHistory() ([]SentAlert, error)
 	FetchProfile(string) (Profile, error)
 	WriteProfile(string, Profile) error
 	WriteAlert(SentAlert) error

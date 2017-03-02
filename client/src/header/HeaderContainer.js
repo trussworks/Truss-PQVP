@@ -7,6 +7,10 @@ import { dismissAlert } from '../app/appActions';
 import { logOutUser } from '../auth/authActions';
 
 class HeaderContainer extends React.Component {
+  static closeMenu() {
+    document.querySelector('ul#side-nav-1').setAttribute('aria-hidden', 'true');
+    document.querySelector('button#side-nav-1-button').setAttribute('aria-expanded', 'false');
+  }
   constructor(props) {
     super(props);
 
@@ -33,6 +37,7 @@ class HeaderContainer extends React.Component {
             />) : (null)
           }
           <NavMenu
+            closeMenu={HeaderContainer.closeMenu}
             loggedIn={this.props.loggedIn}
             logOutUser={this.logOutUser}
             userEmail={this.props.email}

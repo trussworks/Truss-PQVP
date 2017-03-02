@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 
-const UserMenu = ({ loggedIn, logOutUser }) => (
+const UserMenu = ({ closeMenu, loggedIn, logOutUser }) => (
   <div>
     <li>
       <a
@@ -23,7 +23,7 @@ const UserMenu = ({ loggedIn, logOutUser }) => (
     </li>
     { loggedIn ?
       (<div>
-        <Link to="/profile">Profile</Link>
+        <Link onClick={closeMenu} to="/profile">Profile</Link>
         <li><a href="" onClick={logOutUser}>Log out</a></li>
       </div>) : (null)
     }
@@ -31,6 +31,7 @@ const UserMenu = ({ loggedIn, logOutUser }) => (
 );
 
 UserMenu.propTypes = {
+  closeMenu: PropTypes.func.isRequired,
   loggedIn: PropTypes.bool.isRequired,
   logOutUser: PropTypes.func.isRequired,
 };

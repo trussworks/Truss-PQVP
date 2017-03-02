@@ -17,7 +17,7 @@ npm-debug.log
 # server/.glide/
 server/src/pqvp/pqvp
 server/src/pqvp/vendor
-
+server/pkg/
 
 # Terraform task definition
 terraform/aws-us-west-2/task-definitions/pqvp.json

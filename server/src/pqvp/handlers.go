@@ -3,10 +3,13 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
+
+	"goji.io/pat"
+
 	"github.com/asaskevich/govalidator"
 	"github.com/paulmach/go.geojson"
 	"go.uber.org/zap"
-	"net/http"
 )
 
 // resAuthUser returns a user to the client with
@@ -273,6 +276,7 @@ type Alert struct {
 	Severity string           `json:"severity"`
 }
 
+// SentAlert stores data about the sent message
 type SentAlert struct {
 	Message    string           `json:"message"`
 	SentSMS    int              `json:"sent-sms"`
@@ -353,6 +357,7 @@ func SendAlert(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// TestEmail is a wrapper struct around email sending
 type TestEmail struct {
 	Email string `json:"email"`
 }
@@ -370,4 +375,32 @@ func SendEmailTest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	SendEmail([]string{testEmail.Email}, "test alert")
+}
+
+// SendTestAlert sends a test alert to the phone number specified
+func SendTestAlert(w http.ResponseWriter, r *http.Request) {
+	var alert Alert
+	err := json.NewDecoder(r.Body).Decode(&alert)
+	if err != nil {
+		logger.Error("Error decoding alert",
+			zap.String("path", r.URL.Path),
+			zap.Error(err),
+		)
+	}
+	recipients := []string{pat.Param(r, "phone")}
+
+	successesSMS := SendSMS(recipients, alert.Message)
+
+	sentAlert := SentAlert{
+		alert.Message,
+		successesSMS,
+		0,
+		0,
+		alert.Geo,
+		r.Context().Value(userKey).(User).Email,
+		alert.Severity,
+	}
+
+	ru, _ := json.Marshal(sentAlert)
+	fmt.Fprintf(w, "%s", ru)
 }

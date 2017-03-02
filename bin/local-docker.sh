@@ -11,4 +11,4 @@ readonly old_container_id=$(docker ps -a -q -f name=${name})
 if [[ ! -z $old_container_id ]]; then
     docker rm -f $old_container_id
 fi
-docker run -e AWS_REGION=us-east-1 -d -p 80:80 --name $name $name
+docker run -e AWS_REGION=us-west-2 -d -p 80:80 --name $name $name

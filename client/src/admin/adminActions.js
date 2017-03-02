@@ -16,8 +16,7 @@ export function postAlert(authToken, alert) {
   .then(actionHelpers.checkStatus)
   .then(actionHelpers.parseJSON)
   .then((sentAlert) => {
-    console.log('alert sent!', sentAlert); // this is not being sent back correctly right now. Expect to get the number alerted.
-    dispatch(displayAlert('usa-alert-error', 'Alert Sent!', 'Your alert was sent out to MAYBE PEOPLE'));
+    dispatch(displayAlert('usa-alert-success', 'Alert Sent!', `Your alert was sent out to ${sentAlert['send-people']} people`));
   })
   .catch((error) => {
     if (error.response.status === 403) {

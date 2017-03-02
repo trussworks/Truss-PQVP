@@ -193,3 +193,12 @@ $uswds: (
   padding: 10px;
   position: relative;
 }
+
+// USWDS Overrides
+
+.usa-nav-submenu[aria-hidden=true] {
+  display: block;
+  @include grid-media($tablet) {
+    display: none;
+  }
+}

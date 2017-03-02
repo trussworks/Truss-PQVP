@@ -3,7 +3,7 @@ import AdminMenu from './AdminMenu';
 import Logo from './Logo';
 import UserMenu from './UserMenu';
 
-const NavMenu = ({ loggedIn, logOutUser, userEmail }) => (
+const NavMenu = ({ closeMenu, loggedIn, logOutUser, userEmail }) => (
   <div className="container--content group">
     <Logo />
     <nav role="navigation" className="usa-nav">
@@ -16,12 +16,17 @@ const NavMenu = ({ loggedIn, logOutUser, userEmail }) => (
             className="usa-accordion-button usa-nav-link"
             aria-expanded="false"
             aria-controls="side-nav-1"
+            id="side-nav-1-button"
           >
             <span>{ loggedIn ? userEmail : 'About' }</span>
           </button>
           <ul id="side-nav-1" className="usa-nav-submenu">
-            <AdminMenu loggedIn={loggedIn} />
+            <AdminMenu
+              closeMenu={closeMenu}
+              loggedIn={loggedIn}
+            />
             <UserMenu
+              closeMenu={closeMenu}
               loggedIn={loggedIn}
               logOutUser={logOutUser}
               userEmail={userEmail}
@@ -34,6 +39,7 @@ const NavMenu = ({ loggedIn, logOutUser, userEmail }) => (
 );
 
 NavMenu.propTypes = {
+  closeMenu: PropTypes.func.isRequired,
   loggedIn: PropTypes.bool.isRequired,
   logOutUser: PropTypes.func.isRequired,
   userEmail: PropTypes.string,

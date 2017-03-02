@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import AddressField from './AddressField';
+import AddressView from './AddressView';
 
 const Addresses = ({
   addresses,
@@ -7,21 +8,22 @@ const Addresses = ({
   updateAddressState,
   addressFieldState,
   removeAddress,
- }) => (
-   <div>
-     <h3>Receive Alerts For Which Addresses?</h3>
-     {addresses.map(address => (
-       <div key={address.address}>
-         <div>{address.address}</div>
-         <button onClick={() => removeAddress(address)}>Remove Address</button>
-       </div>
-     ))}
-     <AddressField
-       saveAddress={saveNewAddress}
-       updateAddressState={updateAddressState}
-       fieldState={addressFieldState}
-     />
-   </div>
+}) => (
+  <div className="container--bottom">
+    <h3>Receive Alerts For Which Addresses?</h3>
+    {addresses.map(address => (
+      <AddressView
+        address={address}
+        key={address.address}
+        removeAddress={removeAddress}
+      />
+    ))}
+    <AddressField
+      saveAddress={saveNewAddress}
+      updateAddressState={updateAddressState}
+      fieldState={addressFieldState}
+    />
+  </div>
 );
 
 Addresses.propTypes = {

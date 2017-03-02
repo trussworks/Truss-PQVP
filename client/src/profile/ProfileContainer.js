@@ -44,6 +44,7 @@ class ProfileContainer extends React.Component {
     this.setState({ newAddressState: newState });
   }
   removeAddress(address) {
+    console.log(address);
     const newProfile = Object.assign({}, this.props.profile);
     const loc = newProfile.addresses.indexOf(address);
     if (loc === -1) {

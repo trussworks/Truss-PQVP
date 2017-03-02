@@ -31,6 +31,13 @@ $uswds: (
   }
 }
 
+.container--bottom {
+  @include span-columns(12);
+  @include grid-media($tablet) {
+    margin-top: 20px;
+  }
+}
+
 .container--logo {
   @include grid-media($uswds) {
     width: 40% !important;
@@ -49,6 +56,10 @@ $uswds: (
     float: left;
     margin-top: 12px;
   }
+}
+
+.container--address {
+  padding: 5px 0;
 }
 
 // Autocomplete
@@ -80,6 +91,12 @@ $uswds: (
   width: 16px;
   top: 10px;
   right: 10px;
+}
+
+.icon--remove {
+  height: 12px;
+  margin-right: 6px;
+  width: 12px;
 }
 
 .logo--ca {

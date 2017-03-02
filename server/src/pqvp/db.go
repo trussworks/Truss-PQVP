@@ -62,6 +62,7 @@ func (pg *Postgres) FindRecipients(geo *geojson.Geometry) ([]AlertRecipient, err
 	   WHERE ST_Intersects(a.point, ST_SetSRID(ST_GeomFromGeoJSON($1),4326))
 	   AND a.profile_id = p.id AND p.user_id = u.id`
 
+	// TODO total number of people
 	/*
 		queryPeople := `
 		SELECT COUNT(u) FROM Users u, Addresses a, Profiles p
@@ -79,10 +80,10 @@ func (pg *Postgres) FindRecipients(geo *geojson.Geometry) ([]AlertRecipient, err
 	for rows.Next() {
 		var recipient AlertRecipient
 		err = rows.Scan(&recipient.Email,
-			recipient.Profile.Phone,
-			recipient.Profile.AlertEmail,
-			recipient.Profile.AlertPhone,
-			recipient.Profile.UrgentEmergenciesOnly,
+			&recipient.Profile.Phone,
+			&recipient.Profile.AlertEmail,
+			&recipient.Profile.AlertPhone,
+			&recipient.Profile.UrgentEmergenciesOnly,
 		)
 		recipients = append(recipients, recipient)
 	}

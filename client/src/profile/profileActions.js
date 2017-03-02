@@ -1,7 +1,7 @@
-import { push } from 'react-router-redux';
 import actionHelpers from '../utils/actionHelpers';
 import { SAVE_PROFILE } from '../constants/actionTypes';
 import { displayAlert, dismissAlert } from '../app/appActions';
+import { logOutUser } from '../auth/authActions';
 
 export function saveProfile(profile) {
   return { type: SAVE_PROFILE, userInfo: profile };
@@ -13,7 +13,6 @@ export function updateProfile(authToken, newProfile) {
   const headers = new Headers();
   headers.append('Authorization', `Bearer ${authToken}`);
 
-  // TODO: add the security to our headers.
   const fetchInit = {
     method: 'POST',
     headers,
@@ -28,11 +27,13 @@ export function updateProfile(authToken, newProfile) {
     dispatch(dismissAlert());
   })
   .catch((error) => {
-    dispatch(displayAlert('usa-alert-error', 'Error Saving Profile', 'We were unable to save your profile. Please refresh the page and try again.'));
-    console.error('updateProfile Error: ', error);
-    if (error.isAuthRelatedError) {
-      console.log('we failed the auth check, make them login again.');
-      dispatch(push('/'));
+    if (error.response.status === 403) {
+      // Forbidden means our auth didn't auth
+      dispatch(logOutUser());
+      dispatch(displayAlert('usa-alert-error', 'Error Loading Profile', 'We were unable to update your profile. Please login and try again.'));
+    } else {
+      dispatch(displayAlert('usa-alert-error', 'Error Loading Profile', 'We were unable to load your profile. Please refresh the page and try again.'));
+      console.error('getProfile Error: ', error);
     }
   });
 }
@@ -57,11 +58,15 @@ export function getProfile(authToken) {
     dispatch(dismissAlert());
   })
   .catch((error) => {
-    dispatch(displayAlert('usa-alert-error', 'Error Loading Profile', 'We were unable to load your profile. Please refresh the page and try again.'));
-    console.error('getProfile Error: ', error);
-    if (error.isAuthRelatedError) {
-      console.log('we failed the auth check, make them login again.');
-      dispatch(push('/'));
+    console.log(error.response.status);
+    console.log(error.response);
+    if (error.response.status === 403) {
+      // Forbidden means our auth didn't auth
+      dispatch(logOutUser());
+      dispatch(displayAlert('usa-alert-error', 'Error Loading Profile', 'We were unable to load your profile. Please login and try again.'));
+    } else {
+      dispatch(displayAlert('usa-alert-error', 'Error Loading Profile', 'We were unable to load your profile. Please refresh the page and try again.'));
+      console.error('getProfile Error: ', error);
     }
   });
 }

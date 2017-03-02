@@ -21,6 +21,7 @@ $uswds: (
   @include grid-media($tablet) {
     @include span-columns(8);
     @include shift(2);
+    @include grid-container;
   }
 }
 
@@ -35,6 +36,7 @@ $uswds: (
   @include span-columns(12);
   @include grid-media($tablet) {
     @include span-columns(4);
+    width: 37%;
   }
 }
 
@@ -67,6 +69,12 @@ $uswds: (
 
 .container--address {
   padding: 5px 0;
+}
+
+.container--collapse {
+  @include grid-media($tablet) {
+    @include grid-collapse;
+  }
 }
 
 // Autocomplete
@@ -152,16 +160,18 @@ $uswds: (
   color: #046b99;
 }
 
-.text__margin--20 {
+.text__margin--70 {
   @include grid-media($tablet) {
-    margin-bottom: 35px;
+    margin-bottom: 70px;
   }
 }
 
 #form--notification {
-  @include grid-media($tablet) {
-    padding-top: 29px;
-  }
+  background-color: #e1f3f8;
+  border: 1px solid #00a6d2;
+  border-radius: 1em;
+  margin-top: 10px;
+  padding: 20px;
 }
 
 #form--notification legend {

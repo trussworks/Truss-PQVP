@@ -74,7 +74,7 @@ class ProfileContainer extends React.Component {
   render() {
     return (
       <div className="container--content">
-        <h1 className="text--center text__margin--20">User Profile</h1>
+        <h1 className="text--center text__margin--70">User Profile</h1>
         { !(this.props.profile && this.props.profile.addresses) ? (
           <div>loading profile...</div>
           ) : (

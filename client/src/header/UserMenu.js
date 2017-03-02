@@ -23,7 +23,7 @@ const UserMenu = ({ closeMenu, loggedIn, logOutUser }) => (
     </li>
     { loggedIn ?
       (<div>
-        <Link onClick={closeMenu} to="/profile">Profile</Link>
+        <li><Link onClick={closeMenu} to="/profile">Profile</Link></li>
         <li><a href="" onClick={logOutUser}>Log out</a></li>
       </div>) : (null)
     }

@@ -273,6 +273,12 @@ type Alert struct {
 	Severity string           `json:"severity"`
 }
 
+type SentAlert struct {
+	Message   string `json:"message"`
+	SentSMS   int    `json:"sent-sms"`
+	SentEmail int    `json:"sent-email"`
+}
+
 // SendAlert looks up affected users inside an the alert geometry
 // and sends SMS messages with the message
 func SendAlert(w http.ResponseWriter, r *http.Request) {
@@ -302,7 +308,8 @@ func SendAlert(w http.ResponseWriter, r *http.Request) {
 		logger.Info("Unable to finding alert recipients",
 			zap.String("path", r.URL.Path),
 		)
-		w.WriteHeader(http.StatusNotFound)
+		ru, _ := json.Marshal(SentAlert{alert.Message, 0, 0})
+		fmt.Fprintf(w, "%s", ru)
 		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 		return
 	}
@@ -310,11 +317,12 @@ func SendAlert(w http.ResponseWriter, r *http.Request) {
 	logger.Info("Sending SMS messages to",
 		zap.Strings("recipients", recipients),
 	)
-	successes := SendSMS(recipients, alert.Message)
-	_ = successes
+	successesSMS := SendSMS(recipients, alert.Message)
 	logger.Info("Successfully sent",
-		zap.Int("notifications", successes),
+		zap.Int("SMS Notifications", successesSMS),
 	)
-	//TODO Store sent alerts in DB
+
+	ru, _ := json.Marshal(SentAlert{alert.Message, successesSMS, 0})
+	fmt.Fprintf(w, "%s", ru)
 
 }

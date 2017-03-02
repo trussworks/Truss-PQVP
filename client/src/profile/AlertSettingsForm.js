@@ -5,7 +5,7 @@ import profileValidation from './profileValidation';
 const AlertSettingsForm = ({ handleSubmit, valid }) => (
   <div className="container--right">
     <div className="container--collapse">
-      <form className="usa-form" id="form--notification" onSubmit={handleSubmit}>
+      <form className="usa-form container--blue" onSubmit={handleSubmit}>
         <fieldset>
           <legend><h3>Notification Settings</h3></legend>
           <Field

@@ -2,7 +2,7 @@ import React from 'react';
 
 const NotificationsPage = () => (
   <div className="container--content">
-    <h1>Notifications</h1>
+    <h1 className="text--center">Notifications</h1>
     <table className="usa-table-borderless">
       <thead>
         <tr>

@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"encoding/json"
 	_ "github.com/lib/pq"
 	"github.com/paulmach/go.geojson"
 	"golang.org/x/crypto/bcrypt"
@@ -115,19 +114,24 @@ FROM sent_alerts;
 	defer rows.Close()
 	for rows.Next() {
 		var sentSMS, sentEmail, sentPeople int
-		var message, sender, severity, geojson string
+		var message, sender, severity, json string
 		err = rows.Scan(&message,
 			&sentSMS,
 			&sentEmail,
 			&sentPeople,
 			&sender,
 			&severity,
-			&geojson,
+			&json,
 		)
 		if err != nil {
 			return nil, err
 		}
 
+		g, err := geojson.UnmarshalGeometry([]byte(json))
+		if err != nil {
+			return nil, err
+		}
+		f := geojson.NewFeature(g)
 		s := SentAlert{
 			Message:    message,
 			SentSMS:    sentSMS,
@@ -135,7 +139,7 @@ FROM sent_alerts;
 			SentPeople: sentPeople,
 			Sender:     sender,
 			Severity:   severity,
-			Geo:        nil,
+			Geo:        f,
 		}
 		sentAlerts = append(sentAlerts, s)
 	}

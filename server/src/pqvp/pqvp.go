@@ -2,10 +2,11 @@ package main
 
 import (
 	"flag"
+	"net/http"
+
 	"go.uber.org/zap"
 	"goji.io"
 	"goji.io/pat"
-	"net/http"
 )
 
 var (
@@ -71,6 +72,7 @@ func main() {
 	root.Handle(pat.Post("/api/alert/*"), authAdmin)
 	authAdmin.HandleFunc(pat.Post("/"), SendAlert)
 	authAdmin.HandleFunc(pat.Post("/test/email"), SendEmailTest)
+	authAdmin.HandleFunc(pat.Post("/:phone"), SendTestAlert)
 
 	// Documentation routes
 	root.Handle(pat.Get("/docs"), http.RedirectHandler("/docs/", 301))

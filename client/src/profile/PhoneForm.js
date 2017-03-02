@@ -3,7 +3,7 @@ import { reduxForm, Field } from 'redux-form';
 import { AuthField } from '../auth/AuthField';
 import profileValidation from './profileValidation';
 
-const PhoneForm = ({ handleSubmit }) => (
+const PhoneForm = ({ handleSubmit, valid }) => (
   <form
     className="feature--disabled usa-form form--inline"
     onSubmit={handleSubmit}
@@ -21,6 +21,7 @@ const PhoneForm = ({ handleSubmit }) => (
           data-backdrop="static"
           type="submit"
           value="Update"
+          disabled={!valid}
         />
       </div>
     </fieldset>
@@ -28,6 +29,7 @@ const PhoneForm = ({ handleSubmit }) => (
 );
 
 PhoneForm.propTypes = {
+  valid: PropTypes.bool.isRequired,
   handleSubmit: PropTypes.func.isRequired,
 };
 

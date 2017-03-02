@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { reduxForm, Field } from 'redux-form';
 import profileValidation from './profileValidation';
 
-const AlertSettingsForm = ({ handleSubmit, valid }) => (
+const AlertSettingsForm = ({ handleSubmit }) => (
   <div className="container--right">
     <div className="container--collapse">
       <form className="usa-form container--blue" onSubmit={handleSubmit}>
@@ -21,7 +21,6 @@ const AlertSettingsForm = ({ handleSubmit, valid }) => (
             component="input"
             type="checkbox"
             name="alertPhone"
-            disabled={!valid}
             onChange={() => {
               setTimeout(handleSubmit);
             }}
@@ -44,7 +43,6 @@ const AlertSettingsForm = ({ handleSubmit, valid }) => (
 
 AlertSettingsForm.propTypes = {
   handleSubmit: PropTypes.func,
-  valid: PropTypes.bool,
 };
 
 export default reduxForm({

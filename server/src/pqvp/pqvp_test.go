@@ -139,3 +139,15 @@ func TestFindRecipients(t *testing.T) {
 	//TODO insert geopoints and profiles once the plumbing is hooked up
 
 }
+
+func TestGetAlertHistory(t *testing.T) {
+	res := httptest.NewRecorder()
+	req, err := http.NewRequest("GET", "/api/alert/history", nil)
+	req.Header.Set("Content-Type", "application/json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	req = authRequest(req, "joe@gmail.com")
+	GetAlertHistory(res, req)
+	assert.Equal(t, 200, res.Code)
+}

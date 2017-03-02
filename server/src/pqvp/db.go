@@ -96,6 +96,65 @@ func (pg *Postgres) FindRecipients(geo *geojson.Geometry) ([]AlertRecipient, err
 	return recipients, nil
 }
 
+// FetchAlertHistory returns a slice of all alerts
+func (pg *Postgres) FetchAlertHistory() ([]SentAlert, error) {
+	sentAlerts := make([]SentAlert, 0)
+	rows, err := pg.Query(`
+SELECT message,
+sent_sms,
+sent_email,
+sent_people,
+sender,
+severity,
+ST_AsGeoJSON(geo) AS geojson
+FROM sent_alerts;
+`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var sentSMS, sentEmail, sentPeople int
+		var message, sender, severity, json string
+		err = rows.Scan(&message,
+			&sentSMS,
+			&sentEmail,
+			&sentPeople,
+			&sender,
+			&severity,
+			&json,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		g, err := geojson.UnmarshalGeometry([]byte(json))
+		if err != nil {
+			return nil, err
+		}
+		f := geojson.NewFeature(g)
+		s := SentAlert{
+			Message:    message,
+			SentSMS:    sentSMS,
+			SentEmail:  sentEmail,
+			SentPeople: sentPeople,
+			Sender:     sender,
+			Severity:   severity,
+			Geo:        f,
+		}
+		sentAlerts = append(sentAlerts, s)
+	}
+	err = rows.Err()
+	switch {
+	case err == sql.ErrNoRows:
+		return sentAlerts, nil
+	case err != nil:
+		return nil, err
+	default:
+		return sentAlerts, nil
+	}
+}
+
 // FetchProfile fetches a profile from the DB.
 func (pg *Postgres) FetchProfile(email string) (Profile, error) {
 	var profile Profile
@@ -256,6 +315,7 @@ type Datastore interface {
 	CreateUser(User) error
 	DeleteUser(User) error
 	FindRecipients(*geojson.Geometry) ([]AlertRecipient, error)
+	FetchAlertHistory() ([]SentAlert, error)
 	FetchProfile(string) (Profile, error)
 	WriteProfile(string, Profile) error
 	WriteAlert(SentAlert) error

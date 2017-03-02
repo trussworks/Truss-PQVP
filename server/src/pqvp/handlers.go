@@ -354,7 +354,7 @@ func SendAlert(w http.ResponseWriter, r *http.Request) {
 			http.StatusText(http.StatusInternalServerError),
 			http.StatusInternalServerError,
 		)
-
+		return
 	}
 	ru, _ := json.Marshal(sentAlert)
 	w.WriteHeader(http.StatusOK)
@@ -427,5 +427,35 @@ func SendTestAlert(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ru, _ := json.Marshal(sentAlert)
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, "%s", ru)
+}
+
+// GetAlertHistory is the handler for the alert history endpoint
+func GetAlertHistory(w http.ResponseWriter, r *http.Request) {
+	alertHistory, err := db.FetchAlertHistory()
+	if err != nil {
+		logger.Error("couldn't fetch alert history",
+			zap.String("path", r.URL.Path),
+			zap.Error(err))
+		http.Error(w,
+			http.StatusText(http.StatusBadRequest),
+			http.StatusBadRequest,
+		)
+		return
+	}
+	ru, err := json.Marshal(alertHistory)
+	if err != nil {
+		logger.Error("error marshaling json",
+			zap.String("path", r.URL.Path),
+			zap.Error(err),
+		)
+		http.Error(w,
+			http.StatusText(http.StatusInternalServerError),
+			http.StatusInternalServerError,
+		)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
 	fmt.Fprintf(w, "%s", ru)
 }

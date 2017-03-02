@@ -7,6 +7,13 @@ $uswds: (
   media: 951px,
 );
 
+.footer {
+  background-color: #d6d7d9;
+  height: 80px;
+  margin-top: 20px;
+  padding: 20px 0;
+  text-align: right;
+}
 
 .container--content {
   @include span-columns(10);
@@ -34,7 +41,7 @@ $uswds: (
 .container--bottom {
   @include span-columns(12);
   @include grid-media($tablet) {
-    margin-top: 20px;
+    margin: 20px 0 60px 0;
   }
 }
 
@@ -174,6 +181,7 @@ $uswds: (
 }
 
 .cell--left {
+  padding: 15px 0;
   width: 100px;
 }
 

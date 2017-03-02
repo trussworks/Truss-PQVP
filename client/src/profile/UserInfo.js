@@ -4,10 +4,10 @@ import PhoneForm from './PhoneForm';
 
 const UserInfo = ({
   profile,
-  submitUpdate,
   togglePasswordForm,
   togglePhoneForm,
   updatePassword,
+  updatePhone,
   updatingPassword,
   updatingPhone,
   userEmail,
@@ -38,11 +38,20 @@ const UserInfo = ({
         <tr>
           <td className="cell--left"><strong>Phone:</strong></td>
           <td>
-            <a href="" onClick={togglePhoneForm}>Update phone number</a>
+            { profile.phone ? profile.phone : 'N/A' }<br />
+            <a
+              href=""
+              onClick={(e) => {
+                e.preventDefault();
+                togglePhoneForm();
+              }}
+            >
+              Update phone number
+            </a>
             {updatingPhone ?
               (<PhoneForm
                 profile={profile}
-                handleSubmit={submitUpdate}
+                onSubmit={updatePhone}
                 initialValues={profile}
               />) : (null)
             }
@@ -55,10 +64,10 @@ const UserInfo = ({
 
 UserInfo.propTypes = {
   profile: PropTypes.object,
-  submitUpdate: PropTypes.func.isRequired,
   togglePasswordForm: PropTypes.func.isRequired,
   togglePhoneForm: PropTypes.func.isRequired,
   updatePassword: PropTypes.func.isRequired,
+  updatePhone: PropTypes.func.isRequired,
   updatingPassword: PropTypes.bool.isRequired,
   updatingPhone: PropTypes.bool.isRequired,
   userEmail: PropTypes.string,

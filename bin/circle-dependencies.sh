@@ -31,6 +31,3 @@ popd
 # Clone ecs-deploy so we can push task updates to ECS once tests past
 git clone https://github.com/silinternational/ecs-deploy.git
 
-# Pull down Sauce Labs Connect
-wget https://saucelabs.com/downloads/sc-latest-linux.tar.gz
-tar -xzf sc-latest-linux.tar.gz

@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 
 const UserMenu = ({ closeMenu, loggedIn, logOutUser }) => (
   <div>
+    { loggedIn ? (<div><li><Link onClick={closeMenu} to="/profile">Profile</Link></li><hr /></div>) : (null) }
     <li>
       <a
         href="http://www.cio.ca.gov/"
@@ -21,12 +22,7 @@ const UserMenu = ({ closeMenu, loggedIn, logOutUser }) => (
         About Truss
       </a>
     </li>
-    { loggedIn ?
-      (<div>
-        <li><Link onClick={closeMenu} to="/profile">Profile</Link></li>
-        <li><a href="" onClick={logOutUser}>Log out</a></li>
-      </div>) : (null)
-    }
+    { loggedIn ? (<div><hr /><li><a href="" onClick={logOutUser}>Log out</a></li></div>) : (null) }
   </div>
 );
 

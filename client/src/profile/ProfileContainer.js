@@ -93,7 +93,8 @@ class ProfileContainer extends React.Component {
                 userEmail={this.props.email}
               />
               <AlertSettingsForm
-                handleSubmit={this.submitUpdate}
+                initialValues={this.props.profile}
+                onSubmit={this.submitUpdate}
               />
               <Addresses
                 addresses={this.props.profile.addresses}

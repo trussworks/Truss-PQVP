@@ -308,8 +308,6 @@ func SendAlert(w http.ResponseWriter, r *http.Request) {
 		logger.Info("Unable to finding alert recipients",
 			zap.String("path", r.URL.Path),
 		)
-		ru, _ := json.Marshal(SentAlert{alert.Message, 0, 0})
-		fmt.Fprintf(w, "%s", ru)
 		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 		return
 	}
@@ -323,6 +321,7 @@ func SendAlert(w http.ResponseWriter, r *http.Request) {
 	)
 
 	ru, _ := json.Marshal(SentAlert{alert.Message, successesSMS, 0})
+	w.WriteHeader(http.StatusOK)
 	fmt.Fprintf(w, "%s", ru)
 
 }

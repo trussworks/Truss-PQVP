@@ -22,7 +22,7 @@ const AlertForm = ({
       { (feature && feature.properties.link) ?
         <div className="container--span">
           <p className="text--subtitle">
-          Use the following link provides additional information about the region you selected:
+          The following link provides additional information about the region you selected:
           <br />
             <a href={feature.properties.link}>{feature.properties.link}</a>
           </p>

@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"encoding/json"
 	_ "github.com/lib/pq"
 	"github.com/paulmach/go.geojson"
 	"golang.org/x/crypto/bcrypt"
@@ -97,7 +98,56 @@ func (pg *Postgres) FindRecipients(geo *geojson.Geometry) ([]AlertRecipient, err
 
 // FetchAlertHistory returns a slice of all alerts
 func (pg *Postgres) FetchAlertHistory() ([]SentAlert, error) {
-	return make([]SentAlert, 0), nil
+	sentAlerts := make([]SentAlert, 0)
+	rows, err := pg.Query(`
+SELECT message,
+sent_sms,
+sent_email,
+sent_people,
+sender,
+severity,
+ST_AsGeoJSON(geo) AS geojson
+FROM sent_alerts;
+`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var sentSMS, sentEmail, sentPeople int
+		var message, sender, severity, geojson string
+		err = rows.Scan(&message,
+			&sentSMS,
+			&sentEmail,
+			&sentPeople,
+			&sender,
+			&severity,
+			&geojson,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		s := SentAlert{
+			Message:    message,
+			SentSMS:    sentSMS,
+			SentEmail:  sentEmail,
+			SentPeople: sentPeople,
+			Sender:     sender,
+			Severity:   severity,
+			Geo:        nil,
+		}
+		sentAlerts = append(sentAlerts, s)
+	}
+	err = rows.Err()
+	switch {
+	case err == sql.ErrNoRows:
+		return sentAlerts, nil
+	case err != nil:
+		return nil, err
+	default:
+		return sentAlerts, nil
+	}
 }
 
 // FetchProfile fetches a profile from the DB.

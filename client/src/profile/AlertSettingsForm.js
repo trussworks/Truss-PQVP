@@ -15,7 +15,7 @@ const AlertSettingsForm = ({ handleSubmit, valid }) => (
             setTimeout(handleSubmit);
           }}
         />
-        <label htmlFor="alertEmail">Send Alerts To Email?</label>
+        <label htmlFor="alertEmail">Subscribe to Email Alerts</label>
         <Field
           component="input"
           type="checkbox"
@@ -25,7 +25,7 @@ const AlertSettingsForm = ({ handleSubmit, valid }) => (
             setTimeout(handleSubmit);
           }}
         />
-        <label htmlFor="alertPhone">Text Alerts To Phone?</label>
+        <label htmlFor="alertPhone">Subscribe to Text Alerts</label>
         <Field
           component="input"
           type="checkbox"
@@ -34,7 +34,7 @@ const AlertSettingsForm = ({ handleSubmit, valid }) => (
             setTimeout(handleSubmit);
           }}
         />
-        <label htmlFor="onlyEmergencies">Only Receive Notifications For Imminent Emergencies?</label>
+        <label htmlFor="onlyEmergencies">Only Receive Emergency Notifications</label>
       </fieldset>
     </form>
   </div>

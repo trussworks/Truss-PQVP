@@ -132,6 +132,7 @@ func TestFindRecipients(t *testing.T) {
 
 	res := httptest.NewRecorder()
 	req := generatePost(t, "/api/alert", json)
+	req = authRequest(req, "joe@gmail.com")
 	SendAlert(res, req)
 
 	// make sure we get a 404 because we haven't populated the data

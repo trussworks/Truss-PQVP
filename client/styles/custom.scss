@@ -171,12 +171,6 @@ $uswds: (
   padding: 20px;
 }
 
-#form--notification legend {
-  @include grid-media($tablet) {
-    margin-bottom: 20px;
-  }
-}
-
 // Alert Styles
 
 // Leaflet required class
@@ -204,6 +198,10 @@ $uswds: (
 
 .table--no-border table, th, td {
   border: none !important;
+}
+
+table {
+  margin-top: 1em;
 }
 
 .table--no-border td {

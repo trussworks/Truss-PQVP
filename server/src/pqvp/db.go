@@ -233,7 +233,6 @@ sent_sms,
 sent_email,
 sent_people,
 geo,
-<<<<<<< HEAD
 sender,
 severity
 )

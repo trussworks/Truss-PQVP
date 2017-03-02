@@ -356,17 +356,6 @@ func SendAlert(w http.ResponseWriter, r *http.Request) {
 		)
 
 	}
-	err = db.WriteAlert(sentAlert)
-	if err != nil {
-		logger.Error("Error writing alert to db",
-			zap.String("path", r.URL.Path),
-			zap.Error(err))
-		http.Error(w,
-			http.StatusText(http.StatusInternalServerError),
-			http.StatusInternalServerError,
-		)
-
-	}
 	ru, _ := json.Marshal(sentAlert)
 	w.WriteHeader(http.StatusOK)
 	fmt.Fprintf(w, "%s", ru)

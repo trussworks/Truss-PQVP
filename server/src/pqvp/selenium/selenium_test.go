@@ -16,7 +16,7 @@ var caps = []map[string]interface{}{
 	{"platformVersion": "5.1", "deviceName": "Android Emulator", "platformName": "Android", "browserName": "Browser"},
 	{"browserName": "chrome", "version": "56.0"},
 	{"browserName": "firefox", "version": "51.0"},
-	{"browserName": "safari", "version": "10.0"},
+	{"browserName": "safari"},
 }
 var remoteEndpoint = fmt.Sprintf("http://%s:%s@ondemand.saucelabs.com:80/wd/hub", os.Getenv("SAUCE_USERNAME"), os.Getenv("SAUCE_ACCESS_KEY"))
 

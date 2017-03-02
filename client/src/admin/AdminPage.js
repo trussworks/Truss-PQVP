@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import AdminHeader from './AdminHeader';
 import EmergencyPicker from './EmergencyPicker';
 import AlertForm from './AlertForm';
 import { postAlert } from './adminActions';
@@ -34,7 +35,7 @@ class AdminPage extends React.Component {
   render() {
     return (
       <div className="container--content">
-        <h3>Send Alert:</h3>
+        <AdminHeader />
         <EmergencyPicker selectFeature={this.selectFeature} selectedFeature={this.state.feature} />
         { (this.state.feature && this.state.feature.properties.link) ?
           <div className="container--span">

@@ -157,6 +157,8 @@ h1 {
   display: none !important;
 }
 
+// Text styles
+
 .text--dark-blue {
   color: #046b99;
 }
@@ -167,12 +169,9 @@ h1 {
   }
 }
 
-#form--notification {
-  background-color: #e1f3f8;
-  border: 1px solid #00a6d2;
-  border-radius: 1em;
-  margin-top: 10px;
-  padding: 20px;
+.text--subtitle {
+  font-size: 16px;
+  font-weight: normal;
 }
 
 // Alert Styles
@@ -226,11 +225,34 @@ table {
   position: relative;
 }
 
+// Component specific styles
+
+.container--blue {
+  background-color: #e1f3f8;
+  border: 1px solid #00a6d2;
+  border-radius: 1em;
+  margin-top: 10px;
+  padding: 20px;
+}
+
+.container--blue legend {
+  @include grid-media($tablet) {
+    margin-bottom: 20px;
+  }
+}
+
 // USWDS Overrides
 
 .usa-nav-submenu[aria-hidden=true] {
   display: block;
   @include grid-media($tablet) {
     display: none;
+  }
+}
+
+.legend--has-subtitle {
+  line-height: 20px;
+  @include grid-media($tablet) {
+    line-height: 26px;
   }
 }

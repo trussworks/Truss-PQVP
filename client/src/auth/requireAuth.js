@@ -4,7 +4,7 @@ import { push } from 'react-router-redux';
 
 export default function requireAuth(Component) {
   class AuthenticatedComponent extends React.Component {
-    componentDidMount() {
+    componentWillMount() {
       /* Only need to check here if the page was visited directly */
       if (this.props.loggedIn !== true) {
         this.checkAndRedirect();

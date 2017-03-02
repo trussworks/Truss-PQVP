@@ -287,6 +287,11 @@ type SentAlert struct {
 	Severity   string           `json:"severity"`
 }
 
+type AlertRecipient struct {
+	Email   string
+	Profile Profile
+}
+
 // SendAlert looks up affected users inside an the alert geometry
 // and sends SMS messages with the message
 func SendAlert(w http.ResponseWriter, r *http.Request) {
@@ -324,17 +329,17 @@ func SendAlert(w http.ResponseWriter, r *http.Request) {
 		)
 		return
 	}
-	logger.Info("Sending SMS messages to",
-		zap.Strings("recipients", recipients),
-	)
 	successesSMS := SendSMS(recipients, alert.Message)
+	successesEmail := SendEmail(recipients, alert.Message)
 	logger.Info("Successfully sent",
 		zap.Int("SMS Notifications", successesSMS),
+		zap.Int("Emal Notifications", successesEmail),
 	)
+
 	sentAlert := SentAlert{
 		alert.Message,
 		successesSMS,
-		0,
+		successesEmail,
 		0,
 		alert.Geo,
 		user.Email,
@@ -374,7 +379,18 @@ func SendEmailTest(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
-	SendEmail([]string{testEmail.Email}, "test alert")
+	recipient := AlertRecipient{
+		testEmail.Email,
+		Profile{
+			"",
+			true,
+			true,
+			true,
+			nil,
+		},
+	}
+
+	SendEmail([]AlertRecipient{recipient}, "test alert")
 }
 
 // SendTestAlert sends a test alert to the phone number specified
@@ -387,9 +403,18 @@ func SendTestAlert(w http.ResponseWriter, r *http.Request) {
 			zap.Error(err),
 		)
 	}
-	recipients := []string{pat.Param(r, "phone")}
-
-	successesSMS := SendSMS(recipients, alert.Message)
+	recipient := AlertRecipient{
+		"",
+		Profile{
+			pat.Param(r, "phone"),
+			true,
+			true,
+			true,
+			nil,
+		},
+	}
+	alert.Message = "test sms"
+	successesSMS := SendSMS([]AlertRecipient{recipient}, alert.Message)
 
 	sentAlert := SentAlert{
 		alert.Message,

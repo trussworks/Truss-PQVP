@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import EmergencyPicker from './EmergencyPicker';
 import AlertForm from './AlertForm';
+import { postAlert } from './adminActions';
 
 const initialValues = { isEmergency: false };
 
@@ -19,9 +22,13 @@ class AdminPage extends React.Component {
   }
 
   handleSubmit(values) {
-    console.log('Submitting Alert!');
-    console.log(this.state.feature);
-    console.log(values);
+    const alert = {
+      geojson: this.state.feature,
+      message: values.alertMessage,
+      severity: values.isEmergency ? 'EMERGENCY' : 'NON_EMERGENCY',
+    };
+
+    this.props.postAlert(this.props.accessToken, alert);
   }
 
   render() {
@@ -39,4 +46,19 @@ class AdminPage extends React.Component {
   }
 }
 
-export default AdminPage;
+AdminPage.propTypes = {
+  accessToken: PropTypes.string,
+  postAlert: PropTypes.func.isRequired,
+};
+
+function mapStateToProps(state) {
+  return {
+    accessToken: state.auth.get('accessToken'),
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ postAlert }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AdminPage);

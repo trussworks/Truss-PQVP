@@ -26,7 +26,9 @@ class ProfileContainer extends React.Component {
     this.updatePhone = this.updatePhone.bind(this);
   }
   componentWillMount() {
-    this.props.getProfile(this.props.accessToken);
+    if (this.props.accessToken) {
+      this.props.getProfile(this.props.accessToken);
+    }
   }
   submitUpdate(values) {
     const newProfile = Object.assign({}, this.props.profile, values);

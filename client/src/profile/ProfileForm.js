@@ -6,7 +6,7 @@ import profileValidation from './profileValidation';
 const ProfileForm = ({ handleSubmit, submitting, valid }) => (
   <form className="usa-form" onSubmit={handleSubmit}>
     <fieldset>
-      <legend className="usa-drop_text">Update your profile</legend>
+      <legend><h3>Update your profile</h3></legend>
       <Field
         component={AuthField}
         name="phone"

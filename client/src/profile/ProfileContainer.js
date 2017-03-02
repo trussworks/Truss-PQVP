@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import UserForm from './UserForm';
-import ProfileForm from './ProfileForm';
+import UserInfo from './UserInfo';
+import AlertSettingsForm from './AlertSettingsForm';
 import Addresses from './Addresses';
 import { getProfile, updateProfile } from './profileActions';
 
@@ -12,11 +12,13 @@ class ProfileContainer extends React.Component {
 
     this.state = {
       updatingPassword: false,
+      updatingPhone: false,
       newAddressState: '',
     };
 
     this.submitUpdate = this.submitUpdate.bind(this);
     this.togglePasswordForm = this.togglePasswordForm.bind(this);
+    this.togglePhoneForm = this.togglePhoneForm.bind(this);
     this.saveNewAddress = this.saveNewAddress.bind(this);
     this.updateAddressState = this.updateAddressState.bind(this);
     this.removeAddress = this.removeAddress.bind(this);
@@ -26,12 +28,17 @@ class ProfileContainer extends React.Component {
     this.props.getProfile(this.props.accessToken);
   }
   submitUpdate(values) {
+    console.log(values);
     const newProfile = Object.assign({}, this.props.profile, values);
     this.props.updateProfile(this.props.accessToken, newProfile);
   }
   togglePasswordForm(e) {
     e.preventDefault();
     this.setState({ updatingPassword: !this.state.updatingPassword });
+  }
+  togglePhoneForm(e) {
+    e.preventDefault();
+    this.setState({ updatingPhone: !this.state.updatingPhone });
   }
   updateAddressState(newState) {
     this.setState({ newAddressState: newState });
@@ -57,28 +64,30 @@ class ProfileContainer extends React.Component {
     this.props.updateProfile(this.props.accessToken, newProfile);
     this.setState({ newAddressState: '' });
   }
-  updatePassword(values) {
-    console.log('updating password');
+  updatePassword() {
     console.log(this);
-    console.log(values);
   }
   render() {
     return (
       <div className="container--content">
-        <UserForm
-          userEmail={this.props.email}
-          togglePasswordForm={this.togglePasswordForm}
-          updatingPassword={this.state.updatingPassword}
-          onSubmit={this.updatePassword}
-        />
+        <h1 className="text--center text__margin--20">User Profile</h1>
         { !(this.props.profile && this.props.profile.addresses) ? (
           <div>loading profile...</div>
           ) : (
             <div>
-              <ProfileForm
-                profile={this.props.profile}
-                onSubmit={this.submitUpdate}
+              <UserInfo
                 initialValues={this.props.profile}
+                submitUpdate={this.submitUpdate}
+                profile={this.props.profile}
+                togglePasswordForm={this.togglePasswordForm}
+                togglePhoneForm={this.togglePhoneForm}
+                updatePassword={this.updatePassword}
+                updatingPassword={this.state.updatingPassword}
+                updatingPhone={this.state.updatingPhone}
+                userEmail={this.props.email}
+              />
+              <AlertSettingsForm
+                handleSubmit={this.submitUpdate}
               />
               <Addresses
                 addresses={this.props.profile.addresses}

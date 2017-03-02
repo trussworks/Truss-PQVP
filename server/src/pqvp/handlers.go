@@ -313,18 +313,12 @@ func SendAlert(w http.ResponseWriter, r *http.Request) {
 			zap.String("path", r.URL.Path),
 			zap.Error(err),
 		)
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		return
-	}
-
-	if len(recipients) == 0 {
-		logger.Info("Unable to finding alert recipients",
-			zap.String("path", r.URL.Path),
+		http.Error(w,
+			http.StatusText(http.StatusInternalServerError),
+			http.StatusInternalServerError,
 		)
-		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 		return
 	}
-
 	logger.Info("Sending SMS messages to",
 		zap.Strings("recipients", recipients),
 	)
@@ -339,6 +333,17 @@ func SendAlert(w http.ResponseWriter, r *http.Request) {
 		0,
 		alert.Geo,
 		user.Email,
+	}
+	err = db.WriteAlert(sentAlert)
+	if err != nil {
+		logger.Error("Error writing alert to db",
+			zap.String("path", r.URL.Path),
+			zap.Error(err))
+		http.Error(w,
+			http.StatusText(http.StatusInternalServerError),
+			http.StatusInternalServerError,
+		)
+
 	}
 	ru, _ := json.Marshal(sentAlert)
 	w.WriteHeader(http.StatusOK)

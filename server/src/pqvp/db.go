@@ -207,6 +207,11 @@ VALUES ($1, $2, ST_SetSRID(ST_Point($3, $4),4326))`,
 	return tx.Commit()
 }
 
+// WriteAlert writes a SentAlert struct into the database
+func (pg *Postgres) WriteAlert(SentAlert) error {
+	return nil
+}
+
 // Close implements io.Closer
 func (pg *Postgres) Close() error {
 	return pg.DB.Close()
@@ -223,6 +228,7 @@ type Datastore interface {
 	FindRecipients(*geojson.Geometry) ([]string, error)
 	FetchProfile(string) (Profile, error)
 	WriteProfile(string, Profile) error
+	WriteAlert(SentAlert) error
 	io.Closer
 }
 

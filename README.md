@@ -80,12 +80,13 @@ The architecture is a single page  JavaScript application with a Go API server. 
 * Flux
 * Leaflet
 
-Project management tools used include Pivotal Tracker, Slack, GitHub, and Zoom. The team used Pivotal Tracker to create a prioritized list of user stories and to track bugs and issues.
-Run application locally for development
+Project management tools used include Pivotal Tracker, Slack, GitHub, and Zoom. The team used Pivotal Tracker to create a prioritized list of user stories and to track bugs and issues. The project can be accessed in its entirety [here](https://www.pivotaltracker.com/projects/1969823)
 
-# Local installation with Docker
+# Run application locally for development
 
-## Dev Setup
+## Local installation with Docker
+
+### Dev Setup
 1. Install Docker
 2. `$ make local_docker`
     * This builds the server and runs it in docker.
@@ -99,8 +100,8 @@ Run application locally for development
   * Duplicate emails will not be accepted
   * There are no password restrictions (P)
   * Every user is an admin ( no additional auth) (P)
-  * Push notifications require a native mobile app. Since there was not an easy way to deliver this to the government as a usable prototype, this has not been included. You can review the Truss app Leave Now in the apple store and android app store if you would like to see an example of how this would be done.
-  * Geolocation requires a native mobile app. Since there was not an easy way to deliver this to the government as a usable prototype, this has not been included. You can review the Truss app Leave Now in the apple store and android app store if you would like to see an example of how this would be done.
+  * Push notifications require a native mobile app. Since there was not an easy way to deliver this to the government as a usable prototype, this has not been included. You can review the Truss app 'Leave Now' [in the apple store](https://appsto.re/us/xT3qH.i) if you would like to see an example of how we would have incorporated those features.
+  * Geolocation requires a native mobile app. Since there was not an easy way to deliver this to the government as a usable prototype, this has not been included. You can review the Truss app 'Leave Now' [in the apple store](https://appsto.re/us/xT3qH.i) if you would like to see an example of how we would have incorporated those features.
   * Users are not able to update email addresses in the prototype (P)
   * Change Password functionality is not hooked up (P)
    

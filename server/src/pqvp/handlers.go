@@ -280,6 +280,7 @@ type SentAlert struct {
 	SentPeople int              `json:"send-people"`
 	Geo        *geojson.Feature `json:"geojson"`
 	Sender     string           `json:"sender"`
+	Severity   string           `json:"severity"`
 }
 
 // SendAlert looks up affected users inside an the alert geometry
@@ -333,6 +334,7 @@ func SendAlert(w http.ResponseWriter, r *http.Request) {
 		0,
 		alert.Geo,
 		user.Email,
+		alert.Severity,
 	}
 	err = db.WriteAlert(sentAlert)
 	if err != nil {

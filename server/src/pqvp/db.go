@@ -220,10 +220,11 @@ sent_sms,
 sent_email,
 sent_people,
 geo,
-sender
+sender,
+severity
 )
-VALUES ($1, $2, $3, $4, ST_SetSRID(ST_GeomFromGeoJSON($5),4326), $6)
-`, s.Message, s.SentSMS, s.SentEmail, s.SentPeople, json, s.Sender)
+VALUES ($1, $2, $3, $4, ST_SetSRID(ST_GeomFromGeoJSON($5),4326), $6, $7)
+`, s.Message, s.SentSMS, s.SentEmail, s.SentPeople, json, s.Sender, s.Severity)
 	return err
 }
 

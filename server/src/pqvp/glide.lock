@@ -1,5 +1,5 @@
-hash: 1c91c7c063f17fd8f812911e15a93fcfe8bb030958b2a59ca60d2f03428026b6
-updated: 2017-03-01T13:52:17.684430855-08:00
+hash: ad363ad4f8e47aef521da3ef788c80c28f75df92a9d7d1a6b8a61dc3faf6a9f9
+updated: 2017-03-02T09:55:20.180040315-08:00
 imports:
 - name: github.com/asaskevich/govalidator
   version: 7b3beb6df3c42abd3509abfc3bcacc0fbfb7c877
@@ -50,6 +50,10 @@ imports:
   version: eb02bc77fbff74a86a688f227e4254b3c397710c
 - name: github.com/paulmach/go.geojson
   version: 16c6a8e9da10025ce1b0c4515298e5bb4289a8c4
+- name: github.com/sendgrid/rest
+  version: 3ec51b4f1754e13e92409355851a0a82e9a06461
+- name: github.com/sendgrid/sendgrid-go
+  version: aae62ebbdabd46754b041a12b9f74d2ffdfc49d7
 - name: github.com/stretchr/testify
   version: 69483b4bd14f5845b5a1e55bca19e954e827f1d0
   subpackages:

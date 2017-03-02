@@ -325,3 +325,22 @@ func SendAlert(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "%s", ru)
 
 }
+
+type TestEmail struct {
+	Email string `json:"email"`
+}
+
+//SendEmailTest will test email sending to a single email address
+func SendEmailTest(w http.ResponseWriter, r *http.Request) {
+	var testEmail TestEmail
+	err := json.NewDecoder(r.Body).Decode(&testEmail)
+	if err != nil {
+		logger.Error("could not decode json",
+			zap.String("path", r.URL.Path),
+			zap.Error(err),
+		)
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		return
+	}
+	SendEmail([]string{testEmail.Email}, "test alert")
+}

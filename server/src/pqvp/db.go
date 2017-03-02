@@ -47,9 +47,8 @@ func (pg *Postgres) DeleteUser(u User) error {
 
 // FindRecipients handle the actual PostGIS query
 // looking for all addresses inside the alert geometry
-func (pg *Postgres) FindRecipients(geo *geojson.Geometry) ([]string, error) {
-	var phoneNumbers []string
-
+func (pg *Postgres) FindRecipients(geo *geojson.Geometry) ([]AlertRecipient, error) {
+	var recipients []AlertRecipient
 	json, err := geo.MarshalJSON()
 	if err != nil {
 		return nil, err
@@ -58,28 +57,42 @@ func (pg *Postgres) FindRecipients(geo *geojson.Geometry) ([]string, error) {
 	// Look for the phone numbers that having addresses in the alert geometry
 	// Right now we assume the GeoJSON geometry is a polygon
 	query := `
-	   SELECT DISTINCT p.phone
-	   FROM Addresses a, Profiles p
+	   SELECT DISTINCT u.email, p.phone, p.alert_phone, p.alert_email, p.urgent_only
+	   FROM Addresses a, Profiles p, Users u
 	   WHERE ST_Intersects(a.point, ST_SetSRID(ST_GeomFromGeoJSON($1),4326))
-	   AND a.profile_id = p.id`
+	   AND a.profile_id = p.id AND p.user_id = u.id`
+
+	// TODO total number of people
+	/*
+		queryPeople := `
+		SELECT COUNT(u) FROM Users u, Addresses a, Profiles p
+		WHERE ST_Intersects(a.point, ST_SetSRID(ST_GeomFromGeoJSON($1),4326))
+		AND a.profile_id = p.id AND p.user_id = u.id
+		`
+	*/
 
 	rows, err := pg.Query(query, json)
 	if err != nil {
-		return phoneNumbers, err
+		return nil, err
 	}
 	defer rows.Close()
 
 	for rows.Next() {
-		var phoneNumber string
-		err = rows.Scan(&phoneNumber)
-		phoneNumbers = append(phoneNumbers, phoneNumber)
+		var recipient AlertRecipient
+		err = rows.Scan(&recipient.Email,
+			&recipient.Profile.Phone,
+			&recipient.Profile.AlertEmail,
+			&recipient.Profile.AlertPhone,
+			&recipient.Profile.UrgentEmergenciesOnly,
+		)
+		recipients = append(recipients, recipient)
 	}
 	if err != nil {
 		return nil, err
 
 	}
 
-	return phoneNumbers, nil
+	return recipients, nil
 }
 
 // FetchProfile fetches a profile from the DB.
@@ -241,7 +254,7 @@ type Datastore interface {
 	LoginUser(User) bool
 	CreateUser(User) error
 	DeleteUser(User) error
-	FindRecipients(*geojson.Geometry) ([]string, error)
+	FindRecipients(*geojson.Geometry) ([]AlertRecipient, error)
 	FetchProfile(string) (Profile, error)
 	WriteProfile(string, Profile) error
 	WriteAlert(SentAlert) error

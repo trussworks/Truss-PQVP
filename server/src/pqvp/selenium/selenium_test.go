@@ -9,14 +9,11 @@ import (
 	"sourcegraph.com/sourcegraph/go-selenium"
 )
 
-var caps = selenium.Capabilities(map[string]interface{}{"browserName": "chrome", "platform": "macOS 10.12"})
+var browsers = []string{"iphone", "android", "chrome", "firefox", "safari"}
 var remoteEndpoint = fmt.Sprintf("http://%s:%s@ondemand.saucelabs.com:80/wd/hub", os.Getenv("SAUCE_USERNAME"), os.Getenv("SAUCE_ACCESS_KEY"))
 
-func TestLoadTitle(t *testing.T) {
-	if os.Getenv("SAUCE_USERNAME") == "" {
-		t.Skip("skipping test; $SAUCE_USERNAME not set")
-	}
-
+func LoadTitle(cap map[string]interface{}, t *testing.T) {
+	var caps = selenium.Capabilities(cap)
 	wd, err := selenium.NewRemote(caps, remoteEndpoint)
 	if err != nil {
 		t.Fatal(err)
@@ -30,4 +27,14 @@ func TestLoadTitle(t *testing.T) {
 
 	title, _ := wd.Title()
 	assert.Equal(t, "PQVP App", title)
+}
+
+func TestLoadTitle(t *testing.T) {
+	if os.Getenv("SAUCE_USERNAME") == "" {
+		t.Skip("skipping test; $SAUCE_USERNAME not set")
+	}
+	for _, v := range browsers {
+		LoadTitle(map[string]interface{}{"browserName": v}, t)
+	}
+
 }

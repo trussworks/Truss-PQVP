@@ -148,6 +148,15 @@ definitions:
       phone:
         type: string
         description: phone number of the user
+      alertEmail:
+        type: bool
+        description: True if the user wants email alerts
+      alertPhone:
+        type: bool
+        description: True if the user wants SMS alerts
+      onlyEmergencies:
+        type: bool
+        description: If true, only send emergency alerts to the user
       addresses:
         type: array
         items:

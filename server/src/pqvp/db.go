@@ -208,8 +208,23 @@ VALUES ($1, $2, ST_SetSRID(ST_Point($3, $4),4326))`,
 }
 
 // WriteAlert writes a SentAlert struct into the database
-func (pg *Postgres) WriteAlert(SentAlert) error {
-	return nil
+func (pg *Postgres) WriteAlert(s SentAlert) error {
+	json, err := s.Geo.Geometry.MarshalJSON()
+	if err != nil {
+		return err
+	}
+	_, err = pg.Exec(`
+INSERT INTO sent_alerts
+(message,
+sent_sms,
+sent_email,
+sent_people,
+geo,
+sender
+)
+VALUES ($1, $2, $3, $4, ST_SetSRID(ST_GeomFromGeoJSON($5),4326), $6)
+`, s.Message, s.SentSMS, s.SentEmail, s.SentPeople, json, s.Sender)
+	return err
 }
 
 // Close implements io.Closer

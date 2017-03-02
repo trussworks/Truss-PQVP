@@ -21,7 +21,6 @@ class FeatureLayer extends React.Component {
     this.componentWillMount = this.componentWillMount.bind(this);
     this.componentDidMount = this.componentDidMount.bind(this);
   }
-
   componentWillMount() {
     const myFeatures = new esri.FeatureLayer({ url: this.props.url });
     this.setState({ esriLayer: myFeatures });
@@ -29,13 +28,30 @@ class FeatureLayer extends React.Component {
   // Qs.
   // * What happens if we don't hit the server? How do we error?
   componentDidMount() {
-    this.state.esriLayer.addTo(this.context.map);
+    if (this.props.visible) {
+      this.context.map.addLayer(this.state.esriLayer);
+    }
     this.state.esriLayer.bindPopup((fLayer) => {
       const feature = fLayer.toGeoJSON();
       this.props.selectFeature(feature);
-      return L.Util.template('<p>{event}<br>{id}</p>', feature.properties);
+      let template;
+      if (feature.properties.event) {
+        template = L.Util.template('<p>{event}</p>', feature.properties);
+      } else if (feature.properties.NAME_PCASE) {
+        template = L.Util.template('<p>{NAME_PCASE} County</p>', feature.properties);
+      }
+      return template;
     });
     this.state.esriLayer.setStyle(UNSELECTED_STYLE);
+  }
+  componentWillReceiveProps(nextProps) {
+    if (this.props.visible !== nextProps.visible) {
+      if (nextProps.visible) {
+        this.context.map.addLayer(this.state.esriLayer);
+      } else {
+        this.context.map.removeLayer(this.state.esriLayer);
+      }
+    }
   }
 
   render() {
@@ -63,7 +79,8 @@ FeatureLayer.contextTypes = {
 FeatureLayer.propTypes = {
   url: PropTypes.string.isRequired,
   selectFeature: PropTypes.func.isRequired,
-  selectedFeature: PropTypes.number,
+  selectedFeature: PropTypes.object,
+  visible: PropTypes.bool.isRequired,
 };
 
 export default FeatureLayer;

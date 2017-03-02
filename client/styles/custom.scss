@@ -40,6 +40,10 @@ $uswds: (
   }
 }
 
+.container--span {
+  @include span-columns(12);
+}
+
 .container--bottom {
   @include span-columns(12);
   @include grid-media($tablet) {
@@ -123,13 +127,6 @@ $uswds: (
   }
 }
 
-// Leaflet required class
-
-.leaflet-container {
-    height: 400px;
-    width: 500px;
-}
-
 .margin--none {
   margin: 0;
 }
@@ -177,6 +174,29 @@ $uswds: (
 #form--notification legend {
   @include grid-media($tablet) {
     margin-bottom: 20px;
+  }
+}
+
+// Alert Styles
+
+// Leaflet required class
+
+.leaflet-container {
+    height: 400px;
+    width: default;
+}
+
+.map-box {
+  @include span-columns(12);
+  @include grid-media($tablet) {
+    @include span-columns(8);
+  }
+}
+
+.map-switches {
+  @include span-columns(12);
+  @include grid-media($tablet) {
+    @include span-columns(4);
   }
 }
 

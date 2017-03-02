@@ -41,11 +41,16 @@ class FeatureLayer extends React.Component {
   render() {
     this.state.esriLayer.eachFeature((wrapper) => {
       const feature = wrapper.feature;
-      this.state.esriLayer.setFeatureStyle(feature.id, UNSELECTED_STYLE);
+      let thisStyle = UNSELECTED_STYLE;
+      if (this.props.selectedFeature) {
+        const selectedFeature = this.props.selectedFeature;
+        if (selectedFeature.properties.link === feature.properties.link
+          && selectedFeature.id === feature.id) {
+          thisStyle = SELECTED_STYLE;
+        }
+      }
+      this.state.esriLayer.setFeatureStyle(feature.id, thisStyle);
     });
-    if (this.props.selectedFeatureId) {
-      this.state.esriLayer.setFeatureStyle(this.props.selectedFeatureId, SELECTED_STYLE);
-    }
 
     return (<div />);
   }
@@ -58,7 +63,7 @@ FeatureLayer.contextTypes = {
 FeatureLayer.propTypes = {
   url: PropTypes.string.isRequired,
   selectFeature: PropTypes.func.isRequired,
-  selectedFeatureId: PropTypes.number,
+  selectedFeature: PropTypes.number,
 };
 
 export default FeatureLayer;

@@ -12,7 +12,7 @@ class LandingPage extends React.Component {
   render() {
     return (
       <div className="container--content">
-        <h1 className="text--dark-blue">Sign up for our alert service and never miss another emergency.</h1>
+        <h1>Sign up for our alert service and never miss another emergency notification.</h1>
         <AuthContainer />
       </div>
     );

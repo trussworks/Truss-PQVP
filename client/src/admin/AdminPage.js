@@ -22,10 +22,6 @@ class AdminPage extends React.Component {
   }
 
   handleSubmit(values) {
-    console.log('Submitting Alert!');
-    console.log(this.state.feature);
-    console.log(values);
-
     const alert = {
       geojson: this.state.feature,
       message: values.alertMessage,
@@ -51,7 +47,7 @@ class AdminPage extends React.Component {
 }
 
 AdminPage.propTypes = {
-  accessToken: PropTypes.string.isRequired,
+  accessToken: PropTypes.string,
   postAlert: PropTypes.func.isRequired,
 };
 

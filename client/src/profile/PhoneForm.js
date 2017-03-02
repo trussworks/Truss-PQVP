@@ -4,13 +4,11 @@ import { AuthField } from '../auth/AuthField';
 import profileValidation from './profileValidation';
 
 const PhoneForm = ({ handleSubmit }) => (
-  <form className="feature--disabled usa-form form--inline" onSubmit={handleSubmit}>
+  <form
+    className="feature--disabled usa-form form--inline"
+    onSubmit={handleSubmit}
+  >
     <fieldset>
-      <img
-        alt="This feature is not yet implemented"
-        className="icon--disabled"
-        src="./dist/public/img/work-in-progress.png"
-      />
       <legend><h3>Update phone number</h3></legend>
       <Field
         component={AuthField}
@@ -21,7 +19,6 @@ const PhoneForm = ({ handleSubmit }) => (
       <div>
         <input
           data-backdrop="static"
-          disabled
           type="submit"
           value="Update"
         />
@@ -31,7 +28,7 @@ const PhoneForm = ({ handleSubmit }) => (
 );
 
 PhoneForm.propTypes = {
-  handleSubmit: PropTypes.func,
+  handleSubmit: PropTypes.func.isRequired,
 };
 
 export default reduxForm({

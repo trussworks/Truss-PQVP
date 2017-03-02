@@ -23,12 +23,12 @@ class ProfileContainer extends React.Component {
     this.updateAddressState = this.updateAddressState.bind(this);
     this.removeAddress = this.removeAddress.bind(this);
     this.updatePassword = this.updatePassword.bind(this);
+    this.updatePhone = this.updatePhone.bind(this);
   }
   componentWillMount() {
     this.props.getProfile(this.props.accessToken);
   }
   submitUpdate(values) {
-    console.log(values);
     const newProfile = Object.assign({}, this.props.profile, values);
     this.props.updateProfile(this.props.accessToken, newProfile);
   }
@@ -36,12 +36,16 @@ class ProfileContainer extends React.Component {
     e.preventDefault();
     this.setState({ updatingPassword: !this.state.updatingPassword });
   }
-  togglePhoneForm(e) {
-    e.preventDefault();
+  togglePhoneForm() {
     this.setState({ updatingPhone: !this.state.updatingPhone });
   }
   updateAddressState(newState) {
     this.setState({ newAddressState: newState });
+  }
+  updatePhone(values) {
+    const newProfile = Object.assign({}, this.props.profile, values);
+    this.props.updateProfile(this.props.accessToken, newProfile);
+    this.togglePhoneForm();
   }
   removeAddress(address) {
     const newProfile = Object.assign({}, this.props.profile);
@@ -65,7 +69,7 @@ class ProfileContainer extends React.Component {
     this.setState({ newAddressState: '' });
   }
   updatePassword() {
-    console.log(this);
+    this.togglePasswordForm();
   }
   render() {
     return (
@@ -77,11 +81,11 @@ class ProfileContainer extends React.Component {
             <div>
               <UserInfo
                 initialValues={this.props.profile}
-                submitUpdate={this.submitUpdate}
                 profile={this.props.profile}
                 togglePasswordForm={this.togglePasswordForm}
                 togglePhoneForm={this.togglePhoneForm}
                 updatePassword={this.updatePassword}
+                updatePhone={this.updatePhone}
                 updatingPassword={this.state.updatingPassword}
                 updatingPhone={this.state.updatingPhone}
                 userEmail={this.props.email}

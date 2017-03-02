@@ -48,11 +48,11 @@ func (pg *Postgres) DeleteUser(u User) error {
 
 // FindRecipients handle the actual PostGIS query
 // looking for all addresses inside the alert geometry
-func (pg *Postgres) FindRecipients(geo *geojson.Geometry) ([]AlertRecipient, error) {
+func (pg *Postgres) FindRecipients(geo *geojson.Geometry) ([]AlertRecipient, int, error) {
 	var recipients []AlertRecipient
 	json, err := geo.MarshalJSON()
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 
 	// Look for the phone numbers that having addresses in the alert geometry
@@ -63,18 +63,9 @@ func (pg *Postgres) FindRecipients(geo *geojson.Geometry) ([]AlertRecipient, err
 	   WHERE ST_Intersects(a.point, ST_SetSRID(ST_GeomFromGeoJSON($1),4326))
 	   AND a.profile_id = p.id AND p.user_id = u.id`
 
-	// TODO total number of people
-	/*
-		queryPeople := `
-		SELECT COUNT(u) FROM Users u, Addresses a, Profiles p
-		WHERE ST_Intersects(a.point, ST_SetSRID(ST_GeomFromGeoJSON($1),4326))
-		AND a.profile_id = p.id AND p.user_id = u.id
-		`
-	*/
-
 	rows, err := pg.Query(query, json)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	defer rows.Close()
 
@@ -89,11 +80,21 @@ func (pg *Postgres) FindRecipients(geo *geojson.Geometry) ([]AlertRecipient, err
 		recipients = append(recipients, recipient)
 	}
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 
 	}
 
-	return recipients, nil
+	var peopleCount int
+	peopleQuery := pg.QueryRow(`
+		SELECT COUNT(u) FROM Users u, Addresses a, Profiles p
+		WHERE ST_Intersects(a.point, ST_SetSRID(ST_GeomFromGeoJSON($1),4326))
+		AND a.profile_id = p.id AND p.user_id = u.id
+		`, json)
+	err = peopleQuery.Scan(&peopleCount)
+	if err != nil {
+		return nil, 0, err
+	}
+	return recipients, peopleCount, nil
 }
 
 // FetchAlertHistory returns a slice of all alerts
@@ -314,8 +315,8 @@ type Datastore interface {
 	LoginUser(User) bool
 	CreateUser(User) error
 	DeleteUser(User) error
-	FindRecipients(*geojson.Geometry) ([]AlertRecipient, error)
 	FetchAlertHistory() ([]SentAlert, error)
+	FindRecipients(*geojson.Geometry) ([]AlertRecipient, int, error)
 	FetchProfile(string) (Profile, error)
 	WriteProfile(string, Profile) error
 	WriteAlert(SentAlert) error

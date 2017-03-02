@@ -316,7 +316,7 @@ func SendAlert(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
-	recipients, err := db.FindRecipients(alert.Geo.Geometry)
+	recipients, peopleCount, err := db.FindRecipients(alert.Geo.Geometry)
 
 	if err != nil {
 		logger.Error("Error finding alert recipients",
@@ -340,7 +340,7 @@ func SendAlert(w http.ResponseWriter, r *http.Request) {
 		alert.Message,
 		successesSMS,
 		successesEmail,
-		0,
+		peopleCount,
 		alert.Geo,
 		user.Email,
 		alert.Severity,

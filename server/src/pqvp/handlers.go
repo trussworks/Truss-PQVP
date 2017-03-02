@@ -274,14 +274,28 @@ type Alert struct {
 }
 
 type SentAlert struct {
-	Message   string `json:"message"`
-	SentSMS   int    `json:"sent-sms"`
-	SentEmail int    `json:"sent-email"`
+	Message    string           `json:"message"`
+	SentSMS    int              `json:"sent-sms"`
+	SentEmail  int              `json:"sent-email"`
+	SentPeople int              `json:"send-people"`
+	Geo        *geojson.Feature `json:"geojson"`
+	Sender     string           `json:"sender"`
+	Severity   string           `json:"severity"`
 }
 
 // SendAlert looks up affected users inside an the alert geometry
 // and sends SMS messages with the message
 func SendAlert(w http.ResponseWriter, r *http.Request) {
+	var user User
+	if u, ok := r.Context().Value(userKey).(User); ok {
+		user = u
+	} else {
+		logger.Error("no user context",
+			zap.String("path", r.URL.Path),
+		)
+		http.Error(w, http.StatusText(400), http.StatusBadRequest)
+		return
+	}
 	var alert Alert
 	err := json.NewDecoder(r.Body).Decode(&alert)
 	// handle incorrect JSON
@@ -300,18 +314,12 @@ func SendAlert(w http.ResponseWriter, r *http.Request) {
 			zap.String("path", r.URL.Path),
 			zap.Error(err),
 		)
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		return
-	}
-
-	if len(recipients) == 0 {
-		logger.Info("Unable to finding alert recipients",
-			zap.String("path", r.URL.Path),
+		http.Error(w,
+			http.StatusText(http.StatusInternalServerError),
+			http.StatusInternalServerError,
 		)
-		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 		return
 	}
-
 	logger.Info("Sending SMS messages to",
 		zap.Strings("recipients", recipients),
 	)
@@ -319,8 +327,27 @@ func SendAlert(w http.ResponseWriter, r *http.Request) {
 	logger.Info("Successfully sent",
 		zap.Int("SMS Notifications", successesSMS),
 	)
+	sentAlert := SentAlert{
+		alert.Message,
+		successesSMS,
+		0,
+		0,
+		alert.Geo,
+		user.Email,
+		alert.Severity,
+	}
+	err = db.WriteAlert(sentAlert)
+	if err != nil {
+		logger.Error("Error writing alert to db",
+			zap.String("path", r.URL.Path),
+			zap.Error(err))
+		http.Error(w,
+			http.StatusText(http.StatusInternalServerError),
+			http.StatusInternalServerError,
+		)
 
-	ru, _ := json.Marshal(SentAlert{alert.Message, successesSMS, 0})
+	}
+	ru, _ := json.Marshal(sentAlert)
 	w.WriteHeader(http.StatusOK)
 	fmt.Fprintf(w, "%s", ru)
 

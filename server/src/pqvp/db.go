@@ -207,6 +207,27 @@ VALUES ($1, $2, ST_SetSRID(ST_Point($3, $4),4326))`,
 	return tx.Commit()
 }
 
+// WriteAlert writes a SentAlert struct into the database
+func (pg *Postgres) WriteAlert(s SentAlert) error {
+	json, err := s.Geo.Geometry.MarshalJSON()
+	if err != nil {
+		return err
+	}
+	_, err = pg.Exec(`
+INSERT INTO sent_alerts
+(message,
+sent_sms,
+sent_email,
+sent_people,
+geo,
+sender,
+severity
+)
+VALUES ($1, $2, $3, $4, ST_SetSRID(ST_GeomFromGeoJSON($5),4326), $6, $7)
+`, s.Message, s.SentSMS, s.SentEmail, s.SentPeople, json, s.Sender, s.Severity)
+	return err
+}
+
 // Close implements io.Closer
 func (pg *Postgres) Close() error {
 	return pg.DB.Close()
@@ -223,6 +244,7 @@ type Datastore interface {
 	FindRecipients(*geojson.Geometry) ([]string, error)
 	FetchProfile(string) (Profile, error)
 	WriteProfile(string, Profile) error
+	WriteAlert(SentAlert) error
 	io.Closer
 }
 

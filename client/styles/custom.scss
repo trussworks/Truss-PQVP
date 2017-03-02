@@ -44,6 +44,13 @@ h1 {
   }
 }
 
+.container--half {
+  @include span-columns(12);
+  @include grid-media($tablet) {
+    @include span-columns(6);
+  }
+}
+
 .container--span {
   @include span-columns(12);
 }

@@ -23,13 +23,11 @@ class EmergencyPicker extends React.Component {
 
     this.changeLayerVisibility = this.changeLayerVisibility.bind(this);
   }
-
   changeLayerVisibility(event) {
     const newLayers = Object.assign({}, this.state.layers);
     newLayers[event.target.name].visible = !newLayers[event.target.name].visible;
     this.setState({ layers: newLayers });
   }
-
   render() {
     const position = [this.state.lat, this.state.lng];
 

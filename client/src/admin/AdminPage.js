@@ -37,17 +37,8 @@ class AdminPage extends React.Component {
       <div className="container--content">
         <AdminHeader />
         <EmergencyPicker selectFeature={this.selectFeature} selectedFeature={this.state.feature} />
-        { (this.state.feature && this.state.feature.properties.link) ?
-          <div className="container--span">
-            <p>
-            Here is a link for more information on the selected alert.
-            Consider adding it to your message:
-            <br />
-              <a href={this.state.feature.properties.link}>{this.state.feature.properties.link}</a>
-            </p>
-          </div> : <div />
-        }
         <AlertForm
+          feature={this.state.feature}
           featurePicked={!!this.state.feature}
           onSubmit={this.handleSubmit}
           initialValues={initialValues}

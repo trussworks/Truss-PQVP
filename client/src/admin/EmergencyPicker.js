@@ -35,7 +35,7 @@ class EmergencyPicker extends React.Component {
 
     return (
       <div>
-        <h3>Select the region affected by the incident:</h3>
+        <h3>Select the region you wish to alert:</h3>
         <div className="map-box">
           <Map center={position} zoom={this.state.zoom}>
             <TileLayer

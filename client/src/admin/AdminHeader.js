@@ -6,7 +6,7 @@ const AdminHeader = () => (
     <div className="container--blue">
       On this page you can set up an alert for the following services
       provided by Interior Geospatial Emergency Management System (IGEMS).
-      Subscribers will receive an alert via text or email.
+      Subscribers in the selected area will receive an alert via text or email.
     </div>
   </div>
 );

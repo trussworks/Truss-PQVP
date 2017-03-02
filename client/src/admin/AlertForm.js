@@ -2,7 +2,13 @@ import React, { PropTypes } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import alertValidator from './alertValidator';
 
-const AlertForm = ({ featurePicked, handleSubmit, submitting, valid }) => (
+const AlertForm = ({
+  feature,
+  featurePicked,
+  handleSubmit,
+  submitting,
+  valid,
+}) => (
   <div className="container--span">
     <form onSubmit={handleSubmit}>
       <legend className="legend--has-subtitle">
@@ -13,6 +19,15 @@ const AlertForm = ({ featurePicked, handleSubmit, submitting, valid }) => (
           while writing your message and use a link shortener when possible.
         </span>
       </legend>
+      { (feature && feature.properties.link) ?
+        <div className="container--span">
+          <p className="text--subtitle">
+          Use the following link provides additional information about the region you selected:
+          <br />
+            <a href={feature.properties.link}>{feature.properties.link}</a>
+          </p>
+        </div> : <div />
+      }
       <fieldset>
         <div>
           <label htmlFor="alertMessage">Message text:</label>
@@ -37,6 +52,7 @@ const AlertForm = ({ featurePicked, handleSubmit, submitting, valid }) => (
 );
 
 AlertForm.propTypes = {
+  feature: PropTypes.object,
   featurePicked: PropTypes.bool,
   handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,

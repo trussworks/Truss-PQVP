@@ -8,19 +8,10 @@ const AdminMenu = ({ loggedIn }) => {
   });
 
   return (
-    <li className={showAdmin}>
-      <button
-        className="usa-accordion-button usa-nav-link"
-        aria-expanded="false"
-        aria-controls="side-nav-1"
-      >
-        <span>Admin</span>
-      </button>
-      <ul id="side-nav-1" className="usa-nav-submenu">
-        <li><Link to="/admin">Admin Dashboard</Link></li>
-        <li><Link to="/admin/notifications">Notifications</Link></li>
-      </ul>
-    </li>
+    <div className={showAdmin}>
+      <li><Link to="/admin">Admin Dashboard</Link></li>
+      <li><Link to="/admin/notifications">Notifications</Link></li>
+    </div>
   );
 };
 

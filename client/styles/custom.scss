@@ -17,6 +17,20 @@ $uswds: (
   }
 }
 
+.container--left {
+  @include span-columns(12);
+  @include grid-media($tablet) {
+    @include span-columns(7);
+  }
+}
+
+.container--right {
+  @include span-columns(12);
+  @include grid-media($tablet) {
+    @include span-columns(4);
+  }
+}
+
 .container--logo {
   @include grid-media($uswds) {
     width: 40% !important;
@@ -52,6 +66,13 @@ $uswds: (
 }
 
 // Image & Icon Styles
+
+.icon--disabled {
+  height: 20px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
 
 .icon--dismiss {
   height: 16px;
@@ -91,10 +112,59 @@ $uswds: (
   height: 0;
 }
 
+.content--center {
+  margin: auto;
+}
+
+.text--center {
+  text-align: center;
+}
+
 .hide {
   display: none !important;
 }
 
 .text--dark-blue {
   color: #046b99;
+}
+
+.text__margin--20 {
+  @include grid-media($tablet) {
+    margin-bottom: 35px;
+  }
+}
+
+#form--notification {
+  @include grid-media($tablet) {
+    padding-top: 29px;
+  }
+}
+
+#form--notification legend {
+  @include grid-media($tablet) {
+    margin-bottom: 20px;
+  }
+}
+
+// Table styles
+
+.table--no-border table, th, td {
+  border: none !important;
+}
+
+.table--no-border td {
+  vertical-align: top !important;
+}
+
+.cell--left {
+  width: 100px;
+}
+
+// Form styles
+
+.form--inline {
+  box-shadow: inset 0 0 2px black;
+  margin-top: 24px;
+  padding: 10px;
+  position: relative;
 }

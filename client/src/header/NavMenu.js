@@ -11,12 +11,23 @@ const NavMenu = ({ loggedIn, logOutUser, userEmail }) => (
         <img src="../dist/public/img/close.svg" alt="close" />
       </button>
       <ul className="usa-nav-primary usa-accordion">
-        <UserMenu
-          loggedIn={loggedIn}
-          logOutUser={logOutUser}
-          userEmail={userEmail}
-        />
-        <AdminMenu loggedIn={loggedIn} />
+        <li>
+          <button
+            className="usa-accordion-button usa-nav-link"
+            aria-expanded="false"
+            aria-controls="side-nav-1"
+          >
+            <span>{ loggedIn ? userEmail : 'About' }</span>
+          </button>
+          <ul id="side-nav-1" className="usa-nav-submenu">
+            <AdminMenu loggedIn={loggedIn} />
+            <UserMenu
+              loggedIn={loggedIn}
+              logOutUser={logOutUser}
+              userEmail={userEmail}
+            />
+          </ul>
+        </li>
       </ul>
     </nav>
   </div>

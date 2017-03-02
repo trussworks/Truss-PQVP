@@ -86,12 +86,17 @@ func (pg *Postgres) FindRecipients(geo *geojson.Geometry) ([]string, error) {
 func (pg *Postgres) FetchProfile(email string) (Profile, error) {
 	var profile Profile
 	row := pg.QueryRow(`
-SELECT profiles.id, profiles.phone
-FROM profiles, users
-WHERE profiles.user_id = users.id AND users.email = $1`, email)
+SELECT p.id, p.phone, p.alert_phone, p.alert_email, p.urgent_only
+FROM profiles AS p, users AS u
+WHERE p.user_id = u.id AND u.email = $1`, email)
 	var phone string
 	var profileID int32
-	err := row.Scan(&profileID, &phone)
+	var alertPhone, alertEmail, urgentOnly bool
+	err := row.Scan(&profileID,
+		&phone,
+		&alertPhone,
+		&alertEmail,
+		&urgentOnly)
 	switch {
 	case err == sql.ErrNoRows:
 		profile.Phone = ""
@@ -99,6 +104,9 @@ WHERE profiles.user_id = users.id AND users.email = $1`, email)
 		return Profile{}, err
 	default:
 		profile.Phone = phone
+		profile.AlertEmail = alertEmail
+		profile.AlertPhone = alertPhone
+		profile.UrgentEmergenciesOnly = urgentOnly
 		profile.Addresses = make([]ProfileAddress, 0)
 	}
 	rows, err := pg.Query(`
@@ -166,8 +174,14 @@ AND users.email = $1`, email)
 	}
 	var profileID int32
 	row = tx.QueryRow(`
-INSERT INTO profiles (user_id, phone)
-VALUES ($1, $2) RETURNING id`, userID, profile.Phone)
+INSERT INTO profiles (user_id, phone, alert_phone, alert_email, urgent_only)
+VALUES ($1, $2, $3, $4, $5) RETURNING id`,
+		userID,
+		profile.Phone,
+		profile.AlertPhone,
+		profile.AlertEmail,
+		profile.UrgentEmergenciesOnly,
+	)
 	if err != nil {
 		tx.Rollback()
 		return err

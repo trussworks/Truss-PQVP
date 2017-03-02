@@ -64,8 +64,12 @@ func main() {
 	root.Handle(pat.New("/api/profile/*"), auth)
 	auth.HandleFunc(pat.Get("/"), GetProfile)
 	auth.HandleFunc(pat.Post("/"), UpdateProfile)
-	root.Handle(pat.Post("/api/alert/*"), auth)
-	auth.HandleFunc(pat.Post("/"), SendAlert)
+
+	// Admin routes with Auth
+	authAdmin := goji.SubMux()
+	authAdmin.Use(authMiddleware)
+	root.Handle(pat.Post("/api/alert/*"), authAdmin)
+	authAdmin.HandleFunc(pat.Post("/"), SendAlert)
 
 	// Documentation routes
 	root.Handle(pat.Get("/docs"), http.RedirectHandler("/docs/", 301))

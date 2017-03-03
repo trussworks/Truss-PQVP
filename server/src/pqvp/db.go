@@ -73,8 +73,8 @@ func (pg *Postgres) FindRecipients(geo *geojson.Geometry) ([]AlertRecipient, int
 		var recipient AlertRecipient
 		err = rows.Scan(&recipient.Email,
 			&recipient.Profile.Phone,
-			&recipient.Profile.AlertEmail,
 			&recipient.Profile.AlertPhone,
+			&recipient.Profile.AlertEmail,
 			&recipient.Profile.UrgentEmergenciesOnly,
 		)
 		recipients = append(recipients, recipient)

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Map, TileLayer } from 'react-leaflet';
 
 class NotificationsMap extends React.Component {
@@ -26,6 +26,10 @@ class NotificationsMap extends React.Component {
       </div>
     );
   }
+}
+
+NotificationsMap.propTypes = {
+  history: PropTypes.array.isRequired,
 }
 
 export default NotificationsMap;

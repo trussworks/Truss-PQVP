@@ -4,7 +4,6 @@ const NotificationsItem = ({ notification }) => {
   console.log(notification);
   return (
     <tr>
-      <td>Hi</td>
       <td>{notification.message}</td>
       <td>{notification.sender}</td>
     </tr>

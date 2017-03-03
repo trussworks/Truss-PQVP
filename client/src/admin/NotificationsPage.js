@@ -13,7 +13,7 @@ class NotificationsPage extends React.Component {
     return (
       <div className="container--content">
         <h1 className="text--center text__margin--70">Notifications</h1>
-        <NotificationsMap />
+        <NotificationsMap history={this.props.history} />
         <NotificationsList history={this.props.history} />
       </div>
     );

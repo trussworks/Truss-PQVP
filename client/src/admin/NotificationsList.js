@@ -6,7 +6,6 @@ const NotificationsList = ({ history }) => (
     <table className="usa-table-borderless">
       <thead>
         <tr>
-          <th scope="col">Service</th>
           <th scope="col">Description</th>
           <th scope="col">Sender</th>
         </tr>

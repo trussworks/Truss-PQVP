@@ -10,6 +10,8 @@ class HeaderContainer extends React.Component {
   static closeMenu() {
     document.querySelector('ul#side-nav-1').setAttribute('aria-hidden', 'true');
     document.querySelector('button#side-nav-1-button').setAttribute('aria-expanded', 'false');
+    document.querySelector('ul#side-nav-2').setAttribute('aria-hidden', 'true');
+    document.querySelector('button#side-nav-2-button').setAttribute('aria-expanded', 'false');
   }
   constructor(props) {
     super(props);

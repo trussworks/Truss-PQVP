@@ -13,7 +13,7 @@ if (isDev) {
     proxy: {
       "/api/*" : "http://localhost:80"
     },
-  }).listen(3001, 'localhost', function (err, result) {
+  }).listen(3001, '0.0.0.0', function (err, result) {
     if (err) { console.log(err) }
     console.log('Listening at localhost:3001');
   });

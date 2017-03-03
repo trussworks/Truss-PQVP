@@ -10,6 +10,7 @@ import (
 	"go.uber.org/zap"
 )
 
+// CustomClaims wraps our claims to add user data to jwt token
 type CustomClaims struct {
 	Email string `json:"email"`
 	*jwt.StandardClaims
@@ -27,7 +28,7 @@ func CreateJwt(u User) (string, error) {
 		u.Email,
 		/// expire the json web token after 15 minutes
 		&jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Minute * 15).Unix(),
+			ExpiresAt: time.Now().Add(time.Minute * 60).Unix(),
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

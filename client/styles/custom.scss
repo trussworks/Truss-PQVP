@@ -15,6 +15,10 @@ h1 {
   }
 }
 
+body.overflow {
+  overflow-y: scroll !important;
+}
+
 .footer {
   background-color: #d6d7d9;
   height: 80px;

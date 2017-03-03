@@ -32,7 +32,13 @@ const AlertForm = ({
       }
       <fieldset>
         <div>
-          <label htmlFor="alertMessage">Message text:</label>
+          <label htmlFor="alertMessage"><h3 className="text--inline">Message text&emsp;</h3>
+            <select id="select--language">
+              <option value="" defaultValue >English</option>
+              <option value="spanish">Español</option>
+              <option value="chinese">汉语</option>
+            </select>
+          </label>
           <Field
             name="alertMessage"
             component="textarea"

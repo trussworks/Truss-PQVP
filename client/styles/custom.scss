@@ -216,6 +216,10 @@ h1 {
   text-decoration: underline;
 }
 
+.text--inline {
+  display: inline;
+}
+
 // Alert Styles
 
 // Leaflet required class
@@ -310,6 +314,11 @@ table {
 #side-nav-1 > li {
   color: #d6d7d9;
   padding: 0.85rem 1rem 0.85rem 1.8rem;
+}
+
+#select--language {
+  display: inline;
+  width: 120px;
 }
 
 // Fixing the broken disabled buttons

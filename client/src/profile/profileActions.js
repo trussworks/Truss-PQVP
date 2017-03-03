@@ -20,7 +20,6 @@ export function updateProfile(authToken, newProfile) {
     return saveProfile(newProfile);
   }
   isUpdating = true;
-  dispatch(saveProfile(newProfile));
 
   const headers = new Headers();
   headers.append('Authorization', `Bearer ${authToken}`);
@@ -31,8 +30,8 @@ export function updateProfile(authToken, newProfile) {
   };
 
   return (dispatch) => {
-    window.setTimeout(() => {
-      fetch(PROFILE_URL, fetchInit)
+    dispatch(saveProfile(newProfile));
+    return fetch(PROFILE_URL, fetchInit)
       .then(actionHelpers.checkStatus)
       .then(actionHelpers.parseJSON)
       .then((profile) => {
@@ -64,7 +63,6 @@ export function updateProfile(authToken, newProfile) {
           console.error('getProfile Final Error: ', error);
         }
       });
-    }, 3000);
   };
 }
 

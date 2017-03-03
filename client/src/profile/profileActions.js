@@ -19,23 +19,26 @@ export function updateProfile(authToken, newProfile) {
     body: JSON.stringify(newProfile),
   };
 
-  return dispatch => fetch(PROFILE_URL, fetchInit)
-  .then(actionHelpers.checkStatus)
-  .then(actionHelpers.parseJSON)
-  .then((profile) => {
-    dispatch(saveProfile(profile));
-    dispatch(dismissAlert());
-  })
-  .catch((error) => {
-    if (error.response.status === 403) {
-      // Forbidden means our auth didn't auth
-      dispatch(logOutUser());
-      dispatch(displayAlert('usa-alert-error', 'Error Loading Profile', 'We were unable to update your profile. Please login and try again.'));
-    } else {
-      dispatch(displayAlert('usa-alert-error', 'Error Loading Profile', 'We were unable to load your profile. Please refresh the page and try again.'));
-      console.error('getProfile Error: ', error);
-    }
-  });
+  return (dispatch) => {
+    dispatch(saveProfile(newProfile));
+    fetch(PROFILE_URL, fetchInit)
+    .then(actionHelpers.checkStatus)
+    .then(actionHelpers.parseJSON)
+    .then((profile) => {
+      dispatch(saveProfile(profile));
+      dispatch(dismissAlert());
+    })
+    .catch((error) => {
+      if (error.response.status === 403) {
+        // Forbidden means our auth didn't auth
+        dispatch(logOutUser());
+        dispatch(displayAlert('usa-alert-error', 'Error Loading Profile', 'We were unable to update your profile. Please login and try again.'));
+      } else {
+        dispatch(displayAlert('usa-alert-error', 'Error Loading Profile', 'We were unable to load your profile. Please refresh the page and try again.'));
+        console.error('getProfile Error: ', error);
+      }
+    });
+  };
 }
 
 export function getProfile(authToken) {

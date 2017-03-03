@@ -98,24 +98,35 @@ Clone the repository and run ubuntu setup script which will install the followin
  * [nodenv](https://github.com/nodenv/nodenv) - [Node.js](https://nodejs.org/en/) virtual environment manager
  * [yarn](https://yarnpkg.com/en/) - JavaScript package manage
  * [docker](https://www.docker.com/) - build, run, test, and deploy applications inside software containers
+## Installation
 ```
 git clone https://github.com/trussworks/Truss-PQVP.git
 cd Truss-PQVP
 ./bin/setup-dev-ubuntu1604.sh
 ```
+## Start local Docker container
+running docker on linux requires root
+```
+sudo bin/local-docker.sh pqvp-demo
+```
+
 ## Running locally on macOS Sierra
 ### Requirements
  * [Homebrew](https://brew.sh/) needs to be installed and will be used to install all the required software dependencies
  * [Docker for Mac](https://docs.docker.com/docker-for-mac/install/) need to be installed to run the development docker container
+### Installation
 ```
 brew update
 brew install nodenv yarn
 git clone https://github.com/trussworks/Truss-PQVP.git
 nodenv install
-make local_docker
 ```
-# Testing application locally
+## Start local Docker container
+```make local_docker```
+
+## Testing application locally
 The docker container runs on http://localhost:80/ . The PostgreSQL database runs locally inside the Docker container, which means database state does not persist between builds.
+* Logs can be viewed using by running `docker logs -f pqvp-demo`
 
 # Notable Prototype Features
   * Session will time out after 15 minutes for security reasons

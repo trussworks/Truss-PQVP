@@ -9,7 +9,9 @@ import (
 
 func TestMain(m *testing.M) {
 	var err error
-	logger, err = zap.NewProduction()
+	conf := zap.NewDevelopmentConfig()
+	conf.DisableStacktrace = true
+	logger, err = conf.Build()
 	db, err = NewDB()
 	if err != nil {
 		logger.Fatal("could not open db connection",

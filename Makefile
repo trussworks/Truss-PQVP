@@ -32,6 +32,6 @@ local_docker: client_build
 local_test:
 	bin/local-postgis.sh ${POSTGIS} && \
 	cd server/src/pqvp && \
-	go test -cover
+	go test -v -cover
 
 .PHONY: client_build docs server_deps server_build server_test server_run local_docker local_test

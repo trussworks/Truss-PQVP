@@ -10,6 +10,7 @@ import (
 	"go.uber.org/zap"
 )
 
+// CustomClaims is for holding what we need in our jwt claims
 type CustomClaims struct {
 	Email string `json:"email"`
 	*jwt.StandardClaims

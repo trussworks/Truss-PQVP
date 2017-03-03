@@ -63,7 +63,7 @@ export function getProfile(authToken) {
     if (error.response.status === 403) {
       // Forbidden means our auth didn't auth
       dispatch(logOutUser());
-      dispatch(displayAlert('usa-alert-error', 'Error Loading Profile', 'You have been logged out. Please login again to continue.'));
+      dispatch(displayAlert('usa-alert-error', 'Logged Out', 'You have been logged out. Please login again to continue.'));
     } else {
       dispatch(displayAlert('usa-alert-error', 'Error Loading Profile', 'We were unable to load your profile. Please refresh the page and try again.'));
       console.error('getProfile Error: ', error);

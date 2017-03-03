@@ -92,23 +92,28 @@ Clone the repository and run Ubuntu setup script which will install the followin
  * [nodenv](https://github.com/nodenv/nodenv) - [Node.js](https://nodejs.org/en/) virtual environment manager
  * [yarn](https://yarnpkg.com/en/) - JavaScript package manage
  * [docker](https://www.docker.com/) - build, run, test, and deploy applications inside software containers
+
 **Requirements**
   * `sudo` privileges to be able to install software and run `docker` commands
+
 **Installation**
 ```
 git clone https://github.com/trussworks/Truss-PQVP.git
 cd Truss-PQVP
 ./bin/setup-dev-ubuntu1604.sh
 ```
+
 **Start local Docker container**
 running docker on Ubuntu 16.04 requires root
 ```
 sudo bin/local-docker.sh pqvp-demo
 ```
 ### Running locally on macOS Sierra
+
 **Requirements**
  * [Homebrew](https://brew.sh/) needs to be installed and will be used to install all the required software dependencies
  * [Docker for Mac](https://docs.docker.com/docker-for-mac/install/) need to be installed to run the development docker container
+
 **Installation**
 ```
 brew update

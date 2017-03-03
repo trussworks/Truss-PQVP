@@ -47,7 +47,7 @@ class NavMenu extends React.Component {
                 aria-controls="side-nav-2"
                 id="side-nav-2-button"
               >
-                <span>{ this.props.loggedIn ? this.props.userEmail : 'About' }</span>
+                <span>{ this.props.loggedIn ? this.props.userEmail : 'Menu' }</span>
               </button>
               <ul id="side-nav-2" className="usa-nav-submenu">
                 <AdminMenu

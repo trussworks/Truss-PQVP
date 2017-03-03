@@ -6,7 +6,7 @@ const AdminHeader = () => (
     <div className="container--blue">
       To alert registered citizens of an event, choose one of
       the regions identified below and write your message. All regions shown are
-      provided by the <a href="https://igems.doi.gov">IGEMS</a>.
+      provided by the <a rel="noopener noreferrer" target="_blank" href="https://igems.doi.gov">IGEMS</a>.
     </div>
   </div>
 );

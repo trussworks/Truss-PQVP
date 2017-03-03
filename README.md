@@ -78,6 +78,7 @@ The team conducted three one-week sprint cycles(link to pivotal board) to comple
 
 Project management tools used include Pivotal Tracker, Slack, GitHub, and Zoom. The team used Pivotal Tracker to create a prioritized list of user stories and to track bugs and issues. The project can be accessed in its entirety [here](https://www.pivotaltracker.com/projects/1969823)
 
+
 ## Application architecture
 
 The application is structured as a single page JavaScript client application with a Go API server. The client (found in `client`) is served to the browser by the Go server on the first request.
@@ -86,18 +87,35 @@ The client is written in modern JavaScript with [React](https://facebook.github.
 
 The server (found in `server`) is written in Go and uses Postgres with the PostGIS extension as its database. It provides a small number of API endpoints under `/api`, as well as serving the client application and its own docs under `/docs`. The main entrypoint is `server/src/pqvp/pqvp.go`. The majority of the app is the URL handlers in `handlers.go`and the database access in `db.go`. `alert.go` integrates with our SMS and email gateways, `auth.go` sets up the JSON Web Tokens, and `middleware.go` provides the authentication middleware.
 
-# Run application locally for development
+# Run application locally in a Docker container
 
-## Local installation with Docker
+## Running locally on Ubuntu 16.04
+### Requirements
+  * `sudo` privileges to be able to install software and run `docker` commands
+  * `git` needs to be installed locally to clone the repository
 
-### Dev Setup
-1. Install Docker
-2. `$ make local_docker`
-    * This builds the server and runs it in docker.
-3. Server logs at: `docker logs -f pqvp-demo`
-
-### Client Dev
-1. Read `./client/README.md`
+Clone the repository and run ubuntu setup script which will install the following dependencies
+ * [nodenv](https://github.com/nodenv/nodenv) - [Node.js](https://nodejs.org/en/) virtual environment manager
+ * [yarn](https://yarnpkg.com/en/) - JavaScript package manage
+ * [docker](https://www.docker.com/) - build, run, test, and deploy applications inside software containers
+```
+git clone https://github.com/trussworks/Truss-PQVP.git
+cd Truss-PQVP
+./bin/setup-dev-ubuntu1604.sh
+```
+## Running locally on macOS Sierra
+### Requirements
+ * [Homebrew](https://brew.sh/) needs to be installed and will be used to install all the required software dependencies
+ * [Docker for Mac](https://docs.docker.com/docker-for-mac/install/) need to be installed to run the development docker container
+```
+brew update
+brew install nodenv yarn
+git clone https://github.com/trussworks/Truss-PQVP.git
+nodenv install
+make local_docker
+```
+# Testing application locally
+The docker container runs on http://localhost:80/ . The PostgreSQL database runs locally inside the Docker container, which means database state does not persist between builds.
 
 # Notable Prototype Features
   * Session will time out after 15 minutes for security reasons

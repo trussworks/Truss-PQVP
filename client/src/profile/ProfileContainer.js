@@ -83,7 +83,7 @@ class ProfileContainer extends React.Component {
       <div className="container--content">
         <h1 className="text--center text__margin--70">User Profile</h1>
         <div className="container--blue">
-          Please register  below to recieve notifications from the State of CA.
+          Please register below to receive notifications from the State of CA.
           If there are ever imminent emergencies near any of the addresses your provide, you will
           be sent an email and/or a text message notifying you as soon as possible. Furthermore,
           should you be affected by a disaster, you will be notified of relief efforts in the same

@@ -8,6 +8,14 @@ class NavMenu extends React.Component {
   handleClickOutside() {
     this.menu = document.getElementById('main-menu');
     this.menu.classList.remove('is-visible');
+    this.mainMenu = document.getElementById('side-nav-2');
+    this.mainMenu.setAttribute('aria-hidden', 'true');
+    this.mainMenuButton = document.getElementById('side-nav-2-button');
+    this.mainMenuButton.setAttribute('aria-expanded', 'false');
+    this.languageMenu = document.getElementById('side-nav-1');
+    this.languageMenu.setAttribute('aria-hidden', 'true');
+    this.languageButton = document.getElementById('side-nav-1-button');
+    this.languageButton.setAttribute('aria-expanded', 'false');
   }
   render() {
     return (

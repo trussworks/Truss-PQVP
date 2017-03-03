@@ -1,8 +1,16 @@
 import React, { PropTypes } from 'react';
 import NotificationItem from './NotificationItem';
 
-const NotificationsList = ({ history }) => (
-  <div className="container--half">
+const NotificationsList = ({ displayAll, history, toggleAlertFilter }) => (
+  <div className="container--half group">
+    <input
+      type="checkbox"
+      id="input--filter"
+      name="filter-alerts"
+      checked={!displayAll}
+      onChange={toggleAlertFilter}
+    />
+    <label htmlFor="filter-alerts" id="label--filter" >Only show my alerts</label>
     <table className="usa-table-borderless">
       <thead>
         <tr>
@@ -21,7 +29,9 @@ const NotificationsList = ({ history }) => (
 );
 
 NotificationsList.propTypes = {
+  displayAll: PropTypes.bool.isRequired,
   history: PropTypes.array,
+  toggleAlertFilter: PropTypes.func.isRequired,
 };
 
 export default NotificationsList;

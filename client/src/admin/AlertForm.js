@@ -14,19 +14,21 @@ const AlertForm = ({
       <legend className="legend--has-subtitle">
         <h3>Enter a message describing the event:</h3>
         <span className="text--subtitle">
-          Make sure to provide a link to allow the reader to get additional information.
+          { (feature && feature.properties.link) ? (null) :
+          <span>Make sure to provide a link to allow the reader to get additional
+          information. </span> }
           Single text messages are limited to 160 characters so keep that in mind
-          while writing your message and use a link shortener when possible.
+          and use a link shortener when possible.
         </span>
       </legend>
       { (feature && feature.properties.link) ?
         <div className="container--span">
           <p className="text--subtitle">
-          The following link provides additional information about the region you selected:
+          The following link provides additional information about the alert you selected:
           <br />
             <a href={feature.properties.link}>{feature.properties.link}</a>
           </p>
-        </div> : <div />
+        </div> : (null)
       }
       <fieldset>
         <div>
@@ -36,8 +38,6 @@ const AlertForm = ({
             component="textarea"
             type="text"
           />
-        </div>
-        <div>
           <Field
             name="isEmergency"
             component="input"

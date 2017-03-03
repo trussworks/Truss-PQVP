@@ -13,13 +13,15 @@ import (
 
 // SendSMS uses AWS SNS to send SMS messages to a list of phone numbers
 // Return the number of successful sends
-func SendSMS(recipients []AlertRecipient, message string) int {
+func SendSMS(recipients []AlertRecipient, alert Alert) int {
 	var successes uint32
 
 	// Send SMS messages
 	// TODO use channels to speed up throughput
 	for _, r := range recipients {
 		if !r.Profile.AlertPhone {
+			continue
+		} else if r.Profile.UrgentEmergenciesOnly && alert.Severity == "NON_EMERGENCY" {
 			continue
 		}
 		phoneNumber, err := libphonenumber.Parse(r.Profile.Phone, "US")
@@ -33,7 +35,7 @@ func SendSMS(recipients []AlertRecipient, message string) int {
 		logger.Info("Sending SMS",
 			zap.String("phone", formattedNumber),
 		)
-		err = sms.Send(message, formattedNumber)
+		err = sms.Send(alert.Message, formattedNumber)
 		if err != nil {
 			logger.Error("SMS send failed",
 				zap.String("phone", formattedNumber),
@@ -50,7 +52,7 @@ func SendSMS(recipients []AlertRecipient, message string) int {
 
 // SendEmail uses SendGrid to send emails to a list addresses
 // Return the number of successful sends
-func SendEmail(recipients []AlertRecipient, message string) int {
+func SendEmail(recipients []AlertRecipient, alert Alert) int {
 	var successes uint32
 
 	logger.Info("Test Email")
@@ -58,12 +60,15 @@ func SendEmail(recipients []AlertRecipient, message string) int {
 	for _, r := range recipients {
 		if !r.Profile.AlertEmail {
 			continue
+		} else if r.Profile.UrgentEmergenciesOnly && alert.Severity == "NON_EMERGENCY" {
+			continue
 		}
+
 		// TODO fix DMARC policies to send from alert@pqvp.truss.works
 		from := mail.NewEmail("Emergency Alert App", "test@example.com")
 		subject := "Emergency Alert Notification"
 		to := mail.NewEmail(r.Email, r.Email)
-		content := mail.NewContent("text/plain", message)
+		content := mail.NewContent("text/plain", alert.Message)
 		m := mail.NewV3MailInit(from, subject, to, content)
 
 		request := sendgrid.GetRequest(os.Getenv("SENDGRID_API_KEY"), "/v3/mail/send", "https://api.sendgrid.com")

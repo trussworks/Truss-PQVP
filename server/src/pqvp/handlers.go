@@ -329,11 +329,11 @@ func SendAlert(w http.ResponseWriter, r *http.Request) {
 		)
 		return
 	}
-	successesSMS := SendSMS(recipients, alert.Message)
-	successesEmail := SendEmail(recipients, alert.Message)
+	successesSMS := SendSMS(recipients, alert)
+	successesEmail := SendEmail(recipients, alert)
 	logger.Info("Successfully sent",
 		zap.Int("SMS Notifications", successesSMS),
-		zap.Int("Emal Notifications", successesEmail),
+		zap.Int("Email Notifications", successesEmail),
 	)
 
 	sentAlert := SentAlert{
@@ -370,6 +370,7 @@ type TestEmail struct {
 //SendEmailTest will test email sending to a single email address
 func SendEmailTest(w http.ResponseWriter, r *http.Request) {
 	var testEmail TestEmail
+	var alert Alert
 	err := json.NewDecoder(r.Body).Decode(&testEmail)
 	if err != nil {
 		logger.Error("could not decode json",
@@ -389,8 +390,8 @@ func SendEmailTest(w http.ResponseWriter, r *http.Request) {
 			nil,
 		},
 	}
-
-	SendEmail([]AlertRecipient{recipient}, "test alert")
+	alert.Message = "test alert"
+	SendEmail([]AlertRecipient{recipient}, alert)
 }
 
 // SendTestAlert sends a test alert to the phone number specified
@@ -414,7 +415,7 @@ func SendTestAlert(w http.ResponseWriter, r *http.Request) {
 		},
 	}
 	alert.Message = "test sms"
-	successesSMS := SendSMS([]AlertRecipient{recipient}, alert.Message)
+	successesSMS := SendSMS([]AlertRecipient{recipient}, alert)
 
 	sentAlert := SentAlert{
 		alert.Message,

@@ -20,9 +20,7 @@ class NotificationsPage extends React.Component {
     this.props.fetchHistory(this.props.authToken);
   }
   componentWillReceiveProps(nextProps) {
-    if (this.props.history.length === 0 && nextProps.history.length > 0) {
-      this.setState({ filteredAlerts: nextProps.history });
-    }
+    this.setState({ filteredAlerts: nextProps.history });
   }
   toggleAlertFilter() {
     this.setState({ displayAll: !this.state.displayAll }, () => {
@@ -50,7 +48,7 @@ class NotificationsPage extends React.Component {
 }
 
 NotificationsPage.propTypes = {
-  authToken: PropTypes.string.isRequired,
+  authToken: PropTypes.string,
   fetchHistory: PropTypes.func.isRequired,
   history: PropTypes.array,
   userEmail: PropTypes.string,

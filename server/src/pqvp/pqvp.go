@@ -71,8 +71,6 @@ func main() {
 	authAdmin.Use(authMiddleware)
 	root.Handle(pat.New("/api/alert/*"), authAdmin)
 	authAdmin.HandleFunc(pat.Post("/"), SendAlert)
-	authAdmin.HandleFunc(pat.Post("/test/email"), SendEmailTest)
-	authAdmin.HandleFunc(pat.Post("/:phone"), SendTestAlert)
 	authAdmin.HandleFunc(pat.Get("/history"), GetAlertHistory)
 
 	// Documentation routes

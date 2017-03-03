@@ -1,6 +1,11 @@
 import actionHelpers from '../utils/actionHelpers';
 import { displayAlert } from '../app/appActions';
 import { logOutUser } from '../auth/authActions';
+import { SAVE_HISTORY } from '../constants/actionTypes';
+
+export function saveHistory(history) {
+  return { type: SAVE_HISTORY, history };
+}
 
 export function postAlert(authToken, alert) {
   const headers = new Headers();
@@ -30,4 +35,22 @@ export function postAlert(authToken, alert) {
   });
 }
 
-export default postAlert;
+export function fetchHistory(accessToken) {
+  const headers = new Headers();
+  headers.append('Authorization', `Bearer ${accessToken}`);
+
+  const fetchInit = {
+    method: 'GET',
+    headers,
+  };
+
+  return dispatch => fetch('/api/alert/history', fetchInit)
+  .then(actionHelpers.checkStatus)
+  .then(actionHelpers.parseJSON)
+  .then((response) => {
+    dispatch(saveHistory(response));
+  })
+  .catch((error) => {
+    error.log(error);
+  });
+}

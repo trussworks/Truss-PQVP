@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
+import NotificationItem from './NotificationItem';
 
-const NotificationsList = () => (
+const NotificationsList = ({ history }) => (
   <div className="container--half">
     <table className="usa-table-borderless">
       <thead>
@@ -11,29 +12,16 @@ const NotificationsList = () => (
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row">Declaration of Independence</th>
-          <td>Statement adopted by the Continental Congress declaring indepen</td>
-          <td>1776</td>
-        </tr>
-        <tr>
-          <th scope="row">Bill of Rights</th>
-          <td>The first ten ranteeing rights and freedoms.</td>
-          <td>1791</td>
-        </tr>
-        <tr>
-          <th scope="row">Declaration of Sentiments</th>
-          <td>MadeA document written during the Seneca Falls Convention outl</td>
-          <td>1848</td>
-        </tr>
-        <tr>
-          <th scope="row">Emancipation Proclamation</th>
-          <td>An executive order grantingnated southern states.</td>
-          <td>1863</td>
-        </tr>
+        { history.map((notification, index) => (
+          <NotificationItem key={index} notification={notification} />
+        ))}
       </tbody>
     </table>
   </div>
 );
+
+NotificationsList.propTypes = {
+  history: PropTypes.array,
+};
 
 export default NotificationsList;

@@ -31,7 +31,14 @@ class ProfileContainer extends React.Component {
     }
   }
   submitUpdate(values) {
-    const newProfile = Object.assign({}, this.props.profile, values);
+    // Probably because of passing in props to initialValue
+    // But maybe because there is some wonky state sticking around
+    // we are getting values from more than the form should be sending us
+    // so we filter down to the three we care about.
+    const newProfile = Object.assign({}, this.props.profile,
+      { alertEmail: values.alertEmail,
+        alertPhone: values.alertPhone,
+        onlyEmergencies: values.onlyEmergencies });
     this.props.updateProfile(this.props.accessToken, newProfile);
   }
   togglePasswordForm(e) {

@@ -105,7 +105,7 @@ cd Truss-PQVP
 ./bin/setup-dev-ubuntu1604.sh
 ```
 ## Start local Docker container
-running docker on linux requires root
+running docker on Ubuntu 16.04 requires root
 ```
 sudo bin/local-docker.sh pqvp-demo
 ```

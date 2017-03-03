@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 
 const NotificationsItem = ({ notification }) => {
-  console.log(notification);
   return (
     <tr>
       <td>{notification.message}</td>

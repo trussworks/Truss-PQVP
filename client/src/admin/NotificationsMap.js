@@ -30,6 +30,6 @@ class NotificationsMap extends React.Component {
 
 NotificationsMap.propTypes = {
   history: PropTypes.array.isRequired,
-}
+};
 
 export default NotificationsMap;

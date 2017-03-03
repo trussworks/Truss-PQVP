@@ -7,9 +7,9 @@ class EmergencyPicker extends React.Component {
     super(props);
 
     this.state = {
-      lat: 37.7,
-      lng: -122.4,
-      zoom: 8,
+      lat: 38.581,
+      lng: -121.494,
+      zoom: 7,
       layers: {
         warnings: { label: 'Weather Warnings', url: 'https://igems.doi.gov/arcgis/rest/services/igems_haz/MapServer/12', visible: true },
         watches: { label: 'Weather Watches', url: 'https://igems.doi.gov/arcgis/rest/services/igems_haz/MapServer/13', visible: true },

@@ -263,3 +263,9 @@ table {
     line-height: 26px;
   }
 }
+
+// Fixing the broken disabled buttons
+input[type="submit"]:disabled {
+  color: white;
+  background-color: gray;
+}

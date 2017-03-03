@@ -11,12 +11,12 @@ const AdminMenu = ({ closeMenu, loggedIn }) => {
     <div className={showAdmin}>
       <li>
         <Link onClick={closeMenu} to="/admin">
-          Admin Dashboard
+          Send Alert
         </Link>
       </li>
       <li>
         <Link onClick={closeMenu} to="/admin/notifications">
-          Notifications
+          Alert Monitoring
         </Link>
       </li>
     </div>

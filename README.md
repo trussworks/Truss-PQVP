@@ -62,14 +62,14 @@ The following human-centered design techniques were used:
   * Other team members also identified usability improvements and filed stories which were reviewed by the team and accepted or rejected during planning and grooming sessions.
   * Additionally we conducted user testing with people within the organization but outside the assigned team to provide valuable feedback which was iterated upon to achieve the delivered prototype.
 
-Design style guide: [Neat](http://neat.bourbon.io) was used as the grid system to ensure a consistent and responsive design. Templates and style guides were leveraged from the draft [U.S. Web Design Standards](https://standards.usa.gov) site.
+Design style guide: [Neat](http://neat.bourbon.io) was used as the grid system to ensure a consistent and responsive design. Templates and style guides were procured from the draft [U.S. Web Design Standards](https://standards.usa.gov) site. Leveraging these sources facilitated our ability to maintain compliance with Section 508 of the Americans with Disabilities Act and WCAG 2.0. 
 
 ## Agile development approach:
-The team conducted three one-week sprint cycles(link to pivotal board) to complete design, development, and testing. Several technologies were used to ensure the prototype works on multiple devices with a responsive design, including Neat, Leaflet, and React.js. All platforms used to create and run the prototype are openly licensed and free of charge
+The team conducted three one-week sprint cycles to complete design, development, and testing. Several technologies were used to ensure the prototype works on multiple devices with a responsive design, including Neat, Leaflet, and React.js. All platforms used to create and run the prototype are openly licensed and free of charge
 
-* Modern and open-source technologies include: Docker, Circle CI, Postgres, React.js, webpack and Go.
+* Modern and open-source technologies include: Docker, React, Redux, JSON Web Tokens, webpack, and Terraform.
 * Infrastructure as a Service (IaaS) was run on AWS using: Terraform, ECS, SNS, etc.
-* Automated unit tests developed via: We used Jest and the Go built-in unit testing library;
+* Automated unit tests used Jest and the Go built-in unit testing library;
 * We did browser testing using Selenium and Sauce Labs to emulate different devices and OSs as well as manually tested the prototype on iPhone/Android mobile OS.
 * Our continuous integration system, Circle CI, also deployed into ECS after tests passed on master.
 * Configuration management: Terraform
@@ -80,11 +80,11 @@ Project management tools used include Pivotal Tracker, Slack, GitHub, and Zoom. 
 
 ## Application architecture
 
-The application is structured as a single page JavaScript client application with a Go API server. The client (found in `client`) is served to the browser by the Go server on the first request.
+The application is structured as a single page JavaScript client application with a Go API server. Swagger was used to document the API server, these documents can be found at https://demo.pqvp.truss.works/docs. The client (found in `client`) is served to the browser by the Go server on the first request.
 
-The client is written in modern JavaScript with [React](https://facebook.github.io/react/) and [Redux](http://redux.js.org). It uses [Leaflet](http://leafletjs.com) for map rendering and the [ESRI Leaflet](https://github.com/Esri/esri-leaflet) module to interact with ArcGIS. Once logged in, client requests are authorized using [JSON Web Tokens](https://jwt.io). Both the signup and login pages authorize the customer to use the application. Once logged in, the client profile pages uses the `/api/profile` endpoint to fetch and update the customer's profile. If the customer is an admin (note: for the purposes of the prototype's ease of use, all customers are admins), they can access the send alert view, which uses the /api/alert endpoint along with ArcGIS data to notify customers.
+The client is written in modern JavaScript with [React](https://facebook.github.io/react/) and [Redux](http://redux.js.org). It uses [Leaflet](http://leafletjs.com) for map rendering and the [ESRI Leaflet](https://github.com/Esri/esri-leaflet) module to interact with [ArcGIS](http://www.arcgis.com/). Once logged in, client requests are authorized using [JSON Web Tokens](https://jwt.io). Both the signup and login pages authorize the customer to use the application. Once logged in, the client profile pages uses the `/api/profile` endpoint to fetch and update the customer's profile. If the customer is an admin (note: for the purposes of the prototype's ease of use, all customers are admins), they can access the send alert view, which uses the /api/alert endpoint along with ArcGIS data to notify customers.
 
-The server (found in `server`) is written in Go and uses Postgres with the PostGIS extension as its database. It provides a small number of API endpoints under `/api`, as well as serving the client application and its own docs under `/docs`. The main entrypoint is `server/src/pqvp/pqvp.go`. The majority of the app is the URL handlers in `handlers.go`and the database access in `db.go`. `alert.go` integrates with our SMS and email gateways, `auth.go` sets up the JSON Web Tokens, and `middleware.go` provides the authentication middleware.
+The server (found in `server`) is written in Go and uses PostgreSQL with the PostGIS extension as its database. It provides a small number of API endpoints under `/api`, as well as serving the client application and its own docs under `/docs`. The main entrypoint is `server/src/pqvp/pqvp.go`. The majority of the app is the URL handlers in `handlers.go`and the database access in `db.go`. `alert.go` integrates with our SMS and email gateways, `auth.go` sets up the JSON Web Tokens, and `middleware.go` provides the authentication middleware.
 
 ## Run application locally in a Docker container
 ### Running locally on Ubuntu 16.04
@@ -129,15 +129,28 @@ nodenv install
 ### Testing application locally
 The docker container runs on [http://localhost:80/](http://localhost:80/) . The PostgreSQL database runs locally inside the Docker container, which means database state does not persist between builds. Logs can be viewed using by running `docker logs -f pqvp-demo`
 
+SMS alerts use AWS SNS while email alerts use SendGrid. Developers using the local Docker container will be unable to send these notifications until a proper AWS environment is configured and attached to the Docker container. Similarly for sending emails for SendGrid. Environment variables that are expected:
+
+SENDGRID_API_KEY
+AWS_REGION
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+
+Users must make sure their AWS credentials give them access to the AWS SNS service.
+
 # Notable Prototype Features
-  * Session will time out after 15 minutes for security reasons
+Because we are submitting a prototype, certain features have been roughed in but not finalized. Additionally some decsisions made for the sake of the prototype would not be made if designing a production application.
+
   * Duplicate emails will not be accepted
-  * There are no password restrictions (P)
-  * Every user is an admin ( no additional auth) (P)
-  * Push notifications require a native mobile app. Since there was not an easy way to deliver this to the government as a usable prototype, this has not been included. You can review the Truss app 'Leave Now' [in the apple store](https://appsto.re/us/xT3qH.i) if you would like to see an example of how we would have incorporated those features.
+  * There are no password restrictions 
+  * Every user is an admin ( no additional auth)
+  * Push notifications require a native mobile app. Since there was not an easy way to deliver this to the government as a usable prototype, this has not been included. You can review the Truss app 'Leave Now' [in the apple store] (https://appsto.re/us/xT3qH.i) if you would like to see an example of how we would have incorporated those features.
   * Geolocation requires a native mobile app. Since there was not an easy way to deliver this to the government as a usable prototype, this has not been included. You can review the Truss app 'Leave Now' [in the apple store](https://appsto.re/us/xT3qH.i) if you would like to see an example of how we would have incorporated those features.
-  * Users are not able to update email addresses in the prototype (P)
-  * Change Password functionality is not hooked up (P)
+  * Users are not able to update email addresses in the prototype 
+  * Change Password functionality is not hooked up 
+  * Language selection is not functional 
+  * We are able to provide support for MS Edge but not IE 11. All other major browsers (including mobile) were tested and have full support.
+  *
 
 ## Licensing
 Copyright (C) 2017 Truss Works, Inc.

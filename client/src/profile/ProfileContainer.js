@@ -73,14 +73,31 @@ class ProfileContainer extends React.Component {
   updatePassword() {
     this.togglePasswordForm();
   }
+  isAlertable() {
+    const profile = this.props.profile;
+    return (profile.addresses && profile.addresses.length > 0
+      && (profile.alertEmail || (profile.phone && profile.alertPhone)));
+  }
   render() {
     return (
       <div className="container--content">
         <h1 className="text--center text__margin--70">User Profile</h1>
+        <div className="container--blue">
+          Please register  below to recieve notifications from the State of CA.
+          If there are ever imminent emergencies near any of the addresses your provide, you will
+          be sent an email and/or a text message notifying you as soon as possible. Furthermore,
+          should you be affected by a disaster, you will be notified of relief efforts in the same
+          way.
+        </div>
         { !(this.props.profile && this.props.profile.addresses) ? (
           <div>loading profile...</div>
           ) : (
             <div>
+              { this.isAlertable() ? (null) :
+              <div className="container--red">
+                Until you have filled out an address and have selected a notification type, you
+                will not be able to receive any notifications.
+              </div> }
               <UserInfo
                 initialValues={this.props.profile}
                 profile={this.props.profile}

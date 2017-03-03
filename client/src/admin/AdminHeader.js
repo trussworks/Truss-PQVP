@@ -2,7 +2,7 @@ import React from 'react';
 
 const AdminHeader = () => (
   <div>
-    <h1 className="text--center text__margin--70">Send New Notification</h1>
+    <h1 className="text--center text__margin--70">Send New Alert</h1>
     <div className="container--blue">
       To alert registered citizens of an event, choose one of
       the regions identified below and write your message. All regions shown are

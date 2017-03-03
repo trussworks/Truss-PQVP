@@ -7,7 +7,7 @@ export function saveHistory(history) {
   return { type: SAVE_HISTORY, history };
 }
 
-export function postAlert(authToken, alert) {
+export function postAlert(authToken, alert, callback) {
   const headers = new Headers();
   headers.append('Authorization', `Bearer ${authToken}`);
 
@@ -22,8 +22,11 @@ export function postAlert(authToken, alert) {
   .then(actionHelpers.parseJSON)
   .then((sentAlert) => {
     dispatch(displayAlert('usa-alert-success', 'Alert Sent!', `Your alert was sent out to ${sentAlert['send-people']} people`));
+    callback();
+    window.scrollTo(0, 0);
   })
   .catch((error) => {
+    callback();
     if (error.response.status === 403) {
       // Forbidden means our auth didn't auth
       dispatch(logOutUser());

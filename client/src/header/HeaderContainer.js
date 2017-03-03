@@ -7,7 +7,7 @@ import { dismissAlert } from '../app/appActions';
 import { logOutUser } from '../auth/authActions';
 
 class HeaderContainer extends React.Component {
-  static closeMenu(e) {
+  static closeMenu() {
     document.getElementById('main-menu').remove('is-visible');
     document.querySelector('ul#side-nav-1').setAttribute('aria-hidden', 'true');
     document.querySelector('button#side-nav-1-button').setAttribute('aria-expanded', 'false');

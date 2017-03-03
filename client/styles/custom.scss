@@ -15,7 +15,8 @@ h1 {
   }
 }
 
-body.overflow {
+body {
+  overflow-x: visible !important;
   overflow-y: scroll !important;
 }
 

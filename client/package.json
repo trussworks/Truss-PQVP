@@ -7,7 +7,7 @@
   "scripts": {
     "prod": "webpack --config ./webpack-production.config.js --colors",
     "start": "node dev-server.js",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "jest": {
     "automock": false,

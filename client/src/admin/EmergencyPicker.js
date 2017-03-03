@@ -61,10 +61,11 @@ class EmergencyPicker extends React.Component {
             return (
               <div key={name}>
                 <input
-                  type="checkbox"
+                  checked={layer.visible}
+                  className="input__checkbox--layers"
                   name={name}
                   onChange={this.changeLayerVisibility}
-                  checked={layer.visible}
+                  type="checkbox"
                 />
                 <label htmlFor={name}>{layer.label}</label>
               </div>

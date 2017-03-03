@@ -119,6 +119,7 @@ git clone https://github.com/trussworks/Truss-PQVP.git
 nodenv install
 ```
 **Start local Docker container**
+
 ```make local_docker```
 
 ##Testing application locally

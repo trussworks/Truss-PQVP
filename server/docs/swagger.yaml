@@ -22,6 +22,8 @@ paths:
       responses:
         200:
           description: Login Successful
+          schema:
+            $ref: '#/definitions/LoginResponse'
         400:
           description: Invalid Request
         401:
@@ -43,6 +45,8 @@ paths:
       responses:
         201:
           description: Login Successful
+          schema:
+            $ref: '#/definitions/LoginResponse'
         400:
           description: Invalid Request
         500:
@@ -62,6 +66,8 @@ paths:
       responses:
         200:
           description: Profile returned
+          schema:
+            $ref: '#/definitions/Profile'
         400:
           description: Invalid Request
         500:
@@ -73,6 +79,8 @@ paths:
       responses:
         200:
           description: Profile updated
+          schema:
+            $ref: '#/definitions/Profile'
         400:
           description: Invalid Request
         500:
@@ -92,6 +100,8 @@ paths:
       responses:
         200:
           description: Alerts Sent
+          schema:
+            $ref: '#/definitions/AlertResponse'
         400:
           description: Invalid Request
         404:
@@ -105,6 +115,18 @@ paths:
           required: true
           schema:
             $ref: '#/definitions/Alert'
+  /alert/history:
+    get:
+      description: Gets the history of all alerts
+      produces:
+        - application/json
+      responses:
+        200:
+          description: List of all alerts sent.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/AlertResponse'
 definitions:
   Alert:
     type: object
@@ -134,11 +156,11 @@ definitions:
         description: Address describing location of coordinates
       latitude:
         type: number
-        format: long
+        format: double
         description: latitude coordinate using 4326 spatial reference
       longitude:
         type: number
-        format: long
+        format: double
         description: longitude coordinate using 4326 spatial reference
   Profile:
     type: object
@@ -149,13 +171,13 @@ definitions:
         type: string
         description: phone number of the user
       alertEmail:
-        type: bool
+        type: boolean
         description: True if the user wants email alerts
       alertPhone:
-        type: bool
+        type: boolean
         description: True if the user wants SMS alerts
       onlyEmergencies:
-        type: bool
+        type: boolean
         description: If true, only send emergency alerts to the user
       addresses:
         type: array
@@ -294,3 +316,40 @@ definitions:
                 type: array
                 items:
                   $ref: '#/definitions/GeoJSONPoint2D'
+  LoginResponse:
+    type: object
+    description: Login response
+    properties:
+      email:
+        type: string
+        description: Email address used to login
+      access_token:
+        type: string
+        description: JSON Web Token used to authenticate.
+      expires_in:
+        type: integer
+        description: How many seconds the token expires in.
+  AlertResponse:
+    type: object
+    description: Alert response
+    properties:
+      message:
+        type: string
+        description: message that was sent
+      sent-sms:
+        type: integer
+        description: number of SMS messages sent
+      sent-email:
+        type: integer
+        description: number of email messages sent
+      sent-people:
+        type: integer
+        description: Total number of people notified
+      geojson:
+        $ref: '#/definitions/GeoJSONFeature'
+      sender:
+        type: string
+        description: user id of the sender
+      severity:
+        type: string
+        description: Severity of the alert (EMERGENCY or NON_EMERGENCY)

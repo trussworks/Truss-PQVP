@@ -6,8 +6,9 @@ const NotificationsList = ({ history }) => (
     <table className="usa-table-borderless">
       <thead>
         <tr>
-          <th scope="col">Description</th>
+          <th scope="col">Message</th>
           <th scope="col">Sender</th>
+          <th scope="col">Alerts Sent</th>
         </tr>
       </thead>
       <tbody>

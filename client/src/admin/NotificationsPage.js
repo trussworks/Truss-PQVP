@@ -12,7 +12,7 @@ class NotificationsPage extends React.Component {
   render() {
     return (
       <div className="container--content">
-        <h1 className="text--center text__margin--70">Notifications</h1>
+        <h1 className="text--center text__margin--70">Alert Monitoring</h1>
         <NotificationsMap history={this.props.history} />
         <NotificationsList history={this.props.history} />
       </div>

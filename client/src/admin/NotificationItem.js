@@ -2,8 +2,9 @@ import React, { PropTypes } from 'react';
 
 const NotificationsItem = ({ notification }) => (
   <tr>
-    <td>{notification.message}</td>
     <td>{notification.sender}</td>
+    <td>{notification.message}</td>
+    <td>{notification['send-people']}</td>
   </tr>
 );
 

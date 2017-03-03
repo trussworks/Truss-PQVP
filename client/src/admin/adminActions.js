@@ -30,7 +30,7 @@ export function postAlert(authToken, alert, callback) {
     if (error.response.status === 403) {
       // Forbidden means our auth didn't auth
       dispatch(logOutUser());
-      dispatch(displayAlert('usa-alert-error', 'Error Sending Alert', 'We were unable to send the alert. Please login and try again.'));
+      dispatch(displayAlert('usa-alert-error', 'Error Sending Alert', 'We were unable to send the alert because you have been logged out. Please login and try again.'));
     } else {
       dispatch(displayAlert('usa-alert-error', 'Error Sending Alert', 'We were unable to send the alert. Please refresh the page and try again.'));
       console.error('postAlert Error: ', error);
@@ -54,6 +54,13 @@ export function fetchHistory(accessToken) {
     dispatch(saveHistory(response));
   })
   .catch((error) => {
-    console.error(error);
+    if (error.response.status === 403) {
+      // Forbidden means our auth didn't auth
+      dispatch(logOutUser());
+      dispatch(displayAlert('usa-alert-error', 'Error Fetching Monitoring', 'You have been logged out. Please login and try again.'));
+    } else {
+      dispatch(displayAlert('usa-alert-error', 'Error Fetching Monitoring', 'We were to fetch the recent alert history. Please refresh the page and try again.'));
+      console.error('fetchHistory Error: ', error);
+    }
   });
 }

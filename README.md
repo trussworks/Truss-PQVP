@@ -89,13 +89,12 @@ The server (found in `server`) is written in Go and uses Postgres with the PostG
 
 # Run application locally in a Docker container
 ## Running locally on Ubuntu 16.04
-Clone the repository and run ubuntu setup script which will install the following dependencies
+Clone the repository and run Ubuntu setup script which will install the following dependencies
  * [nodenv](https://github.com/nodenv/nodenv) - [Node.js](https://nodejs.org/en/) virtual environment manager
  * [yarn](https://yarnpkg.com/en/) - JavaScript package manage
  * [docker](https://www.docker.com/) - build, run, test, and deploy applications inside software containers
 **Requirements**
   * `sudo` privileges to be able to install software and run `docker` commands
-  * `git` needs to be installed locally to clone the repository
 **Installation**
 ```
 git clone https://github.com/trussworks/Truss-PQVP.git
@@ -123,8 +122,7 @@ nodenv install
 ```make local_docker```
 
 ##Testing application locally
-The docker container runs on [http://localhost:80/](http://localhost:80/) . The PostgreSQL database runs locally inside the Docker container, which means database state does not persist between builds.
-* Logs can be viewed using by running `docker logs -f pqvp-demo`
+The docker container runs on [http://localhost:80/](http://localhost:80/) . The PostgreSQL database runs locally inside the Docker container, which means database state does not persist between builds. Logs can be viewed using by running `docker logs -f pqvp-demo`
 
 # Notable Prototype Features
   * Session will time out after 15 minutes for security reasons

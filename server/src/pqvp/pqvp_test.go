@@ -7,14 +7,6 @@ import (
 	"go.uber.org/zap"
 )
 
-var (
-	invalidJSON = []byte(`"email":"joe@gmail.com", "fail":"peanutbutter"`)
-	userGood    = []byte(`{"email":"mario@gmail.com", "password":"peanutbutter"}`)
-	userBad     = []byte(`{"email":"joe@gmail.com", "address":"peanutbutter"}`)
-	profileGood = []byte(`{"phone":"1234567890", "addresses":[{"address": "1 My Address", "latitude":37.770070, "longitude":-122.428790}]}`)
-	profileBad  = []byte(`{"phone":"1231231231", "addresses":[{"address": "address string"}]}`)
-)
-
 func TestMain(m *testing.M) {
 	var err error
 	logger, err = zap.NewProduction()

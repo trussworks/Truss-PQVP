@@ -35,6 +35,5 @@ sudo apt-get install -y docker-ce
 
 # run dev docker instance
 make client_build
-# running docker on linux requires root
-sudo bin/local-docker.sh pqvp-demo
+
 

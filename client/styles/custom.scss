@@ -23,7 +23,7 @@ body {
 .footer {
   background-color: #d6d7d9;
   height: 80px;
-  margin-top: 20px;
+  margin-top: 60px;
   padding: 20px 0;
   text-align: right;
 }
@@ -295,6 +295,13 @@ table {
   }
 }
 
+.input__checkbox--layers {
+  width: 50%;
+  @include grid-media($tablet) {
+    width: 25%;
+  }
+}
+
 .legend--has-subtitle {
   line-height: 20px;
   @include grid-media($tablet) {
@@ -308,8 +315,10 @@ table {
 }
 
 #select--language {
+  border: none;
+  color: #5b616b;
   display: inline;
-  width: 120px;
+  width: 100px;
 }
 
 // Fixing the broken disabled buttons

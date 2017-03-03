@@ -11,6 +11,7 @@ client/dist/docs
 client/npm-debug.log*
 client/yarn-debug.log*
 client/yarn-error.log*
+client/coverage
 npm-debug.log
 
 # Server side exclude

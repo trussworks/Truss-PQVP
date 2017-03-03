@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import AutoComplete from 'react-autocomplete';
+import Autosuggest from 'react-autosuggest';
 
 const MAPZEN_API_KEY = 'mapzen-Xt7d1Sz';
 const MAPZEN_AUTOCOMPLETE_URL = 'https://search.mapzen.com/v1/autocomplete';
@@ -33,35 +33,48 @@ class AddressField extends React.Component {
     };
     this.onChange = this.onChange.bind(this);
     this.onSelect = this.onSelect.bind(this);
+    this.updateSuggestions = this.updateSuggestions.bind(this);
+    this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this);
   }
-
   onChange(event, value) {
-    this.props.updateAddressState(value);
+    this.props.updateAddressState(value.newValue);
+  }
+  onSelect(event, { suggestion, suggestionValue }) {
+    this.setState({ suggestions: [] });
+    this.props.updateAddressState(suggestionValue);
+    this.props.saveAddress(suggestion);
+  }
+  onSuggestionsClearRequested() {
+    this.setState({
+      suggestions: [],
+    });
+  }
+  updateSuggestions({ value }) {
     AddressField.suggestionsRequest(value).then((result) => {
       this.setState({ suggestions: result.features });
     });
   }
-  onSelect(value, item) {
-    this.setState({ suggestions: [] });
-    this.props.updateAddressState({ value });
-    this.props.saveAddress(item);
-  }
 
 // TODO: rate limiting, making sure you only show suggestions monotonically increasingly.
   render() {
+    const inputProps = {
+      placeholder: 'Type an address',
+      value: this.props.fieldState,
+      onChange: this.onChange,
+    };
     return (
       <div>
         <label htmlFor="input-type-text">Add Address:</label>
-        <AutoComplete
-          value={this.props.fieldState}
-          items={this.state.suggestions}
-          getItemValue={item => item.properties.label}
-          onSelect={this.onSelect}
-          onChange={this.onChange}
-          renderItem={(item, isHighlighted) => (
-            <div
-              className={isHighlighted ? 'autocomplete__item--highlighted' : 'autocomplete__item'}
-            >{item.properties.label}</div>
+        <Autosuggest
+          onSuggestionsFetchRequested={this.updateSuggestions}
+          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+          suggestions={this.state.suggestions}
+          getSuggestionValue={item => item.properties.label}
+          onSuggestionSelected={this.onSelect}
+          highlightFirstSuggestion
+          inputProps={inputProps}
+          renderSuggestion={item => (
+            <div>{item.properties.label}</div>
           )}
         />
       </div>

@@ -3,6 +3,7 @@ GOPATH := $(CURDIR)/server:$(GOPATH)
 
 client_build:
 	cd client && \
+	yarn install && \
 	npm run-script prod
 docs:
 	bootprint openapi server/docs/swagger.yaml client/dist/docs

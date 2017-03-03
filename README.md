@@ -86,8 +86,8 @@ The client is written in modern JavaScript with [React](https://facebook.github.
 
 The server (found in `server`) is written in Go and uses Postgres with the PostGIS extension as its database. It provides a small number of API endpoints under `/api`, as well as serving the client application and its own docs under `/docs`. The main entrypoint is `server/src/pqvp/pqvp.go`. The majority of the app is the URL handlers in `handlers.go`and the database access in `db.go`. `alert.go` integrates with our SMS and email gateways, `auth.go` sets up the JSON Web Tokens, and `middleware.go` provides the authentication middleware.
 
-# Run application locally in a Docker container
-## Running locally on Ubuntu 16.04
+## Run application locally in a Docker container
+### Running locally on Ubuntu 16.04
 Clone the repository and run Ubuntu setup script which will install the following dependencies
  * [nodenv](https://github.com/nodenv/nodenv) - [Node.js](https://nodejs.org/en/) virtual environment manager
  * [yarn](https://yarnpkg.com/en/) - JavaScript package manage
@@ -105,7 +105,7 @@ running docker on Ubuntu 16.04 requires root
 ```
 sudo bin/local-docker.sh pqvp-demo
 ```
-## Running locally on macOS Sierra
+### Running locally on macOS Sierra
 **Requirements**
  * [Homebrew](https://brew.sh/) needs to be installed and will be used to install all the required software dependencies
  * [Docker for Mac](https://docs.docker.com/docker-for-mac/install/) need to be installed to run the development docker container
@@ -120,7 +120,7 @@ nodenv install
 
 ```make local_docker```
 
-##Testing application locally
+### Testing application locally
 The docker container runs on [http://localhost:80/](http://localhost:80/) . The PostgreSQL database runs locally inside the Docker container, which means database state does not persist between builds. Logs can be viewed using by running `docker logs -f pqvp-demo`
 
 # Notable Prototype Features

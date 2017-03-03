@@ -16,7 +16,7 @@ const NotificationsList = ({ displayAll, history, toggleAlertFilter }) => (
         <tr>
           <th scope="col">Message</th>
           <th scope="col">Sender</th>
-          <th scope="col">Alerts Sent</th>
+          <th scope="col">Num. of Recipients</th>
         </tr>
       </thead>
       <tbody>

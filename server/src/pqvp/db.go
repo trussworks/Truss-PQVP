@@ -174,6 +174,8 @@ WHERE p.user_id = u.id AND u.email = $1`, email)
 	switch {
 	case err == sql.ErrNoRows:
 		profile.Phone = ""
+		// Default is to alert via email
+		profile.AlertEmail = true
 	case err != nil:
 		return Profile{}, err
 	default:

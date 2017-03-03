@@ -57,6 +57,13 @@ const UserInfo = ({
             }
           </td>
         </tr>
+        <tr>
+          <td className="cell--left"><strong>Alert Language:</strong></td>
+          <td>
+            English<br />
+            <span className="text--disabled-link">Update language</span>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>

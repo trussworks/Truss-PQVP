@@ -211,6 +211,11 @@ h1 {
   font-weight: normal;
 }
 
+.text--disabled-link {
+  color: #aeb0b5;
+  text-decoration: underline;
+}
+
 // Alert Styles
 
 // Leaflet required class
@@ -300,6 +305,11 @@ table {
   @include grid-media($tablet) {
     line-height: 26px;
   }
+}
+
+#side-nav-1 > li {
+  color: #d6d7d9;
+  padding: 0.85rem 1rem 0.85rem 1.8rem;
 }
 
 // Fixing the broken disabled buttons

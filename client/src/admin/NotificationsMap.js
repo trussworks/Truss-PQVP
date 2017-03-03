@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Map, TileLayer } from 'react-leaflet';
+import { Map, TileLayer, GeoJSON, Popup } from 'react-leaflet';
 
 class NotificationsMap extends React.Component {
   constructor(props) {
@@ -22,6 +22,17 @@ class NotificationsMap extends React.Component {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
           />
+          { this.props.history.map(alert => (
+            <GeoJSON
+              key={alert.message} // jank. we need to have an ID.
+              data={alert.geojson}
+              color="blue"
+            >
+              <Popup>
+                <span>{alert.message} sent by: {alert.sender}</span>
+              </Popup>
+            </GeoJSON>
+          ))}
         </Map>
       </div>
     );

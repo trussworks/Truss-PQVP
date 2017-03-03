@@ -14,8 +14,8 @@ const NotificationsList = ({ displayAll, history, toggleAlertFilter }) => (
     <table className="usa-table-borderless">
       <thead>
         <tr>
-          <th scope="col">Message</th>
           <th scope="col">Sender</th>
+          <th scope="col">Message</th>
           <th scope="col">Num. of Recipients</th>
         </tr>
       </thead>

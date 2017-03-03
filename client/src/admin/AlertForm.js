@@ -26,7 +26,7 @@ const AlertForm = ({
           <p className="text--subtitle">
           The following link provides additional information about the alert you selected:
           <br />
-            <a href={feature.properties.link}>{feature.properties.link}</a>
+            <a rel="noopener noreferrer" target="_blank" href={feature.properties.link}>{feature.properties.link}</a>
           </p>
         </div> : (null)
       }

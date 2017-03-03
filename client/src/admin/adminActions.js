@@ -51,6 +51,6 @@ export function fetchHistory(accessToken) {
     dispatch(saveHistory(response));
   })
   .catch((error) => {
-    error.log(error);
+    console.error(error);
   });
 }

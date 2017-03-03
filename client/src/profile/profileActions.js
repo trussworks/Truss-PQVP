@@ -13,19 +13,17 @@ export function saveProfile(profile) {
 const PROFILE_URL = '/api/profile/';
 
 export function updateProfile(authToken, newProfile) {
-  console.log('BEGIN');
   if (isUpdating) {
     // If we are in the middle of a request, just replace nextProfile with newProfile
+    // the most up to date profile will be sent when the current request finishes.
     nextProfile = newProfile;
-    console.log('saving profile999999');
     return saveProfile(newProfile);
   }
-
-  // If we aren't requesting, then we request.
   isUpdating = true;
+  dispatch(saveProfile(newProfile));
+
   const headers = new Headers();
   headers.append('Authorization', `Bearer ${authToken}`);
-
   const fetchInit = {
     method: 'POST',
     headers,
@@ -33,36 +31,26 @@ export function updateProfile(authToken, newProfile) {
   };
 
   return (dispatch) => {
-    dispatch(saveProfile(newProfile));
-    console.log('newporf should be: ', newProfile);
-    console.log('sending');
     window.setTimeout(() => {
-      console.log('snet');
       fetch(PROFILE_URL, fetchInit)
       .then(actionHelpers.checkStatus)
       .then(actionHelpers.parseJSON)
       .then((profile) => {
-        console.log('got back', profile);
         isUpdating = false;
         dispatch(dismissAlert());
         if (nextProfile) {
           const theProfile = nextProfile;
           nextProfile = null;
           // If there was a new profile waiting to be sent, send it.
-          console.log('recurse');
           dispatch(updateProfile(authToken, theProfile));
         } else {
-          console.log('saving profile!');
           dispatch(saveProfile(profile));
         }
-        console.log('back');
       })
       .catch((error) => {
-        console.log('errororred');
         isUpdating = false;
         if (error.response.status === 403) {
           // Forbidden means our auth didn't auth
-          console.log(error);
           dispatch(logOutUser());
           dispatch(displayAlert('usa-alert-error', 'Error Loading Profile', 'We were unable to update your profile. Please login and try again.'));
         } else if (nextProfile) {
@@ -100,9 +88,6 @@ export function getProfile(authToken) {
     dispatch(dismissAlert());
   })
   .catch((error) => {
-    console.log(error);
-    console.log(error.response.status);
-    console.log(error.response);
     if (error.response.status === 403) {
       // Forbidden means our auth didn't auth
       dispatch(logOutUser());

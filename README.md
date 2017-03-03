@@ -114,6 +114,7 @@ sudo bin/local-docker.sh pqvp-demo
 brew update
 brew install nodenv yarn
 git clone https://github.com/trussworks/Truss-PQVP.git
+cd Truss-PQVP
 nodenv install
 ```
 **Start local Docker container**

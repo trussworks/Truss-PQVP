@@ -78,7 +78,6 @@ The team conducted three one-week sprint cycles(link to pivotal board) to comple
 
 Project management tools used include Pivotal Tracker, Slack, GitHub, and Zoom. The team used Pivotal Tracker to create a prioritized list of user stories and to track bugs and issues. The project can be accessed in its entirety [here](https://www.pivotaltracker.com/projects/1969823)
 
-
 ## Application architecture
 
 The application is structured as a single page JavaScript client application with a Go API server. The client (found in `client`) is served to the browser by the Go server on the first request.

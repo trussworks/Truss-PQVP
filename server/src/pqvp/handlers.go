@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"net/http"
 
-	"goji.io/pat"
-
 	"github.com/asaskevich/govalidator"
 	"github.com/paulmach/go.geojson"
 	"go.uber.org/zap"
@@ -360,76 +358,6 @@ func SendAlert(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	fmt.Fprintf(w, "%s", ru)
 
-}
-
-// TestEmail is a wrapper struct around email sending
-type TestEmail struct {
-	Email string `json:"email"`
-}
-
-//SendEmailTest will test email sending to a single email address
-func SendEmailTest(w http.ResponseWriter, r *http.Request) {
-	var testEmail TestEmail
-	var alert Alert
-	err := json.NewDecoder(r.Body).Decode(&testEmail)
-	if err != nil {
-		logger.Error("could not decode json",
-			zap.String("path", r.URL.Path),
-			zap.Error(err),
-		)
-		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
-		return
-	}
-	recipient := AlertRecipient{
-		testEmail.Email,
-		Profile{
-			"",
-			true,
-			true,
-			true,
-			nil,
-		},
-	}
-	alert.Message = "test alert"
-	SendEmail([]AlertRecipient{recipient}, alert)
-}
-
-// SendTestAlert sends a test alert to the phone number specified
-func SendTestAlert(w http.ResponseWriter, r *http.Request) {
-	var alert Alert
-	err := json.NewDecoder(r.Body).Decode(&alert)
-	if err != nil {
-		logger.Error("Error decoding alert",
-			zap.String("path", r.URL.Path),
-			zap.Error(err),
-		)
-	}
-	recipient := AlertRecipient{
-		"",
-		Profile{
-			pat.Param(r, "phone"),
-			true,
-			true,
-			true,
-			nil,
-		},
-	}
-	alert.Message = "test sms"
-	successesSMS := SendSMS([]AlertRecipient{recipient}, alert)
-
-	sentAlert := SentAlert{
-		alert.Message,
-		successesSMS,
-		0,
-		0,
-		alert.Geo,
-		r.Context().Value(userKey).(User).Email,
-		alert.Severity,
-	}
-
-	ru, _ := json.Marshal(sentAlert)
-	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "%s", ru)
 }
 
 // GetAlertHistory is the handler for the alert history endpoint

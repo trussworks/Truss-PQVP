@@ -52,7 +52,7 @@ class ProfileContainer extends React.Component {
     this.setState({ newAddressState: newState });
   }
   updatePhone(values) {
-    const newProfile = Object.assign({}, this.props.profile, values);
+    const newProfile = Object.assign({}, this.props.profile, { phone: values.phone });
     this.props.updateProfile(this.props.accessToken, newProfile);
     this.togglePhoneForm();
   }

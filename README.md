@@ -123,7 +123,7 @@ nodenv install
 ```make local_docker```
 
 ##Testing application locally
-The docker container runs on http://localhost:80/ . The PostgreSQL database runs locally inside the Docker container, which means database state does not persist between builds.
+The docker container runs on [http://localhost:80/](http://localhost:80/) . The PostgreSQL database runs locally inside the Docker container, which means database state does not persist between builds.
 * Logs can be viewed using by running `docker logs -f pqvp-demo`
 
 # Notable Prototype Features

@@ -6,8 +6,8 @@ const AlertForm = ({
   feature,
   featurePicked,
   handleSubmit,
-  submitting,
   valid,
+  sending,
 }) => (
   <div className="container--span">
     <form onSubmit={handleSubmit}>
@@ -26,7 +26,7 @@ const AlertForm = ({
           <p className="text--subtitle">
           The following link provides additional information about the alert you selected:
           <br />
-            <a href={feature.properties.link}>{feature.properties.link}</a>
+            <a rel="noopener noreferrer" target="_blank" href={feature.properties.link}>{feature.properties.link}</a>
           </p>
         </div> : (null)
       }
@@ -45,7 +45,7 @@ const AlertForm = ({
           />
           <label htmlFor="isEmergency">This event is classified as an emergency.</label>
         </div>
-        <input type="submit" disabled={submitting || !(valid && featurePicked)} value="Send Alert!" />
+        <input type="submit" disabled={sending || !(valid && featurePicked)} value="Send Alert!" />
       </fieldset>
     </form>
   </div>
@@ -55,7 +55,7 @@ AlertForm.propTypes = {
   feature: PropTypes.object,
   featurePicked: PropTypes.bool,
   handleSubmit: PropTypes.func.isRequired,
-  submitting: PropTypes.bool.isRequired,
+  sending: PropTypes.bool,
   valid: PropTypes.bool.isRequired,
 };
 

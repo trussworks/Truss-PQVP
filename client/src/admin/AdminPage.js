@@ -16,12 +16,14 @@ class AdminPage extends React.Component {
 
     this.selectFeature = this.selectFeature.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.alertPosted = this.alertPosted.bind(this);
   }
-
   selectFeature(feature) {
     this.setState({ feature });
   }
-
+  alertPosted() {
+    this.setState({ sending: false });
+  }
   handleSubmit(values) {
     const alert = {
       geojson: this.state.feature,
@@ -29,7 +31,8 @@ class AdminPage extends React.Component {
       severity: values.isEmergency ? 'EMERGENCY' : 'NON_EMERGENCY',
     };
 
-    this.props.postAlert(this.props.accessToken, alert);
+    this.setState({ sending: true });
+    this.props.postAlert(this.props.accessToken, alert, this.alertPosted);
   }
 
   render() {
@@ -42,6 +45,7 @@ class AdminPage extends React.Component {
           featurePicked={!!this.state.feature}
           onSubmit={this.handleSubmit}
           initialValues={initialValues}
+          sending={this.state.sending}
         />
       </div>
     );

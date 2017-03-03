@@ -10,7 +10,7 @@ const Addresses = ({
   removeAddress,
 }) => (
   <div className="container--bottom">
-    <h3>Receive Alerts For Which Addresses?</h3>
+    <h3>Your Addresses</h3>
     {addresses.map(address => (
       <AddressView
         address={address}

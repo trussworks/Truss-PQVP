@@ -28,6 +28,26 @@ const AlertSettingsForm = ({ handleSubmit }) => (
           <label htmlFor="alertPhone">Subscribe to Text Alerts</label>
           <Field
             component="input"
+            disabled
+            type="checkbox"
+            name="pushNotifications"
+            onChange={() => {
+              setTimeout(handleSubmit);
+            }}
+          />
+          <label htmlFor="alertPhone">
+            Subscribe to Push Notifications
+          </label>
+          <div className="container--image">
+            <img
+              alt="Download from the App Store"
+              className="icon--download"
+              src="dist/public/img/Download_on_the_App_Store_Badge_US-UK_135x40.svg"
+            />
+            <div className="after" />
+          </div>
+          <Field
+            component="input"
             type="checkbox"
             name="onlyEmergencies"
             onChange={() => {

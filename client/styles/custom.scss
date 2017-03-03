@@ -9,6 +9,10 @@ $uswds: (
 
 h1 {
   color: #046b99;
+  font-size: 1.4em;
+  @include grid-media($tablet) {
+    font-size: 2.2em;
+  }
 }
 
 .footer {
@@ -129,6 +133,32 @@ h1 {
   width: 12px;
 }
 
+.icon--download {
+  // height: 40px;
+  // margin: 4px 0 0 28px;
+  // position: relative;
+  // width: 135px;
+}
+
+.container--image {
+  height: 40px;
+  margin: 4px 0 0 28px;
+  position: relative;
+  width: 135px;
+}
+
+.container--image .after {
+  background: rgba(0, 0, 0, .3);
+  border-radius: 5px;
+  color: #FFF;
+  display: block;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
 .logo--ca {
   height: 35px;
   width: 35px;
@@ -179,6 +209,11 @@ h1 {
 .text--subtitle {
   font-size: 16px;
   font-weight: normal;
+}
+
+.text--disabled-link {
+  color: #aeb0b5;
+  text-decoration: underline;
 }
 
 // Alert Styles
@@ -235,10 +270,10 @@ table {
 // Component specific styles
 
 .container--red {
-  background-color: #ff0033;
-  border: 1px solid #00a6d2;
+  background-color: #f9dede;
+  border: 1px solid #e59393;
   border-radius: 1em;
-  margin-top: 10px;
+  margin: 16px 0;
   padding: 20px;
 }
 
@@ -270,6 +305,11 @@ table {
   @include grid-media($tablet) {
     line-height: 26px;
   }
+}
+
+#side-nav-1 > li {
+  color: #d6d7d9;
+  padding: 0.85rem 1rem 0.85rem 1.8rem;
 }
 
 // Fixing the broken disabled buttons

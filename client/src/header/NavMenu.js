@@ -13,21 +13,35 @@ class NavMenu extends React.Component {
     return (
       <div className="container--content group">
         <Logo />
-        <nav role="navigation" className="usa-nav" id="main-menu">
+        <nav id="main-menu" role="navigation" className="usa-nav">
           <button className="usa-nav-close">
             <img src="../dist/public/img/close.svg" alt="close" />
           </button>
           <ul className="usa-nav-primary usa-accordion">
             <li>
               <button
+                aria-controls="side-nav-1"
+                aria-expanded="false"
+                className="usa-accordion-button usa-nav-link"
+                id="side-nav-1-button"
+              >
+                <span>English</span>
+              </button>
+              <ul id="side-nav-1" className="usa-nav-submenu">
+                <li>Español</li>
+                <li>汉语</li>
+              </ul>
+            </li>
+            <li>
+              <button
                 className="usa-accordion-button usa-nav-link"
                 aria-expanded="false"
-                aria-controls="side-nav-1"
-                id="side-nav-1-button"
+                aria-controls="side-nav-2"
+                id="side-nav-2-button"
               >
                 <span>{ this.props.loggedIn ? this.props.userEmail : 'About' }</span>
               </button>
-              <ul id="side-nav-1" className="usa-nav-submenu">
+              <ul id="side-nav-2" className="usa-nav-submenu">
                 <AdminMenu
                   closeMenu={this.props.closeMenu}
                   loggedIn={this.props.loggedIn}

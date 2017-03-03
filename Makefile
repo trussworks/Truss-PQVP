@@ -1,4 +1,5 @@
 NAME = pqvp-demo
+POSTGIS = pqvp-postgis
 GOPATH := $(CURDIR)/server:$(GOPATH)
 
 client_build:
@@ -28,5 +29,12 @@ selenium_test:
 	go test
 local_docker: client_build
 	bin/local-docker.sh $(NAME)
+local_test:
+	bin/local-postgis.sh ${POSTGIS} && \
+	cd server/src/pqvp && \
+	go test -v -cover
+test_coverage:
+	go test -coverprofile=/tmp/coverage-handlers.out ./server/src/pqvp/
+	go tool cover -html=/tmp/coverage-handlers.out
 
-.PHONY: client_build docs server_deps server_build server_test server_run local_docker
+.PHONY: client_build docs server_deps server_build server_test server_run local_docker local_test test_coverage

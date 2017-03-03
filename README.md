@@ -71,17 +71,20 @@ The team conducted three one-week sprint cycles(link to pivotal board) to comple
 * Infrastructure as a Service (IaaS) was run on AWS using: Terraform, ECS, SNS, etc.
 * Automated unit tests developed via: We used Jest and the Go built-in unit testing library;
 * We did browser testing using Selenium and Sauce Labs to emulate different devices and OSs as well as manually tested the prototype on iPhone/Android mobile OS.
-* Continuous integration system: Circle CI
+* Our continuous integration system, Circle CI, also deployed into ECS after tests passed on master.
 * Configuration management: Terraform
 * Continuous monitoring: AWS Cloudwatch and Route53 Health Check
 * Container deployment:ECS / Docker
 
-The architecture is a single page  JavaScript application with a Go API server. It is supported by a carefully selected set of modern libraries such as:
-* React
-* Flux
-* Leaflet
-
 Project management tools used include Pivotal Tracker, Slack, GitHub, and Zoom. The team used Pivotal Tracker to create a prioritized list of user stories and to track bugs and issues. The project can be accessed in its entirety [here](https://www.pivotaltracker.com/projects/1969823)
+
+## Application architecture
+
+The application is structured as a single page JavaScript client application with a Go API server. The  client (found in `client`) is served to the browser by the Go server on the first request.
+
+The client is written in modern JavaScript with [React](https://facebook.github.io/react/) and [Redux](http://redux.js.org). It uses [Leaflet](http://leafletjs.com) for map rendering and the [ESRI Leaflet](https://github.com/Esri/esri-leaflet) module to interact with ArcGIS. Once logged in, client requests are authorized using [JSON Web Tokens](https://jwt.io). Both the signup and login pages authorize the customer to use the application. Once logged in, the client profile pages uses the `/api/profile` endpoint to fetch and update the customers profile. If the customer is an admin (note: for the purposes of the prototype's ease of use, all customers are admins), they can access the send alert view, which uses the /api/alert endpoint along with ArcGIS data to notify customers.
+
+The server (found in `server`) is written in Go and uses Postgres with the PostGIS extension as its database. It provides a small number of API endpoints under `/api`, as well as serving the client application and its own docs under `/docs`. The main entrypoint is `server/src/pqvp/pqvp.go`. The majority of the app is the URL handlers in `handlers.go`and the database access in `db.go`. `alert.go` integrates with our SMS and email gateways, `auth.go` sets up the JSON Web Tokens, and `middleware.go` provides the authentication middleware.
 
 # Run application locally for development
 

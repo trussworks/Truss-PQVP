@@ -1,3 +1,6 @@
+// Admin Actions
+export const SAVE_HISTORY = 'SAVE_HISTORY';
+
 // App Actions
 export const DISPLAY_ALERT = 'DISPLAY_ALERT';
 export const DISMISS_ALERT = 'DISMISS_ALERT';
